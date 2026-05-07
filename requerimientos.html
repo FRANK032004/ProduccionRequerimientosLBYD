@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Documento de Requerimientos — La Baguetteria y Delicatezze</title>
+  <style>
+    :root {
+      --primary:   #2c3e50;
+      --accent:    #e67e22;
+      --success:   #27ae60;
+      --warning:   #f39c12;
+      --danger:    #e74c3c;
+      --light:     #f4f6f8;
+      --border:    #dde1e7;
+      --text:      #2c3e50;
+      --muted:     #7f8c8d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 40px 60px 30px;
+      border-bottom: 5px solid var(--accent);
+    }
+    header h1 { font-size: 26px; font-weight: 700; letter-spacing: 0.5px; }
+    header h2 { font-size: 14px; font-weight: 400; opacity: 0.75; margin-top: 6px; }
+    .header-meta {
+      display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap;
+    }
+    .meta-item { font-size: 12px; opacity: 0.8; }
+    .meta-item strong { color: var(--accent); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 30px; }
+
+    /* ── SECCIONES ── */
+    .section {
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+    .section-header {
+      background: var(--primary);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-header .icon { font-size: 18px; }
+    .section-header h3 { font-size: 15px; font-weight: 600; }
+    .section-header .badge {
+      margin-left: auto;
+      background: var(--accent);
+      border-radius: 12px;
+      padding: 2px 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .section-body { padding: 24px; }
+
+    /* ── SUBSECCIONES ── */
+    .subsection { margin-bottom: 24px; }
+    .subsection:last-child { margin-bottom: 0; }
+    .subsection h4 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--accent);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+
+    /* ── TABLAS ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead tr { background: var(--light); }
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      border-bottom: 2px solid var(--border);
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafbfc; }
+
+    /* ── TAGS DE ESTADO ── */
+    .tag {
+      display: inline-block;
+      border-radius: 4px;
+      padding: 2px 9px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tag-ok       { background: #d5f5e3; color: #1e8449; }
+    .tag-warn     { background: #fef9e7; color: #b7770d; }
+    .tag-danger   { background: #fdebd0; color: #c0392b; }
+    .tag-info     { background: #d6eaf8; color: #1a5276; }
+    .tag-pending  { background: #f2f3f4; color: #707b7c; }
+
+    /* ── BLOQUES DE CÓDIGO / FLUJO ── */
+    .flow-box {
+      background: #f8f9fa;
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+      padding: 14px 18px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12.5px;
+      line-height: 2;
+      white-space: pre-wrap;
+      color: var(--primary);
+    }
+
+    /* ── BRECHAS ── */
+    .brecha {
+      border-left: 4px solid var(--danger);
+      background: #fdf2f2;
+      border-radius: 4px;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .brecha strong { color: var(--danger); }
+
+    /* ── REQUERIMIENTOS ── */
+    .rf-list { list-style: none; }
+    .rf-list li {
+      display: flex;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+      font-size: 13px;
+    }
+    .rf-list li:last-child { border-bottom: none; }
+    .rf-code {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: monospace;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    /* ── INCIDENTE ── */
+    .incident-box {
+      border: 2px solid var(--danger);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .incident-header {
+      background: var(--danger);
+      color: #fff;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .incident-body { padding: 16px 18px; font-size: 13px; }
+
+    /* ── PRODUCTOS CONFLICTIVOS ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 8px;
+    }
+    .product-card {
+      background: #fff8f0;
+      border: 1px solid #f0c080;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 12.5px;
+      color: var(--primary);
+    }
+    .product-card::before { content: "⚠ "; color: var(--warning); }
+
+    /* ── ESTADO GENERAL ── */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .status-card {
+      border-radius: 8px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+    }
+    .status-card .area { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .status-card .estado { font-size: 11px; }
+    .status-complete { background: #d5f5e3; border-color: #a9dfbf; }
+    .status-pending  { background: #f2f3f4; border-color: #d5d8dc; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: #fff; }
+      .section { break-inside: avoid; }
+      header { background: #fff; color: #000; border-bottom: 2px solid #000; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Documento de Levantamiento de Requerimientos</h1>
+  <h2>Sistema de Control de Producción y Costos — La Baguetteria y Delicatezze</h2>
+  <div class="header-meta">
+    <div class="meta-item"><strong>Empresa</strong>La Baguetteria y Delicatezze</div>
+    <div class="meta-item"><strong>Responsable</strong>Luis Franklin Zeta Juárez</div>
+    <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
+    <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
+    <div class="meta-item"><strong>Versión</strong>1.0 — En progreso</div>
+    <div class="meta-item"><strong>Estado</strong>Levantamiento activo</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ═══════════════════════════════════════════════════
+       1. DESCRIPCIÓN GENERAL
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🏢</span>
+      <h3>1. Descripción General de la Empresa</h3>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <h4>Información General</h4>
+        <table>
+          <tr><td style="width:220px;font-weight:600;">Nombre</td><td>La Baguetteria y Delicatezze</td></tr>
+          <tr><td style="font-weight:600;">Rubro</td><td>Panadería y Pastelería — Producción y Venta</td></tr>
+          <tr><td style="font-weight:600;">Personal estimado</td><td>~200 personas (producción, múltiples turnos)</td></tr>
+          <tr><td style="font-weight:600;">Canales de venta</td><td>4 tiendas físicas + 1 canal Online (4 cajas especializadas)</td></tr>
+          <tr><td style="font-weight:600;">Catálogo de productos</td><td>~500 productos</td></tr>
+          <tr><td style="font-weight:600;">Sistema actual</td><td>Restaurant.pe (orientado a ventas) + Excel + hojas físicas</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Problema Central</h4>
+        <div class="flow-box">Sin ficha técnica    →  No se sabe qué insumos ni cantidades usa un producto
+Sin orden de producción →  No se sabe qué se produjo ni cuánto costó
+Sin control de insumos  →  No se sabe cuánto se gastó en materia prima
+Resultado               →  Imposible calcular rentabilidad real por producto</div>
+      </div>
+
+      <div class="subsection">
+        <h4>Objetivo del Sistema</h4>
+        <table>
+          <tr><th>Objetivo</th><th>Descripción</th></tr>
+          <tr><td><span class="tag tag-info">VISIBILIDAD</span></td><td>Que todos sepan qué hay en stock, qué se pidió y qué se está produciendo en tiempo real.</td></tr>
+          <tr><td><span class="tag tag-info">TRAZABILIDAD</span></td><td>Que cada producto tenga historia completa: insumos usados, costo de producción y responsable.</td></tr>
+          <tr><td><span class="tag tag-info">ANTICIPACIÓN</span></td><td>Que el sistema avise antes de que el problema ocurra: stock mínimo, vencimientos, pedidos fuera de plazo.</td></tr>
+          <tr><td><span class="tag tag-info">RENTABILIDAD</span></td><td>Cruzar costos de producción vs precio de venta para conocer el margen real por producto.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       2. ESTRUCTURA ORGANIZACIONAL
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🗂</span>
+      <h3>2. Estructura Organizacional</h3>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <h4>Áreas de la empresa</h4>
+        <table>
+          <thead><tr><th>Área</th><th>Sub-áreas / Detalle</th><th>Estado levantamiento</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Producción</strong></td>
+              <td>Pastelería Dulce, Pastelería Salada, Panadería, Cocina, Oficina de Producción</td>
+              <td><span class="tag tag-ok">Completo</span></td>
+            </tr>
+            <tr>
+              <td><strong>Despacho</strong></td>
+              <td>Distribución a tiendas y clientes, vehículos propios</td>
+              <td><span class="tag tag-ok">Completo</span></td>
+            </tr>
+            <tr>
+              <td><strong>Almacén</strong></td>
+              <td>Recepción de insumos, control de stock, salidas a producción</td>
+              <td><span class="tag tag-ok">Completo</span></td>
+            </tr>
+            <tr>
+              <td><strong>Mantenimiento</strong></td>
+              <td>Maquinaria y equipos</td>
+              <td><span class="tag tag-pending">No levantado</span></td>
+            </tr>
+            <tr>
+              <td><strong>Administración / Finanzas</strong></td>
+              <td>Contabilidad, costos, aprobaciones</td>
+              <td><span class="tag tag-warn">Pendiente</span></td>
+            </tr>
+            <tr>
+              <td><strong>Compras</strong></td>
+              <td>Órdenes de compra, proveedores, abastecimiento</td>
+              <td><span class="tag tag-warn">Pendiente</span></td>
+            </tr>
+            <tr>
+              <td><strong>Ventas — Tiendas Físicas</strong></td>
+              <td>4 tiendas físicas, catálogo por tienda, requerimientos nocturnos</td>
+              <td><span class="tag tag-ok">Completo</span></td>
+            </tr>
+            <tr>
+              <td><strong>Ventas — Canal Online</strong></td>
+              <td>Caja Online, Caja Corporativos, Caja Masivos, Caja BID</td>
+              <td><span class="tag tag-ok">Completo</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Canal Online — 4 Cajas Especializadas</h4>
+        <table>
+          <thead><tr><th>Caja</th><th>Tipo de cliente</th><th>Características</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Online General</strong></td><td>Público en general</td><td>Venta abierta a todo tipo de clientes</td></tr>
+            <tr><td><strong>Corporativos</strong></td><td>Empresas (ej: Pikis — hamburguesas a grifos)</td><td>Precios y plazos especiales, crédito disponible</td></tr>
+            <tr><td><strong>Masivos</strong></td><td>Empresas de grandes volúmenes</td><td>Pan masivo, empanadas, pedidos en grandes cantidades</td></tr>
+            <tr><td><strong>BID</strong></td><td>Marca propia (logo ardilla)</td><td>Productos exclusivos, vencimiento 2 meses, vende en Online y tiendas físicas</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Turnos de Producción</h4>
+        <table>
+          <thead><tr><th>Sub-área</th><th>Turno(s)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Panadería</strong></td><td>5am–1pm / 1pm–9pm / Horneros: 9pm–5am</td></tr>
+            <tr><td><strong>Pastelería Dulce</strong></td><td>6am–2pm / Una seña: 9am–5pm</td></tr>
+            <tr><td><strong>Pastelería Salada</strong></td><td>6am–2pm</td></tr>
+            <tr><td><strong>Cocina</strong></td><td>6am–2pm / 2pm–10pm</td></tr>
+            <tr><td><strong>BID</strong></td><td>7am–3pm (un solo turno)</td></tr>
+            <tr><td><strong>Almacén</strong></td><td>7am–5pm (1 persona)</td></tr>
+            <tr>
+              <td><strong>Despacho</strong></td>
+              <td>
+                Amanecida: 1am–10am (1 persona)<br>
+                2am–11am / 3am–11am (2 personas más)<br>
+                7am–3pm / 8am–4pm (3 personas)<br>
+                2pm–10pm (2 personas)
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       3. PRODUCCIÓN
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🏭</span>
+      <h3>3. Área de Producción</h3>
+      <span class="badge">Levantamiento completo</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Flujo Ideal de Producción (según Jamin — Jefe de Producción)</h4>
+        <div class="flow-box">1. Tiendas envían requerimientos        →  Hora límite: 1:00 PM del día anterior
+2. Validación de insumos en almacén     →  Confirmar disponibilidad de todo lo necesario
+3. Programación del plan de producción  →  Asignación por sub-área y por cantidad
+4. Comanda digital baja a cada área     →  Reemplaza la hoja de papel actual
+5. Producción ejecuta                   →  Cada sub-área con su encargado
+6. Despacho distribuye                  →  Desde las 5:00 AM del día siguiente</div>
+      </div>
+
+      <div class="subsection">
+        <h4>Tiempos Mínimos para Pedidos</h4>
+        <table>
+          <thead><tr><th>Tipo</th><th>Anticipación mínima</th><th>Hora límite</th><th>Autoriza rechazo</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Pedido estándar</strong></td>
+              <td>24 horas</td>
+              <td>Antes de 1:00 PM</td>
+              <td>Jamin / Valeria (Gerente General)</td>
+            </tr>
+            <tr>
+              <td><strong>Pedido especial</strong></td>
+              <td>48 horas</td>
+              <td>Antes de 1:00 PM</td>
+              <td>Jamin / Valeria (Gerente General)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Pedidos Especiales</h4>
+        <table>
+          <tr><td style="width:240px;font-weight:600;">Frecuencia semanal</td><td>5 a 6 pedidos especiales por semana</td></tr>
+          <tr><td style="font-weight:600;">Gestión de insumos</td><td>Se reservan al día siguiente de recibido el pedido (por eso se exige 48h de anticipación)</td></tr>
+          <tr><td style="font-weight:600;">Registro actual</td><td>No existe lista formal de pedidos especiales pendientes</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Productos de Alta Complejidad / Conflictivos ⚠</h4>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Estos productos generan problemas frecuentes por falta de planificación. Requieren validación especial en el sistema.</p>
+        <div class="product-grid">
+          <div class="product-card">Torta de Zanahoria #24</div>
+          <div class="product-card">Torta de Pecana #24</div>
+          <div class="product-card">Yemitas Acarameladas Mini #24</div>
+          <div class="product-card">Tortas Heladas</div>
+          <div class="product-card">Triple Clásico Mini</div>
+          <div class="product-card">Biscotelas</div>
+          <div class="product-card">Croissant Mini</div>
+          <div class="product-card">Croissant Buffet</div>
+          <div class="product-card">Torta de Chocolate con Trufas</div>
+          <div class="product-card">Masa de Pizza Grande</div>
+          <div class="product-card">Quiche de Acelga</div>
+          <div class="product-card">Quiche de Tocino</div>
+          <div class="product-card">Empanadas de Lomo Mini</div>
+          <div class="product-card">Árabe Blanco Mini 16.67gr</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h4>Gestión de Merma</h4>
+        <table>
+          <tr><td style="width:240px;font-weight:600;">Registro actual</td><td>Excel de merma por área</td></tr>
+          <tr><td style="font-weight:600;">Proceso</td><td>Si se dañan 10 de 100 unidades, se envían 90 al cliente y los 10 se reprograman en siguiente producción</td></tr>
+          <tr><td style="font-weight:600;">Responsabilidad</td><td>Se descuenta al responsable que dañó el producto</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Campañas y Fechas Especiales</h4>
+        <table>
+          <tr><td style="width:240px;font-weight:600;">Anticipación de planificación</td><td>1 semana antes</td></tr>
+          <tr><td style="font-weight:600;">Método del Jefe Comercial</td><td>Descarga ventas del año anterior desde Restaurant + adiciona 20% o 30% estimado empírico</td></tr>
+          <tr><td style="font-weight:600;">Aumento de capacidad</td><td>Horas extras (no se contratan temporales)</td></tr>
+          <tr><td style="font-weight:600;">Historial</td><td>Existe en Excel pero no estructurado para comparación</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Brechas Identificadas — Producción</h4>
+        <div class="brecha"><strong>BRECHA 1:</strong> BID no tiene planificación formal. La producción es completamente empírica ("al ojo"). No hay datos históricos propios de BID.</div>
+        <div class="brecha"><strong>BRECHA 2:</strong> Panadería no tiene registro formal de entrega a despacho. Hay pérdida de trazabilidad total en ese tramo.</div>
+        <div class="brecha"><strong>BRECHA 3:</strong> No existe una lista de productos que son exclusivamente por pedido especial.</div>
+        <div class="brecha"><strong>BRECHA 4:</strong> Los requerimientos de tiendas llegan mal estructurados generando confusión en producción.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       4. ALMACÉN
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">📦</span>
+      <h3>4. Área de Almacén</h3>
+      <span class="badge">Levantamiento completo</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Flujo de Compras e Insumos</h4>
+        <div class="flow-box">Producción detecta necesidad de insumo
+        ↓
+Informa a la chica de compras (también encargada de almacén)
+        ↓
+Compras verifica stock en almacén
+        ↓
+Si hay stock   →  Da orden de entrega a producción
+Si no hay      →  Genera orden de compra al proveedor
+        ↓
+Gerencia aprueba la orden de compra
+        ↓
+Proveedor entrega con factura
+        ↓
+Almacén registra entrada en Restaurant (cantidad + precio + factura)</div>
+      </div>
+
+      <div class="subsection">
+        <h4>Control de Stock</h4>
+        <table>
+          <thead><tr><th>Aspecto</th><th>Situación actual</th></tr></thead>
+          <tbody>
+            <tr><td>Registro de stock</td><td>Restaurant + Excel (doble registro)</td></tr>
+            <tr><td>Visibilidad en tiempo real</td><td>Sí, vía Restaurant</td></tr>
+            <tr><td>Inventario físico</td><td>Mensual (fin de mes)</td></tr>
+            <tr><td>Revisión diaria</td><td>Solo de productos prioritarios que no deben faltar</td></tr>
+            <tr><td>Stock mínimo</td><td>Definido para todos los insumos</td></tr>
+            <tr><td>Control de vencimiento</td><td>Excel. Ej: embutidos pedidos con 20 días mínimos de vencimiento</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Salidas hacia Producción</h4>
+        <table>
+          <tr><td style="width:240px;font-weight:600;">Documento de entrega</td><td>Hoja de requerimiento + movimiento entre almacenes en Restaurant</td></tr>
+          <tr><td style="font-weight:600;">Registro de destino</td><td>Se registra a qué área fue cada insumo y en qué cantidad</td></tr>
+          <tr><td style="font-weight:600;">Faltante urgente</td><td>Compra inmediata a proveedor alternativo. Coordinación constante producción–almacén.</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Precios y Costeo</h4>
+        <table>
+          <tr><td style="width:240px;font-weight:600;">Método de costeo</td><td>Costo promedio ponderado</td></tr>
+          <tr><td style="font-weight:600;">Registro de precios</td><td>Solo al momento de la compra (en Restaurant con la factura). No hay lista maestra de precios.</td></tr>
+          <tr><td style="font-weight:600;">Historial de precios</td><td><strong>No existe.</strong> No se puede saber cómo ha variado el precio de un insumo en el tiempo.</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Proveedores</h4>
+        <table>
+          <thead><tr><th>Insumo</th><th>Proveedor principal</th><th>Proveedor de emergencia</th></tr></thead>
+          <tbody>
+            <tr><td>Harina</td><td>Alicorp (proveedor fijo)</td><td>Sí existe (solo para harina y algunos insumos)</td></tr>
+            <tr><td>Resto de insumos</td><td>Sin proveedor fijo definido</td><td>Coordinación según disponibilidad</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Brechas Identificadas — Almacén</h4>
+        <div class="brecha"><strong>BRECHA CRÍTICA:</strong> No existe historial de precios por insumo. Imposible calcular con exactitud cuánto costó fabricar un producto en una fecha pasada si el precio del insumo cambió.</div>
+        <div class="brecha"><strong>BRECHA 2:</strong> Doble registro (Restaurant + Excel) genera riesgo de inconsistencia de datos.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       5. DESPACHO
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🚚</span>
+      <h3>5. Área de Despacho</h3>
+      <span class="badge">Levantamiento completo</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Operación Actual</h4>
+        <table>
+          <thead><tr><th>Proceso</th><th>Situación actual</th><th>Problema</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Recepción desde producción</td>
+              <td>Sin documento formal, solo verificación verbal</td>
+              <td><span class="tag tag-danger">Brecha crítica</span></td>
+            </tr>
+            <tr>
+              <td>Distribución a tiendas</td>
+              <td>Basado en requerimientos de tiendas vía Restaurant</td>
+              <td><span class="tag tag-ok">Aceptable</span></td>
+            </tr>
+            <tr>
+              <td>Registro de salida</td>
+              <td>Movimiento entre almacenes en Restaurant</td>
+              <td><span class="tag tag-ok">Aceptable</span></td>
+            </tr>
+            <tr>
+              <td>Lista de pedidos pendientes</td>
+              <td>No existe</td>
+              <td><span class="tag tag-danger">Brecha crítica</span></td>
+            </tr>
+            <tr>
+              <td>Confirmación de entrega</td>
+              <td>Se asume que llegó. No hay confirmación formal.</td>
+              <td><span class="tag tag-warn">Riesgo medio</span></td>
+            </tr>
+            <tr>
+              <td>Transporte</td>
+              <td>Vehículos propios de la empresa</td>
+              <td><span class="tag tag-ok">OK</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Gestión de Sobrantes y Devoluciones</h4>
+        <div class="flow-box">Producto no vendido en tienda
+        ↓
+Promoción (descuento para salida rápida)
+        ↓
+Si aún no se vende  →  Devolución a almacén
+        ↓
+Descarte / Baja de inventario
+
+EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
+           No aplica el mismo flujo urgente</div>
+      </div>
+
+      <div class="subsection">
+        <h4>Brechas Identificadas — Despacho</h4>
+        <div class="brecha"><strong>BRECHA 1:</strong> No existe documento de traspaso Producción → Despacho. Nadie sabe exactamente cuánto salió de producción ni a qué hora.</div>
+        <div class="brecha"><strong>BRECHA 2:</strong> Los pedidos especiales de clientes no tienen una lista de seguimiento. Se gestionan de memoria o verbal.</div>
+        <div class="brecha"><strong>BRECHA 3:</strong> La entrega al cliente final no se confirma formalmente. No hay evidencia de que el producto llegó a destino.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       6. VENTAS / TIENDAS
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🛍</span>
+      <h3>6. Área de Ventas / Tiendas</h3>
+      <span class="badge">Levantamiento completo</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Operación General</h4>
+        <table>
+          <tr><td style="width:240px;font-weight:600;">Registro de ventas</td><td>Sistema Restaurant por tienda con su caja respectiva</td></tr>
+          <tr><td style="font-weight:600;">Catálogo</td><td>Distinto por tienda según demanda de cada zona estratégica</td></tr>
+          <tr><td style="font-weight:600;">Precios</td><td>Iguales en todas las tiendas (un solo maestro de precios)</td></tr>
+          <tr><td style="font-weight:600;">Tiendas físicas</td><td>4 tiendas físicas activas</td></tr>
+          <tr><td style="font-weight:600;">Hora de requerimientos</td><td>Todas las tiendas envían sus requerimientos entre 10pm y 11pm</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Gestión de Stock en Tienda</h4>
+        <table>
+          <tr><td style="width:240px;font-weight:600;">Stock base</td><td>Cada tienda mantiene un stock fijo por producto</td></tr>
+          <tr><td style="font-weight:600;">Reabastecimiento</td><td>Si se agota antes del siguiente despacho, envían requerimiento adicional</td></tr>
+          <tr><td style="font-weight:600;">Transferencia entre tiendas</td><td>Movimiento entre almacenes via Restaurant + coordinación con choferes</td></tr>
+          <tr><td style="font-weight:600;">Sin stock en ninguna tienda</td><td>El producto no se vende (no hay alternativa)</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Campañas — Proyección de Demanda</h4>
+        <table>
+          <tr><td style="width:240px;font-weight:600;">Método actual</td><td>Duplican o triplican stock de productos clave según tendencia histórica de años anteriores</td></tr>
+          <tr><td style="font-weight:600;">Productos estrella en campaña</td><td>Bocaditos, tortas, empanadas, productos de alta rotación conocidos empíricamente</td></tr>
+          <tr><td style="font-weight:600;">Fórmula del Jefe Comercial</td><td>Ventas año anterior (de Restaurant) + 20% o 30% adicional estimado</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Canal Online</h4>
+        <table>
+          <tr><td style="width:240px;font-weight:600;">Canales de captación</td><td>WhatsApp (clientes fijos recurrentes), llamadas telefónicas, página web (baja demanda)</td></tr>
+          <tr><td style="font-weight:600;">Problema web detectado</td><td>El descuento por registro generó fraude (clientes creaban múltiples correos). Se descontinuó.</td></tr>
+          <tr><td style="font-weight:600;">Clientes corporativos y masivos</td><td>Precios especiales + plazos de entrega especiales + crédito disponible</td></tr>
+          <tr><td style="font-weight:600;">Problema operativo</td><td>Clientes corporativos solicitan pedidos a última hora generando tensión en producción</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Clientes</h4>
+        <table>
+          <tr><td style="width:240px;font-weight:600;">Base de datos de clientes</td><td><strong>No existe.</strong> No hay registro formal de ningún cliente.</td></tr>
+          <tr><td style="font-weight:600;">Clientes con crédito</td><td>Corporativos y masivos. Algunos pagan al contado.</td></tr>
+          <tr><td style="font-weight:600;">Reportes solicitados por Gerencia</td><td>Productos más vendidos por tienda y por hora, productos en fechas especiales, comparativo histórico año a año</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Brechas Identificadas — Ventas</h4>
+        <div class="brecha"><strong>BRECHA 1:</strong> Los pedidos Online llegan por WhatsApp y llamadas sin registro formal. Riesgo idéntico al incidente de la torta de zanahoria pero en escala mayor.</div>
+        <div class="brecha"><strong>BRECHA 2:</strong> No existe base de datos de clientes. Imposible fidelizar, analizar comportamiento ni gestionar créditos correctamente.</div>
+        <div class="brecha"><strong>BRECHA 3:</strong> Clientes corporativos solicitan pedidos fuera del tiempo mínimo. No hay política formal de rechazo o penalidad.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       7. INCIDENTE DOCUMENTADO
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🚨</span>
+      <h3>7. Incidente Documentado — Caso Real</h3>
+    </div>
+    <div class="section-body">
+      <div class="incident-box">
+        <div class="incident-header">INCIDENTE: Torta de Zanahoria — Pedido especial no gestionado correctamente</div>
+        <div class="incident-body">
+          <table>
+            <tr><td style="width:200px;font-weight:600;color:var(--danger);">Semana anterior</td><td>Cliente hace pedido de una torta de zanahoria especial desde una tienda Online.</td></tr>
+            <tr><td style="font-weight:600;color:var(--danger);">Días después</td><td>La chica de tienda <strong>recién recuerda</strong> pasar el pedido a producción al día anterior de la entrega.</td></tr>
+            <tr><td style="font-weight:600;color:var(--danger);">Día de entrega</td><td>El pastelero daña la torta (se quema). Es un producto exclusivo de pedido especial, no hay stock de insumos reservados.</td></tr>
+            <tr><td style="font-weight:600;color:var(--danger);">Contexto</td><td>La empresa estaba en plena campaña Día del Trabajador con producción al máximo de capacidad.</td></tr>
+            <tr><td style="font-weight:600;color:var(--danger);">Resultado</td><td>Se rehízo la torta sobrecargando pastelería dulce. Cliente muy insatisfecho. Costos de emergencia y retraso.</td></tr>
+          </table>
+          <br>
+          <strong>Cadena de fallos:</strong>
+          <div class="flow-box" style="margin-top:8px;">❌ No hay registro formal del pedido al momento de tomarlo
+❌ No hay alerta automática a producción
+❌ No hay reserva de insumos para pedidos especiales
+❌ No hay seguimiento de estado del pedido
+❌ No hay protocolo de emergencia por merma en pedido especial
+❌ No existe planificación de capacidad en campaña</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       8. REQUERIMIENTOS FUNCIONALES
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">📋</span>
+      <h3>8. Requerimientos Funcionales Identificados</h3>
+      <span class="badge">46 requerimientos</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Módulo de Catálogo y Fichas Técnicas</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-01</span>Gestión de fichas técnicas (recetas) con variantes y escalado automático por cantidad.</li>
+          <li><span class="rf-code">RF-02</span>Catálogo de productos configurable por tienda y canal de venta.</li>
+          <li><span class="rf-code">RF-29</span>Marcado especial para productos de alta complejidad (lista de productos conflictivos con validación obligatoria).</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Planificación y Producción</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-03</span>Planificación diaria de producción (comanda digital por sub-área).</li>
+          <li><span class="rf-code">RF-37</span>Flujo digital de requerimientos con hora de corte configurable (por defecto 1:00 PM).</li>
+          <li><span class="rf-code">RF-38</span>Validación automática de disponibilidad de insumos al generar el plan de producción.</li>
+          <li><span class="rf-code">RF-39</span>Comanda digital distribuida a cada sub-área desde el sistema (reemplaza hoja de papel).</li>
+          <li><span class="rf-code">RF-04</span>Registro de producción real vs producción planificada.</li>
+          <li><span class="rf-code">RF-43</span>Panel de inicio de día: insumos validados + requerimientos organizados por hora y sub-área.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Pedidos</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-23</span>Registro inmediato de pedidos especiales con fecha y hora límite de entrega.</li>
+          <li><span class="rf-code">RF-24</span>Alerta automática a producción al registrar un pedido especial.</li>
+          <li><span class="rf-code">RF-40</span>Control de tiempos mínimos por tipo de pedido (estándar: 24h / especial: 48h).</li>
+          <li><span class="rf-code">RF-41</span>Alerta automática si un pedido llega fuera del tiempo mínimo permitido.</li>
+          <li><span class="rf-code">RF-26</span>Seguimiento de estado del pedido: Registrado → En producción → Listo → Despachado → Entregado.</li>
+          <li><span class="rf-code">RF-33</span>Registro de pedidos entrantes por canal (presencial, Online, WhatsApp, llamada).</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Merma</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-05</span>Registro de merma con responsable asignado y motivo.</li>
+          <li><span class="rf-code">RF-27</span>Alerta de merma en pedido especial con protocolo de reacción rápida.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Almacén e Insumos</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-06</span>Requerimiento de insumos por sub-área hacia almacén.</li>
+          <li><span class="rf-code">RF-07</span>Trazabilidad de insumos: qué se usó, en qué área y en qué cantidad.</li>
+          <li><span class="rf-code">RF-08</span>Registro de órdenes de compra con flujo de aprobación por gerencia.</li>
+          <li><span class="rf-code">RF-09</span>Recepción de compras con verificación contra orden de compra original.</li>
+          <li><span class="rf-code">RF-10</span>Control de stock en tiempo real por insumo.</li>
+          <li><span class="rf-code">RF-11</span>Alertas automáticas cuando el stock de un insumo se acerca al mínimo definido.</li>
+          <li><span class="rf-code">RF-12</span>Control de fechas de vencimiento por insumo con días mínimos configurables (ej: embutidos con 20 días).</li>
+          <li><span class="rf-code">RF-13</span>Registro de salidas de insumos hacia producción por área.</li>
+          <li><span class="rf-code">RF-25</span>Reserva de insumos en almacén para pedidos especiales confirmados.</li>
+          <li><span class="rf-code">RF-16</span>Inventario físico mensual con conciliación sistema vs físico.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Costos y Rentabilidad</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-14</span>Cálculo automático de costo promedio ponderado por insumo.</li>
+          <li><span class="rf-code">RF-15</span>Historial de precios por insumo a lo largo del tiempo.</li>
+          <li><span class="rf-code">RF-44</span>Reporte diario de producción y despacho por área.</li>
+          <li><span class="rf-code">RF-45</span>Proyección de campaña: histórico del año anterior + porcentaje de incremento configurable.</li>
+          <li><span class="rf-code">RF-46</span>Historial de producción por campaña para comparación año a año.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Despacho</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-17</span>Registro formal de recepción de productos terminados desde producción (con cantidades y responsable).</li>
+          <li><span class="rf-code">RF-18</span>Generación de guía de despacho por tienda o cliente.</li>
+          <li><span class="rf-code">RF-19</span>Gestión de pedidos con estado (Pendiente / Despachado / Entregado).</li>
+          <li><span class="rf-code">RF-20</span>Confirmación formal de entrega desde tienda o punto de destino.</li>
+          <li><span class="rf-code">RF-21</span>Registro de devoluciones y sobrantes del día.</li>
+          <li><span class="rf-code">RF-22</span>Flujo de sobrantes con trazabilidad: Promoción → Devolución → Descarte.</li>
+          <li><span class="rf-code">RF-09B</span>Conciliación de cantidades producidas vs despachadas por sub-área.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Ventas y Clientes</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-30</span>Gestión de requerimientos diarios por tienda con horario de corte (10–11pm).</li>
+          <li><span class="rf-code">RF-31</span>Proyección de demanda para campañas basada en historial + porcentaje configurable.</li>
+          <li><span class="rf-code">RF-32</span>Registro de transferencias de productos entre tiendas.</li>
+          <li><span class="rf-code">RF-34</span>Base de datos de clientes con clasificación (regular, corporativo, masivo, BID).</li>
+          <li><span class="rf-code">RF-35</span>Condiciones comerciales por cliente: precio especial, plazo de crédito, política de anticipación.</li>
+          <li><span class="rf-code">RF-36</span>Control de cuentas por cobrar para clientes con crédito.</td></li>
+          <li><span class="rf-code">RF-28</span>Planificación de capacidad por sub-área en campañas y fechas especiales.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       9. ESTADO GENERAL
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">📊</span>
+      <h3>9. Estado General del Levantamiento</h3>
+    </div>
+    <div class="section-body">
+      <div class="status-grid">
+        <div class="status-card status-complete">
+          <div class="area">✅ Producción</div>
+          <div class="estado">Levantamiento completo</div>
+        </div>
+        <div class="status-card status-complete">
+          <div class="area">✅ Almacén</div>
+          <div class="estado">Levantamiento completo</div>
+        </div>
+        <div class="status-card status-complete">
+          <div class="area">✅ Despacho</div>
+          <div class="estado">Levantamiento completo</div>
+        </div>
+        <div class="status-card status-complete">
+          <div class="area">✅ Ventas / Tiendas</div>
+          <div class="estado">Levantamiento completo</div>
+        </div>
+        <div class="status-card status-complete">
+          <div class="area">✅ Contacto Producción</div>
+          <div class="estado">Entrevista realizada</div>
+        </div>
+        <div class="status-card status-pending">
+          <div class="area">⬜ Administración / Finanzas</div>
+          <div class="estado">Pendiente</div>
+        </div>
+        <div class="status-card status-pending">
+          <div class="area">⬜ Gerencia General</div>
+          <div class="estado">Pendiente</div>
+        </div>
+        <div class="status-card status-pending">
+          <div class="area">⬜ Compras</div>
+          <div class="estado">Pendiente</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Documento de Requerimientos v1.0 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
+  Última actualización: Mayo 2026
+</footer>
+
+</body>
+</html>
