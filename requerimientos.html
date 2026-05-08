@@ -759,7 +759,7 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
     <div class="section-header">
       <span class="icon">📋</span>
       <h3>8. Requerimientos Funcionales Identificados</h3>
-      <span class="badge">46 requerimientos</span>
+      <span class="badge">60 requerimientos</span>
     </div>
     <div class="section-body">
 
@@ -861,12 +861,192 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
   </div>
 
   <!-- ═══════════════════════════════════════════════════
-       9. ESTADO GENERAL
+       9. GERENCIA GENERAL
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">👔</span>
+      <h3>9. Gerencia General</h3>
+      <span class="badge">Levantamiento completo</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Visión del Negocio</h4>
+        <div class="flow-box">Objetivo estratégico: Control y trazabilidad total de todas las áreas.
+
+Próxima acción operativa: Contratar un dosificador para controlar
+exactamente las cantidades de insumos entregadas a cada área.
+
+Modelo a evaluar: Control de producción por LOTES.
+
+Referencia: Investigar cómo otras empresas del rubro manejan
+el control total de producción para tener una mejor visión.</div>
+      </div>
+
+      <div class="subsection">
+        <h4>Lo que más duele hoy — Pain Points del Gerente</h4>
+        <div class="brecha"><strong>DOLOR 1:</strong> No saben cuántos clientes tienen ni quiénes son. No pueden analizarlos, hacerles seguimiento ni venderles más productos.</div>
+        <div class="brecha"><strong>DOLOR 2:</strong> Producción de campañas (Día de la Madre, etc.) se decide a ciegas o con datos históricos imprecisos.</div>
+        <div class="brecha"><strong>DOLOR 3:</strong> Producción de BID y precocidos completamente empírica, sin datos que la respalden.</div>
+        <div class="brecha"><strong>DOLOR 4:</strong> No saben cuánto gastan en horas extras de personal ni qué área consume más en planilla.</div>
+        <div class="brecha"><strong>DOLOR 5:</strong> No tienen inventario de equipos, muebles ni registro de mantenimiento (preventivo o correctivo) de hornos y maquinaria.</div>
+        <div class="brecha"><strong>DOLOR 6:</strong> En almacén, cuando falta personal, el encargado entrega bolsas completas de insumos sin medir. No se sabe cuánto se usó realmente ni cuánto sobró.</div>
+        <div class="brecha"><strong>DOLOR 7:</strong> No conocen el costo real de cada producto ni de los servicios externos. Solo ven el resultado global.</div>
+      </div>
+
+      <div class="subsection">
+        <h4>Información que necesita Gerencia en tiempo real</h4>
+        <table>
+          <thead><tr><th>Información requerida</th><th>Frecuencia</th><th>Detalle</th></tr></thead>
+          <tbody>
+            <tr><td>Ventas totales y por área</td><td>Diaria</td><td>Con trazabilidad de qué área genera cada venta</td></tr>
+            <tr><td>Ventas en tiempo real</td><td>En vivo</td><td>Tarde/noche: qué se está vendiendo, qué productos y en qué horario</td></tr>
+            <tr><td>Ventas históricas comparativas</td><td>A demanda</td><td>Comparar fechas especiales año a año</td></tr>
+            <tr><td>Producción diaria por área</td><td>Diaria</td><td>Cantidades producidas y productos por sub-área</td></tr>
+            <tr><td>Merma por área</td><td>Diaria</td><td>Producción, despacho, tiendas y almacén</td></tr>
+            <tr><td>Costo real por producto</td><td>A demanda</td><td>Rentabilidad individual, hoy solo ven resultado global</td></tr>
+            <tr><td>Gasto en personal por área</td><td>Mensual</td><td>Incluye horas extras. Comparativo entre áreas y tiendas</td></tr>
+            <tr><td>Mantenimiento de equipos</td><td>A demanda</td><td>Inventario de equipos, costo de mantenimiento preventivo y correctivo</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Usuarios del Sistema y Nivel de Acceso Propuesto</h4>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">El gerente indicó que los siguientes perfiles tienen acceso total. Como senior se propone la siguiente matriz de permisos:</p>
+        <table>
+          <thead><tr><th>Perfil</th><th>Acceso</th><th>Módulos clave</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Gerente General</strong></td>
+              <td><span class="tag tag-danger">Total + Dashboard ejecutivo</span></td>
+              <td>Todos los módulos + reportes gerenciales en tiempo real</td>
+            </tr>
+            <tr>
+              <td><strong>Gerente de Finanzas</strong></td>
+              <td><span class="tag tag-danger">Total financiero</span></td>
+              <td>Costos, rentabilidad, cuentas por cobrar, presupuestos, planilla</td>
+            </tr>
+            <tr>
+              <td><strong>Gerente de Producción</strong></td>
+              <td><span class="tag tag-warn">Total operativo</span></td>
+              <td>Producción, fichas técnicas, merma, insumos, pedidos, despacho</td>
+            </tr>
+            <tr>
+              <td><strong>Jefe Comercial</strong></td>
+              <td><span class="tag tag-warn">Total comercial</span></td>
+              <td>Ventas, clientes, pedidos, campañas, proyecciones — Sin acceso a costos internos</td>
+            </tr>
+            <tr>
+              <td><strong>Encargado de Almacén</strong></td>
+              <td><span class="tag tag-info">Operativo almacén</span></td>
+              <td>Stock, entradas, salidas, órdenes de compra, vencimientos</td>
+            </tr>
+            <tr>
+              <td><strong>Encargado de cada sub-área</strong></td>
+              <td><span class="tag tag-info">Operativo producción</span></td>
+              <td>Ver comanda de su área, registrar producción real, registrar merma</td>
+            </tr>
+            <tr>
+              <td><strong>Supervisora de tienda</strong></td>
+              <td><span class="tag tag-info">Operativo tienda</span></td>
+              <td>Enviar requerimientos, registrar pedidos de clientes, confirmar recepción</td>
+            </tr>
+            <tr>
+              <td><strong>Encargado de despacho</strong></td>
+              <td><span class="tag tag-info">Operativo despacho</span></td>
+              <td>Guías de despacho, confirmación de entrega, registro de sobrantes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Ejemplo crítico mencionado por Gerencia — Problema de dosificación en almacén</h4>
+        <div class="flow-box">SITUACIÓN ACTUAL (problemática):
+  Área solicita harina  →  No hay personal para medir
+  Almacén dice: "llévate la bolsa completa"
+  Resultado: No se sabe cuánto se usó, cuánto sobró
+             → Costo real del producto = desconocido
+             → Si hay error en producción, no se puede rastrear el insumo
+
+SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
+  Área solicita X kg de harina  →  Se registra en sistema
+  Almacén despacha X kg exactos →  Se registra la salida
+  Producción usa Y kg reales    →  Se registra el consumo real
+  Diferencia (X - Y) = sobrante →  Se registra devolución o merma de insumo
+  Resultado: Costo real = calculable con precisión</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       10. REQUERIMIENTOS FUNCIONALES — ACTUALIZADOS
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🆕</span>
+      <h3>10. Requerimientos Adicionales — Gerencia General</h3>
+      <span class="badge">+12 nuevos</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Módulo de Dashboard Ejecutivo (tiempo real)</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-47</span>Dashboard en tiempo real con ventas del día por área, tienda y canal.</li>
+          <li><span class="rf-code">RF-48</span>Indicador en vivo de productos más vendidos por hora y por tienda.</li>
+          <li><span class="rf-code">RF-49</span>Comparativo de ventas vs histórico del mismo día/campaña del año anterior.</li>
+          <li><span class="rf-code">RF-50</span>Reporte diario consolidado: producción real, merma y despacho por área.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Control de Dosificación / Lotes</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-51</span>Registro de entrega de insumos por cantidad exacta (no por bolsa/bulto). El sistema obliga a ingresar la cantidad en unidad de medida definida.</li>
+          <li><span class="rf-code">RF-52</span>Registro de consumo real de insumos por lote de producción.</li>
+          <li><span class="rf-code">RF-53</span>Cálculo automático de sobrante de insumo: cantidad entregada − cantidad usada.</li>
+          <li><span class="rf-code">RF-54</span>Trazabilidad completa por lote: insumos usados, cantidades, área responsable, fecha y turno.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Personal y Horas Extras</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-55</span>Registro de horas extras por área y por persona.</li>
+          <li><span class="rf-code">RF-56</span>Reporte de costo de planilla por área (incluye horas extras) para comparativo entre áreas y tiendas.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Mantenimiento de Equipos</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-57</span>Inventario de equipos y muebles por área (hornos, batidoras, vitrinas, etc.).</li>
+          <li><span class="rf-code">RF-58</span>Registro de mantenimiento preventivo y correctivo por equipo con costo y responsable.</li>
+          <li><span class="rf-code">RF-59</span>Alertas de mantenimiento programado próximo a vencer.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Merma Consolidada</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-60</span>Reporte de merma consolidado: producción + despacho + tiendas + almacén, visible para gerencia en un solo lugar.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       11. ESTADO GENERAL
   ════════════════════════════════════════════════════ -->
   <div class="section">
     <div class="section-header">
       <span class="icon">📊</span>
-      <h3>9. Estado General del Levantamiento</h3>
+      <h3>11. Estado General del Levantamiento</h3>
     </div>
     <div class="section-body">
       <div class="status-grid">
@@ -890,12 +1070,12 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
           <div class="area">✅ Contacto Producción</div>
           <div class="estado">Entrevista realizada</div>
         </div>
-        <div class="status-card status-pending">
-          <div class="area">⬜ Administración / Finanzas</div>
-          <div class="estado">Pendiente</div>
+        <div class="status-card status-complete">
+          <div class="area">✅ Gerencia General</div>
+          <div class="estado">Levantamiento completo</div>
         </div>
         <div class="status-card status-pending">
-          <div class="area">⬜ Gerencia General</div>
+          <div class="area">⬜ Administración / Finanzas</div>
           <div class="estado">Pendiente</div>
         </div>
         <div class="status-card status-pending">
@@ -909,9 +1089,9 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
 </div>
 
 <footer>
-  Documento de Requerimientos v1.0 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Documento de Requerimientos v1.1 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
-  Última actualización: Mayo 2026
+  Última actualización: 08 Mayo 2026
 </footer>
 
 </body>
