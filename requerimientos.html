@@ -247,7 +247,7 @@
     <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
     <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
     <div class="meta-item"><strong>Versión</strong>1.2 — En progreso</div>
-    <div class="meta-item"><strong>Estado</strong>Levantamiento 87% completo</div>
+    <div class="meta-item"><strong>Estado</strong>7 de 8 áreas levantadas — Pendiente: Compras</div>
   </div>
 </header>
 
@@ -327,8 +327,8 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
             </tr>
             <tr>
               <td><strong>Mantenimiento</strong></td>
-              <td>Maquinaria y equipos</td>
-              <td><span class="tag tag-pending">No levantado</span></td>
+              <td>Maquinaria y equipos — inventario de equipos, hornos, maquinaria, mantenimiento preventivo y correctivo</td>
+              <td><span class="tag tag-info">Cubierto vía módulo de Personal, Equipos y Mantenimiento (RF-57 a RF-59)</span></td>
             </tr>
             <tr>
               <td><strong>Administración / Finanzas</strong></td>
@@ -490,6 +490,7 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
         <div class="brecha"><strong>BRECHA 2:</strong> Panadería no tiene registro formal de entrega a despacho. Hay pérdida de trazabilidad total en ese tramo.</div>
         <div class="brecha"><strong>BRECHA 3:</strong> No existe una lista de productos que son exclusivamente por pedido especial.</div>
         <div class="brecha"><strong>BRECHA 4:</strong> Los requerimientos de tiendas llegan mal estructurados generando confusión en producción.</div>
+        <div class="brecha"><strong>BRECHA 5 (confirmada con Gerencia y Finanzas):</strong> El costo real de las horas extras en campañas es completamente desconocido. Se sabe que se usan pero nadie sabe cuánto cuestan por área ni cómo impactan el costo final del producto producido en esa jornada.</div>
       </div>
 
     </div>
@@ -510,7 +511,7 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
         <h4>Flujo de Compras e Insumos</h4>
         <div class="flow-box">Producción detecta necesidad de insumo
         ↓
-Informa a la chica de compras (también encargada de almacén)
+Informa a la encargada de Compras/Almacén (una sola persona gestiona ambas funciones)
         ↓
 Compras verifica stock en almacén
         ↓
@@ -653,6 +654,7 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
         <div class="brecha"><strong>BRECHA 1:</strong> No existe documento de traspaso Producción → Despacho. Nadie sabe exactamente cuánto salió de producción ni a qué hora.</div>
         <div class="brecha"><strong>BRECHA 2:</strong> Los pedidos especiales de clientes no tienen una lista de seguimiento. Se gestionan de memoria o verbal.</div>
         <div class="brecha"><strong>BRECHA 3:</strong> La entrega al cliente final no se confirma formalmente. No hay evidencia de que el producto llegó a destino.</div>
+        <div class="brecha"><strong>BRECHA 4 (requerida por Finanzas):</strong> No existe seguimiento del costo real por ruta de distribución. Los vehículos propios tienen costos de combustible, mantenimiento y chofer que hoy no se imputan a ningún producto ni canal. Finanzas necesita rentabilidad por ruta (RF-67).</div>
       </div>
 
     </div>
@@ -1302,6 +1304,10 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
         <div class="status-card status-pending">
           <div class="area">⬜ Compras</div>
           <div class="estado">Pendiente — última área</div>
+        </div>
+        <div class="status-card" style="background:#d6eaf8;border-color:#a9cce3;">
+          <div class="area" style="color:#1a5276;">📋 Mantenimiento</div>
+          <div class="estado" style="color:#1a5276;">Cubierto vía módulo de equipos (RF-57 a RF-59) — No requiere entrevista separada</div>
         </div>
       </div>
     </div>
