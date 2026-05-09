@@ -234,7 +234,36 @@
       .section { break-inside: avoid; }
       header { background: #fff; color: #000; border-bottom: 2px solid #000; }
     }
+
+    /* ── MERMAID ── */
+    .mermaid {
+      background: #f8f9fa;
+      border-radius: 6px;
+      padding: 20px;
+      overflow-x: auto;
+      text-align: center;
+      margin-top: 12px;
+    }
+    .diagram-meta {
+      font-size: 11px;
+      color: var(--muted);
+      padding: 6px 14px;
+      background: var(--light);
+      border-radius: 4px;
+      border-left: 3px solid var(--accent);
+      margin-bottom: 8px;
+    }
+    .diagram-pending {
+      padding: 12px 16px;
+      background: #fef9e7;
+      border-radius: 6px;
+      border-left: 4px solid var(--warning);
+      font-size: 12px;
+      margin-top: 20px;
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({ startOnLoad: true, theme: 'default', flowchart: { curve: 'basis', useMaxWidth: true } });</script>
 </head>
 <body>
 
@@ -1310,6 +1339,134 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
           <div class="estado" style="color:#1a5276;">Cubierto vía módulo de equipos (RF-57 a RF-59) — No requiere entrevista separada</div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       12. DIAGRAMAS DE FLUJO DE PROCESOS
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🔀</span>
+      <h3>12. Diagramas de Flujo de Procesos</h3>
+      <span class="badge">4 flujos validados — v1 parcial</span>
+    </div>
+    <div class="section-body">
+
+      <p style="font-size:13px;color:var(--muted);margin-bottom:24px;">
+        Los flujos documentados corresponden únicamente a procesos cuyo levantamiento está <strong>100% validado</strong>.
+        El Flujo de Órdenes de Compra se incorporará tras completar el levantamiento con el Área de Compras.
+      </p>
+
+      <!-- FLUJO 1 -->
+      <div class="subsection">
+        <h4>Flujo 1 — Ciclo Diario de Producción</h4>
+        <div class="diagram-meta">
+          Fuente: Jamin Torres — Jefe de Producción (Sección 3) &nbsp;|&nbsp; Estado: Validado ✅
+        </div>
+        <div class="mermaid">
+flowchart TD
+    A(["Inicio del ciclo — noche anterior"]) --> B["Tiendas envían requerimientos\n10 PM – 11 PM"]
+    B --> C{"Llega antes de\nla 1:00 PM del día siguiente?"}
+    C -->|Sí — dentro de hora| D["Almacén valida\ndisponibilidad de insumos"]
+    C -->|No — fuera de hora| E["Alerta automática al sistema\nJamin o Valeria decide"]
+    E -->|Rechazado| RZ(["Pedido rechazado\nSe notifica a tienda"])
+    E -->|Aceptado excepcionalmente| D
+    D --> F{"Stock\nsuficiente?"}
+    F -->|Sí| G["Plan de producción\nconfirmado por sub-área"]
+    F -->|No| H["Compra urgente\nal proveedor alternativo"]
+    H --> G
+    G --> I["Comanda digital\ndistribuida a cada sub-área"]
+    I --> J["Sub-áreas ejecutan producción\nPastelería, Panadería, Cocina, BID"]
+    J --> K["Encargados registran\nproducción real vs planificada"]
+    K --> L["Traspaso formal\nProducción a Despacho"]
+    L --> M["Despacho distribuye\ndesde las 5:00 AM"]
+    M --> N(["Productos entregados\nen tiendas y clientes"])
+        </div>
+      </div>
+
+      <!-- FLUJO 2 -->
+      <div class="subsection">
+        <h4>Flujo 2 — Gestión de Pedidos Especiales</h4>
+        <div class="diagram-meta">
+          Fuente: Incidente documentado (Sección 7) + Producción + Gerencia General &nbsp;|&nbsp; Estado: Validado ✅
+        </div>
+        <div class="mermaid">
+flowchart TD
+    A(["Cliente solicita\npedido especial"]) --> B{"Con mínimo\n48 horas de anticipación?"}
+    B -->|Sí| C["Sistema registra el pedido\ncon fecha y hora límite de entrega"]
+    B -->|No — fuera del mínimo| D["Alerta automática al sistema\nJamin o Valeria decide"]
+    D -->|Rechazado| RZ(["Pedido rechazado\nSe notifica al cliente"])
+    D -->|Aceptado excepcionalmente| C
+    C --> E["Alerta automática\na Producción"]
+    C --> F["Reserva de insumos\nen Almacén para el pedido"]
+    E --> G["Seguimiento de estado en el sistema\nRegistrado — En producción — Listo — Despachado"]
+    F --> G
+    G --> H{"Merma o daño\ndurante producción?"}
+    H -->|No| I["Producto listo\npara despacho"]
+    H -->|Sí| J["Alerta de protocolo\nde reacción rápida"]
+    J --> K["Replanificación urgente\nde emergencia"]
+    K --> I
+    I --> L["Despacho y entrega\nal cliente"]
+    L --> M["Confirmación formal\nde recepción del cliente"]
+    M --> N(["Pedido cerrado\nen el sistema"])
+        </div>
+      </div>
+
+      <!-- FLUJO 3 -->
+      <div class="subsection">
+        <h4>Flujo 3 — Costeo Integral y Food Cost</h4>
+        <div class="diagram-meta">
+          Fuente: Finanzas y Costeo (Sección 10) + Gerencia General (Sección 9) &nbsp;|&nbsp; Estado: Validado ✅
+        </div>
+        <div class="mermaid">
+flowchart LR
+    A(["Producto\na costear"]) --> B["Ficha Técnica\ndel producto"]
+    B --> C["Insumos y empaques\nPrecio promedio ponderado"]
+    C --> D["Mano de obra directa\nHoras x costo-hora por área"]
+    D --> E["CIF — Costos Indirectos\nEnergía, gas, mantenimiento prorrateado"]
+    E --> F["Costo de distribución\nPor ruta y canal"]
+    F --> G["Gastos admin y ventas\nFactor porcentual configurable"]
+    G --> H(["COSTO REAL\nDEL PRODUCTO"])
+    H --> I["Precio de venta\nmenos Costo real = Margen Real"]
+    I --> J["Food Cost pct = Costo real\ndividido entre Precio venta x 100"]
+    J --> K{"Supera umbral\nconfigurable?"}
+    K -->|No — dentro del rango| L(["Producto rentable\nEstado OK"])
+    K -->|Sí — fuera del rango| M["Alerta automática\na Finanzas y Comercial"]
+    M --> N(["Revisión de precio\no estructura de costo"])
+        </div>
+      </div>
+
+      <!-- FLUJO 4 -->
+      <div class="subsection">
+        <h4>Flujo 4 — Ciclo de Sobrantes y Devoluciones</h4>
+        <div class="diagram-meta">
+          Fuente: Despacho (Sección 5) + Ventas y Tiendas (Sección 6) &nbsp;|&nbsp; Estado: Validado ✅
+        </div>
+        <div class="mermaid">
+flowchart TD
+    A(["Producto no vendido\nen tienda o despacho"]) --> B{"Tipo de\nproducto"}
+    B -->|Producto regular| C["Promoción con descuento\npara salida rápida"]
+    B -->|Producto BID\nvencimiento 2 meses| D["Gestión estándar\nsin urgencia inmediata"]
+    C --> E{"Se vendió\ncon promoción?"}
+    E -->|Sí| Z1(["Registrado como venta\ncon descuento"])
+    E -->|No| F["Devolución al almacén\nregistrada en el sistema"]
+    F --> G{"Estado del\nproducto devuelto"}
+    G -->|Apto para reuso| H["Reingreso a inventario\ncon nuevo estado y fecha"]
+    G -->|No apto| I["Descarte formal\nBaja de inventario"]
+    I --> J["Registro de merma:\nresponsable, motivo y cantidad"]
+    J --> K(["Reporte de merma\nconsolidado — RF-60"])
+    D --> L{"Próximo\na vencer?"}
+    L -->|Sí — menos de X días| C
+    L -->|No| M(["Continúa en vitrina\nsin acción inmediata"])
+        </div>
+      </div>
+
+      <div class="diagram-pending">
+        <strong>Pendiente — Flujo 5:</strong> Ciclo de Órdenes de Compra (proveedores, aprobaciones, recepción).
+        Se documentará tras completar el levantamiento con el Área de Compras.
+      </div>
+
     </div>
   </div>
 
