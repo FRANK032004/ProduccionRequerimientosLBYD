@@ -228,9 +228,65 @@
       margin-top: 20px;
     }
 
+    /* ── LAYOUT Y SIDEBAR ─────────────────────────────── */
+    html { scroll-behavior: smooth; }
+    .page-layout { display: flex; align-items: flex-start; }
+
+    .sidebar {
+      width: 238px;
+      min-width: 238px;
+      flex-shrink: 0;
+      background: var(--primary);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding-bottom: 40px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.15) transparent;
+    }
+    .sidebar-brand {
+      padding: 18px 16px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 6px;
+    }
+    .sidebar-brand .brand-name { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.4; }
+    .sidebar-brand .brand-sub  { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 3px; }
+    .sidebar-brand .brand-version {
+      display: inline-block; margin-top: 7px; font-size: 10px;
+      background: var(--accent); color: #fff; border-radius: 3px;
+      padding: 2px 8px; font-weight: 700;
+    }
+    .nav-group-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.35);
+      padding: 14px 16px 4px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 14px; font-size: 11.5px; color: rgba(255,255,255,0.7);
+      text-decoration: none; border-left: 3px solid transparent;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      line-height: 1.3;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; border-left-color: rgba(230,126,34,0.5); }
+    .nav-item.active { background: rgba(230,126,34,0.15); color: #fff; border-left-color: var(--accent); font-weight: 600; }
+    .nav-item .nav-icon { font-size: 13px; flex-shrink: 0; }
+    .nav-item .nav-badge {
+      margin-left: auto; font-size: 9px; background: rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 1px 6px; flex-shrink: 0; white-space: nowrap;
+    }
+    .nav-badge-ok   { background: rgba(39,174,96,0.3)    !important; color: #82e0aa !important; }
+    .nav-badge-pend { background: rgba(255,255,255,0.06)  !important; color: rgba(255,255,255,0.35) !important; }
+    .nav-badge-num  { background: rgba(230,126,34,0.3)    !important; color: #f0a762 !important; }
+
+    .main-content { flex: 1; min-width: 0; padding: 32px 28px 60px; }
+    .section { scroll-margin-top: 20px; }
+
     /* ── PRINT ── */
     @media print {
       body { background: #fff; }
+      .sidebar { display: none; }
       .section { break-inside: avoid; }
       header { background: #fff; color: #000; border-bottom: 2px solid #000; }
     }
@@ -280,12 +336,44 @@
   </div>
 </header>
 
-<div class="container">
+<div class="page-layout">
+
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-name">La Baguetteria<br>y Delicatezze</div>
+    <div class="brand-sub">Sistema de Producción y Costos</div>
+    <span class="brand-version">v1.2</span>
+  </div>
+
+  <div class="nav-group-label">Empresa</div>
+  <a class="nav-item" href="#sec-descripcion"><span class="nav-icon">🏢</span>Descripción General</a>
+  <a class="nav-item" href="#sec-organizacion"><span class="nav-icon">🗂</span>Estructura Organizacional</a>
+
+  <div class="nav-group-label">Levantamiento por Área</div>
+  <a class="nav-item" href="#sec-produccion"><span class="nav-icon">🏭</span>Producción<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
+  <a class="nav-item" href="#sec-almacen"><span class="nav-icon">📦</span>Almacén<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
+  <a class="nav-item" href="#sec-despacho"><span class="nav-icon">🚚</span>Despacho<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
+  <a class="nav-item" href="#sec-ventas"><span class="nav-icon">🛍</span>Ventas / Tiendas<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
+  <a class="nav-item" href="#sec-incidente"><span class="nav-icon">🚨</span>Incidente Documentado</a>
+  <a class="nav-item" href="#sec-gerencia"><span class="nav-icon">👔</span>Gerencia General<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
+  <a class="nav-item" href="#sec-finanzas"><span class="nav-icon">💰</span>Finanzas y Costeo<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
+  <a class="nav-item" style="opacity:0.45;pointer-events:none;"><span class="nav-icon">🛒</span>Compras<span class="nav-badge nav-badge-pend">Pendiente</span></a>
+
+  <div class="nav-group-label">Requerimientos</div>
+  <a class="nav-item" href="#sec-rf"><span class="nav-icon">📋</span>Funcionales<span class="nav-badge nav-badge-num">71 RF</span></a>
+  <a class="nav-item" href="#sec-rnf"><span class="nav-icon">⚙</span>No Funcionales<span class="nav-badge nav-badge-num">15 RNF</span></a>
+
+  <div class="nav-group-label">Análisis</div>
+  <a class="nav-item" href="#sec-estado"><span class="nav-icon">📊</span>Estado General</a>
+  <a class="nav-item" href="#sec-diagramas"><span class="nav-icon">🔀</span>Diagramas de Flujo<span class="nav-badge nav-badge-num">4</span></a>
+</nav>
+
+<main class="main-content">
 
   <!-- ═══════════════════════════════════════════════════
        1. DESCRIPCIÓN GENERAL
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-descripcion">
     <div class="section-header">
       <span class="icon">🏢</span>
       <h3>1. Descripción General de la Empresa</h3>
@@ -328,7 +416,7 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
   <!-- ═══════════════════════════════════════════════════
        2. ESTRUCTURA ORGANIZACIONAL
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-organizacion">
     <div class="section-header">
       <span class="icon">🗂</span>
       <h3>2. Estructura Organizacional</h3>
@@ -425,7 +513,7 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
   <!-- ═══════════════════════════════════════════════════
        3. PRODUCCIÓN
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-produccion">
     <div class="section-header">
       <span class="icon">🏭</span>
       <h3>3. Área de Producción</h3>
@@ -528,7 +616,7 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
   <!-- ═══════════════════════════════════════════════════
        4. ALMACÉN
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-almacen">
     <div class="section-header">
       <span class="icon">📦</span>
       <h3>4. Área de Almacén</h3>
@@ -617,7 +705,7 @@ Almacén registra entrada en Restaurant (cantidad + precio + factura)</div>
   <!-- ═══════════════════════════════════════════════════
        5. DESPACHO
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-despacho">
     <div class="section-header">
       <span class="icon">🚚</span>
       <h3>5. Área de Despacho</h3>
@@ -692,7 +780,7 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
   <!-- ═══════════════════════════════════════════════════
        6. VENTAS / TIENDAS
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-ventas">
     <div class="section-header">
       <span class="icon">🛍</span>
       <h3>6. Área de Ventas / Tiendas</h3>
@@ -762,7 +850,7 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
   <!-- ═══════════════════════════════════════════════════
        7. INCIDENTE DOCUMENTADO
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-incidente">
     <div class="section-header">
       <span class="icon">🚨</span>
       <h3>7. Incidente Documentado — Caso Real</h3>
@@ -794,7 +882,7 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
   <!-- ═══════════════════════════════════════════════════
        8. REQUERIMIENTOS FUNCIONALES
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-rf">
     <div class="section-header">
       <span class="icon">📋</span>
       <h3>8. Requerimientos Funcionales Identificados</h3>
@@ -957,7 +1045,7 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
   <!-- ═══════════════════════════════════════════════════
        REQUERIMIENTOS NO FUNCIONALES
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-rnf">
     <div class="section-header">
       <span class="icon">⚙</span>
       <h3>8B. Requerimientos No Funcionales</h3>
@@ -1030,7 +1118,7 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
   <!-- ═══════════════════════════════════════════════════
        9. GERENCIA GENERAL
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-gerencia">
     <div class="section-header">
       <span class="icon">👔</span>
       <h3>9. Gerencia General</h3>
@@ -1153,7 +1241,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
   <!-- ═══════════════════════════════════════════════════
        10. FINANZAS Y COSTEO
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-finanzas">
     <div class="section-header">
       <span class="icon">💰</span>
       <h3>10. Área de Finanzas y Costeo</h3>
@@ -1295,7 +1383,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
   <!-- ═══════════════════════════════════════════════════
        11. ESTADO GENERAL
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-estado">
     <div class="section-header">
       <span class="icon">📊</span>
       <h3>11. Estado General del Levantamiento</h3>
@@ -1345,7 +1433,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
   <!-- ═══════════════════════════════════════════════════
        12. DIAGRAMAS DE FLUJO DE PROCESOS
   ════════════════════════════════════════════════════ -->
-  <div class="section">
+  <div class="section" id="sec-diagramas">
     <div class="section-header">
       <span class="icon">🔀</span>
       <h3>12. Diagramas de Flujo de Procesos</h3>
@@ -1470,6 +1558,7 @@ flowchart TD
     </div>
   </div>
 
+</main>
 </div>
 
 <footer>
@@ -1478,5 +1567,22 @@ flowchart TD
   Última actualización: 09 Mayo 2026
 </footer>
 
+<script>
+  // Resaltar sección activa en el sidebar según scroll
+  const navLinks = document.querySelectorAll('.sidebar .nav-item[href^="#"]');
+  const sections = document.querySelectorAll('.section[id]');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.sidebar .nav-item[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -55% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
 </body>
 </html>
