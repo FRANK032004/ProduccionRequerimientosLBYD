@@ -551,9 +551,14 @@ Almacén registra entrada en Restaurant (cantidad + precio + factura)</div>
       <div class="subsection">
         <h4>Precios y Costeo</h4>
         <table>
-          <tr><td style="width:240px;font-weight:600;">Método de costeo</td><td>Costo promedio ponderado</td></tr>
-          <tr><td style="font-weight:600;">Registro de precios</td><td>Solo al momento de la compra (en Restaurant con la factura). No hay lista maestra de precios.</td></tr>
-          <tr><td style="font-weight:600;">Historial de precios</td><td><strong>No existe.</strong> No se puede saber cómo ha variado el precio de un insumo en el tiempo.</td></tr>
+          <tr><td style="width:240px;font-weight:600;">Método de costeo</td><td>Costo promedio ponderado — confirmado con Finanzas como método oficial del sistema.</td></tr>
+          <tr><td style="font-weight:600;">Registro de precios actual</td><td>Solo al momento de la compra (en Restaurant con la factura). No hay lista maestra de precios independiente.</td></tr>
+          <tr><td style="font-weight:600;">Historial de precios</td><td><strong>No existe.</strong> No se puede saber cómo ha variado el precio de un insumo en el tiempo. Esto impide calcular el costo real de un producto en fechas pasadas.</td></tr>
+          <tr><td style="font-weight:600;">Modelo de costo actual</td><td><span class="tag tag-danger">Incompleto.</span> Solo considera insumos + empaques + factor de ajuste. No incluye mano de obra, CIF, distribución ni gastos administrativos.</td></tr>
+          <tr><td style="font-weight:600;">Actualización de costos</td><td><span class="tag tag-danger">Manual y tardía.</span> Cuando un proveedor sube el precio de un insumo, el costo del producto <strong>no se actualiza de forma automática</strong>. Las decisiones de precio pueden tomarse con costos desactualizados.</td></tr>
+          <tr><td style="font-weight:600;">Márgenes por categoría</td><td>Existen por categoría y canal (definidos por el área comercial), pero <strong>no reflejan rentabilidad real</strong> porque el costeo base es incompleto.</td></tr>
+          <tr><td style="font-weight:600;">Productos con pérdida</td><td>Se sospechan pero no se pueden confirmar con datos exactos. El sistema debe identificarlos automáticamente.</td></tr>
+          <tr><td style="font-weight:600;">Modelo integral requerido</td><td>Insumos + empaques → Mano de obra directa → CIF (energía, gas, mantenimiento) → Distribución → Gastos admin/ventas (factor %) = <strong>Costo real del producto.</strong> Definido con Finanzas. Ver Sección 10.</td></tr>
         </table>
       </div>
 
@@ -570,8 +575,10 @@ Almacén registra entrada en Restaurant (cantidad + precio + factura)</div>
 
       <div class="subsection">
         <h4>Brechas Identificadas — Almacén</h4>
-        <div class="brecha"><strong>BRECHA CRÍTICA:</strong> No existe historial de precios por insumo. Imposible calcular con exactitud cuánto costó fabricar un producto en una fecha pasada si el precio del insumo cambió.</div>
+        <div class="brecha"><strong>BRECHA CRÍTICA:</strong> No existe historial de precios por insumo. Imposible calcular con exactitud cuánto costó fabricar un producto en una fecha pasada si el precio del insumo cambió. Confirmado por Finanzas.</div>
         <div class="brecha"><strong>BRECHA 2:</strong> Doble registro (Restaurant + Excel) genera riesgo de inconsistencia de datos.</div>
+        <div class="brecha"><strong>BRECHA 3 (confirmada con Finanzas):</strong> El modelo de costo actual (solo insumos + factor de ajuste) no refleja el costo real. Los márgenes reportados pueden ser incorrectos. Productos que se creen rentables podrían estar generando pérdida.</div>
+        <div class="brecha"><strong>BRECHA 4 (confirmada con Finanzas):</strong> La actualización de costos es manual. Si Alicorp sube el precio de la harina, el sistema no lo refleja automáticamente en el costo de ningún producto.</div>
       </div>
 
     </div>
