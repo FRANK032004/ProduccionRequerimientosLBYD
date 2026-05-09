@@ -317,6 +317,72 @@
       font-size: 12px;
       margin-top: 20px;
     }
+
+    /* ── ZOOM BUTTON SOBRE DIAGRAMA ── */
+    .btn-zoom {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary); color: #fff;
+      border: none; border-radius: 6px;
+      padding: 6px 14px; font-size: 12px; font-weight: 600;
+      cursor: pointer; margin-bottom: 8px;
+      transition: background 0.15s;
+    }
+    .btn-zoom:hover { background: var(--accent); }
+
+    /* ── MODAL DE DIAGRAMA ── */
+    .diagram-modal {
+      display: none;
+      position: fixed; inset: 0;
+      z-index: 9999;
+      flex-direction: column;
+      background: rgba(20,25,35,0.96);
+    }
+    .diagram-modal.open { display: flex; }
+
+    .modal-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px;
+      background: var(--primary);
+      border-bottom: 3px solid var(--accent);
+      flex-shrink: 0;
+    }
+    .modal-title { font-size: 14px; font-weight: 700; color: #fff; }
+    .modal-controls { display: flex; gap: 8px; align-items: center; }
+    .mbtn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; border-radius: 5px;
+      padding: 5px 13px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .mbtn:hover { background: var(--accent); border-color: var(--accent); }
+    .mbtn-close { background: rgba(231,76,60,0.3); border-color: rgba(231,76,60,0.5); }
+    .mbtn-close:hover { background: #e74c3c; border-color: #e74c3c; }
+
+    .modal-zoom-bar {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 6px; padding: 3px 6px;
+      font-size: 11px; color: rgba(255,255,255,0.6);
+    }
+    #zoomLabel { min-width: 38px; text-align: center; color: var(--accent); font-weight: 700; font-size: 12px; }
+
+    .modal-canvas {
+      flex: 1; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      cursor: grab; position: relative;
+    }
+    .modal-canvas.dragging { cursor: grabbing; }
+    .modal-svg-wrap { transform-origin: 0 0; will-change: transform; }
+    .modal-svg-wrap svg { display: block; max-width: none; }
+
+    .modal-hint {
+      position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+      color: rgba(255,255,255,0.6); border-radius: 20px;
+      padding: 5px 16px; font-size: 11px; pointer-events: none;
+      white-space: nowrap;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script>mermaid.initialize({ startOnLoad: true, theme: 'default', flowchart: { curve: 'basis', useMaxWidth: true } });</script>
@@ -1561,6 +1627,26 @@ flowchart TD
 </main>
 </div>
 
+<!-- ── MODAL ZOOM DIAGRAMAS ── -->
+<div id="diagramModal" class="diagram-modal">
+  <div class="modal-topbar">
+    <span class="modal-title" id="modalTitle">Diagrama</span>
+    <div class="modal-controls">
+      <div class="modal-zoom-bar">
+        <button class="mbtn" id="btnZoomOut" title="Alejar">−</button>
+        <span id="zoomLabel">100%</span>
+        <button class="mbtn" id="btnZoomIn" title="Acercar">+</button>
+        <button class="mbtn" id="btnReset" title="Restablecer">↺</button>
+      </div>
+      <button class="mbtn mbtn-close" id="btnClose">✕&nbsp; Cerrar</button>
+    </div>
+  </div>
+  <div class="modal-canvas" id="modalCanvas">
+    <div class="modal-svg-wrap" id="modalSvgWrap"></div>
+    <div class="modal-hint">🔍 Rueda del mouse para zoom &nbsp;·&nbsp; Arrastra para mover &nbsp;·&nbsp; ESC para cerrar</div>
+  </div>
+</div>
+
 <footer>
   Documento de Requerimientos v1.2 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
@@ -1568,11 +1654,10 @@ flowchart TD
 </footer>
 
 <script>
-  // Resaltar sección activa en el sidebar según scroll
+  /* ── SIDEBAR ACTIVE ── */
   const navLinks = document.querySelectorAll('.sidebar .nav-item[href^="#"]');
   const sections = document.querySelectorAll('.section[id]');
-
-  const observer = new IntersectionObserver(entries => {
+  const sectionObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         navLinks.forEach(l => l.classList.remove('active'));
@@ -1581,8 +1666,115 @@ flowchart TD
       }
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -55% 0px' });
+  sections.forEach(s => sectionObserver.observe(s));
 
-  sections.forEach(s => observer.observe(s));
+  /* ── ZOOM MODAL ── */
+  const modal    = document.getElementById('diagramModal');
+  const canvas   = document.getElementById('modalCanvas');
+  const svgWrap  = document.getElementById('modalSvgWrap');
+  const zoomLbl  = document.getElementById('zoomLabel');
+  let scale = 1, tx = 0, ty = 0;
+  let dragging = false, lastX = 0, lastY = 0;
+
+  function applyTransform() {
+    svgWrap.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
+    zoomLbl.textContent = Math.round(scale * 100) + '%';
+  }
+  function clampScale(v) { return Math.max(0.3, Math.min(5, v)); }
+
+  function openModal(svgEl, title) {
+    document.getElementById('modalTitle').textContent = title;
+    const clone = svgEl.cloneNode(true);
+    clone.removeAttribute('width');
+    clone.removeAttribute('height');
+    clone.style.cssText = 'width:auto;height:auto;max-height:82vh;';
+    svgWrap.innerHTML = '';
+    svgWrap.appendChild(clone);
+    scale = 1; tx = 0; ty = 0;
+    applyTransform();
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('btnClose').addEventListener('click', closeModal);
+  document.getElementById('btnZoomIn').addEventListener('click',  () => { scale = clampScale(scale + 0.2); applyTransform(); });
+  document.getElementById('btnZoomOut').addEventListener('click', () => { scale = clampScale(scale - 0.2); applyTransform(); });
+  document.getElementById('btnReset').addEventListener('click',   () => { scale = 1; tx = 0; ty = 0; applyTransform(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // Zoom con rueda del mouse (centrado en el cursor)
+  canvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect   = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const delta  = e.deltaY < 0 ? 0.15 : -0.15;
+    const newScale = clampScale(scale + delta);
+    const factor = newScale / scale;
+    tx = mouseX - factor * (mouseX - tx);
+    ty = mouseY - factor * (mouseY - ty);
+    scale = newScale;
+    applyTransform();
+  }, { passive: false });
+
+  // Drag (mouse)
+  canvas.addEventListener('mousedown', e => {
+    if (e.target.closest('.mbtn')) return;
+    dragging = true; lastX = e.clientX; lastY = e.clientY;
+    canvas.classList.add('dragging');
+  });
+  window.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    tx += e.clientX - lastX; ty += e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
+    applyTransform();
+  });
+  window.addEventListener('mouseup', () => { dragging = false; canvas.classList.remove('dragging'); });
+
+  // Touch (tablet / móvil)
+  let lastTouchDist = null;
+  canvas.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) { lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; dragging = true; }
+    if (e.touches.length === 2) { lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
+  }, { passive: true });
+  canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (e.touches.length === 1 && dragging) {
+      tx += e.touches[0].clientX - lastX; ty += e.touches[0].clientY - lastY;
+      lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+      applyTransform();
+    }
+    if (e.touches.length === 2 && lastTouchDist !== null) {
+      const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      scale = clampScale(scale * (dist / lastTouchDist));
+      lastTouchDist = dist;
+      applyTransform();
+    }
+  }, { passive: false });
+  canvas.addEventListener('touchend', () => { dragging = false; lastTouchDist = null; });
+
+  // Agregar botón "Ampliar" a cada diagrama tras renderizado de Mermaid
+  function addZoomButtons() {
+    document.querySelectorAll('#sec-diagramas .subsection').forEach(sub => {
+      if (sub.querySelector('.btn-zoom')) return;
+      const mDiv = sub.querySelector('.mermaid');
+      if (!mDiv || !mDiv.querySelector('svg')) return;
+      const title = (sub.querySelector('h4') || {}).textContent || 'Diagrama';
+      const btn = document.createElement('button');
+      btn.className = 'btn-zoom';
+      btn.innerHTML = '🔍&nbsp; Ver diagrama completo';
+      btn.addEventListener('click', () => openModal(mDiv.querySelector('svg'), title));
+      sub.insertBefore(btn, mDiv);
+    });
+  }
+  // Mermaid tarda ~400–800ms en renderizar; reintentamos por si acaso
+  setTimeout(addZoomButtons, 700);
+  setTimeout(addZoomButtons, 1800);
 </script>
 </body>
 </html>
