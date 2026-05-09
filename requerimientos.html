@@ -246,8 +246,8 @@
     <div class="meta-item"><strong>Responsable</strong>Luis Franklin Zeta Juárez</div>
     <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
     <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
-    <div class="meta-item"><strong>Versión</strong>1.0 — En progreso</div>
-    <div class="meta-item"><strong>Estado</strong>Levantamiento activo</div>
+    <div class="meta-item"><strong>Versión</strong>1.2 — En progreso</div>
+    <div class="meta-item"><strong>Estado</strong>Levantamiento 87% completo</div>
   </div>
 </header>
 
@@ -287,9 +287,10 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
         <table>
           <tr><th>Objetivo</th><th>Descripción</th></tr>
           <tr><td><span class="tag tag-info">VISIBILIDAD</span></td><td>Que todos sepan qué hay en stock, qué se pidió y qué se está produciendo en tiempo real.</td></tr>
-          <tr><td><span class="tag tag-info">TRAZABILIDAD</span></td><td>Que cada producto tenga historia completa: insumos usados, costo de producción y responsable.</td></tr>
+          <tr><td><span class="tag tag-info">TRAZABILIDAD</span></td><td>Que cada producto tenga historia completa: insumos usados, costo de producción y responsable por área.</td></tr>
           <tr><td><span class="tag tag-info">ANTICIPACIÓN</span></td><td>Que el sistema avise antes de que el problema ocurra: stock mínimo, vencimientos, pedidos fuera de plazo.</td></tr>
-          <tr><td><span class="tag tag-info">RENTABILIDAD</span></td><td>Cruzar costos de producción vs precio de venta para conocer el margen real por producto.</td></tr>
+          <tr><td><span class="tag tag-info">FOOD COST</span></td><td>Calcular el Food Cost % teórico y real por producto. Prioridad máxima según Gerencia. Actualmente desconocido.</td></tr>
+          <tr><td><span class="tag tag-info">RENTABILIDAD</span></td><td>Estado de rentabilidad real por producto, cliente y canal cruzando costo integral vs precio de venta.</td></tr>
         </table>
       </div>
     </div>
@@ -331,13 +332,13 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
             </tr>
             <tr>
               <td><strong>Administración / Finanzas</strong></td>
-              <td>Contabilidad, costos, aprobaciones</td>
-              <td><span class="tag tag-warn">Pendiente</span></td>
+              <td>Contabilidad, costeo integral, food cost, márgenes, cuentas por cobrar</td>
+              <td><span class="tag tag-ok">Completo</span></td>
             </tr>
             <tr>
               <td><strong>Compras</strong></td>
               <td>Órdenes de compra, proveedores, abastecimiento</td>
-              <td><span class="tag tag-warn">Pendiente</span></td>
+              <td><span class="tag tag-warn">Pendiente — última área</span></td>
             </tr>
             <tr>
               <td><strong>Ventas — Tiendas Físicas</strong></td>
@@ -852,9 +853,137 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
           <li><span class="rf-code">RF-32</span>Registro de transferencias de productos entre tiendas.</li>
           <li><span class="rf-code">RF-34</span>Base de datos de clientes con clasificación (regular, corporativo, masivo, BID).</li>
           <li><span class="rf-code">RF-35</span>Condiciones comerciales por cliente: precio especial, plazo de crédito, política de anticipación.</li>
-          <li><span class="rf-code">RF-36</span>Control de cuentas por cobrar para clientes con crédito.</td></li>
+          <li><span class="rf-code">RF-36</span>Control de cuentas por cobrar para clientes con crédito.</li>
           <li><span class="rf-code">RF-28</span>Planificación de capacidad por sub-área en campañas y fechas especiales.</li>
         </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Costeo Integral y Food Cost</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-61</span>Modelo de costeo integral por producto: insumos + mano de obra directa + CIF + distribución + gastos admin/ventas, configurable por área.</li>
+          <li><span class="rf-code">RF-62</span>Actualización automática del costo del producto cuando cambia el precio de cualquier insumo, con alerta a finanzas y comercial.</li>
+          <li><span class="rf-code">RF-63</span>Cálculo automático de Food Cost % teórico y real por producto con semáforo de alerta si supera el umbral configurado.</li>
+          <li><span class="rf-code">RF-64</span>Comparativo de costo teórico vs costo real por lote, identificando desviaciones y causas (merma, sobrante, variación de precio).</li>
+          <li><span class="rf-code">RF-65</span>Estado de rentabilidad real por producto, cliente y canal de venta.</li>
+          <li><span class="rf-code">RF-66</span>Análisis de márgenes por canal con comparativo vs margen objetivo definido.</li>
+          <li><span class="rf-code">RF-67</span>Rentabilidad por ruta de distribución.</li>
+          <li><span class="rf-code">RF-68</span>Alertas automáticas de desviación presupuestal cuando el costo real supera el presupuestado.</li>
+          <li><span class="rf-code">RF-69</span>Reporte de antigüedad de saldos (aging report) por cliente con días vencidos y monto pendiente.</li>
+          <li><span class="rf-code">RF-70</span>Gestión de crédito: suspensión automática por morosidad, acuerdos de pago y provisiones contables.</li>
+          <li><span class="rf-code">RF-71</span>Generación automática del reporte de inventario al cierre de mes por área para el estudio contable externo.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Dashboard Ejecutivo</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-47</span>Dashboard en tiempo real con ventas del día por área, tienda y canal.</li>
+          <li><span class="rf-code">RF-48</span>Indicador en vivo de productos más vendidos por hora y por tienda.</li>
+          <li><span class="rf-code">RF-49</span>Comparativo de ventas vs histórico del mismo día/campaña del año anterior.</li>
+          <li><span class="rf-code">RF-50</span>Reporte diario consolidado: producción real, merma y despacho por área.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Control de Dosificación y Lotes</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-51</span>Registro de entrega de insumos por cantidad exacta, el sistema obliga a ingresar la unidad de medida definida (no por bolsa/bulto).</li>
+          <li><span class="rf-code">RF-52</span>Registro de consumo real de insumos por lote de producción.</li>
+          <li><span class="rf-code">RF-53</span>Cálculo automático de sobrante de insumo: cantidad entregada − cantidad consumida real.</li>
+          <li><span class="rf-code">RF-54</span>Trazabilidad completa por lote: insumos, cantidades, área responsable, fecha y turno.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Personal, Equipos y Mantenimiento</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-55</span>Registro de horas extras por área y por persona.</li>
+          <li><span class="rf-code">RF-56</span>Reporte de costo de planilla por área incluyendo horas extras, con comparativo entre áreas y tiendas.</li>
+          <li><span class="rf-code">RF-57</span>Inventario de equipos y muebles por área (hornos, batidoras, vitrinas, etc.).</li>
+          <li><span class="rf-code">RF-58</span>Registro de mantenimiento preventivo y correctivo por equipo con costo y responsable.</li>
+          <li><span class="rf-code">RF-59</span>Alertas de mantenimiento programado próximo a vencer.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Merma Consolidada</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-60</span>Reporte de merma consolidado: producción + despacho + tiendas + almacén en un solo reporte gerencial.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       REQUERIMIENTOS NO FUNCIONALES
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">⚙</span>
+      <h3>8B. Requerimientos No Funcionales</h3>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Rendimiento</h4>
+        <table>
+          <thead><tr><th>RNF</th><th>Descripción</th><th>Criterio de aceptación</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RNF-01</strong></td><td>Tiempo de respuesta del sistema</td><td>Páginas cargan en menos de 3 segundos en condiciones normales</td></tr>
+            <tr><td><strong>RNF-02</strong></td><td>Usuarios concurrentes</td><td>El sistema debe soportar al menos 50 usuarios simultáneos sin degradación</td></tr>
+            <tr><td><strong>RNF-03</strong></td><td>Dashboard en tiempo real</td><td>Datos actualizados con máximo 60 segundos de retraso</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Disponibilidad y Acceso</h4>
+        <table>
+          <thead><tr><th>RNF</th><th>Descripción</th><th>Criterio de aceptación</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RNF-04</strong></td><td>Disponibilidad del sistema</td><td>99% uptime en horario operativo (5am–11pm). Mantenimiento en madrugada.</td></tr>
+            <tr><td><strong>RNF-05</strong></td><td>Acceso desde dispositivos</td><td>Compatible con PC de escritorio, laptop y tablet. Móvil para consultas gerenciales.</td></tr>
+            <tr><td><strong>RNF-06</strong></td><td>Acceso desde fuera de planta</td><td>El gerente y jefes deben poder acceder desde cualquier ubicación vía navegador</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Seguridad</h4>
+        <table>
+          <thead><tr><th>RNF</th><th>Descripción</th><th>Criterio de aceptación</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RNF-07</strong></td><td>Autenticación</td><td>Login con usuario y contraseña. Sesiones con tiempo de expiración configurable.</td></tr>
+            <tr><td><strong>RNF-08</strong></td><td>Control de acceso por rol</td><td>Cada perfil solo ve y opera lo que le corresponde según la matriz de permisos definida</td></tr>
+            <tr><td><strong>RNF-09</strong></td><td>Auditoría de acciones</td><td>Registro de quién hizo qué y cuándo (log de auditoría) para todas las operaciones críticas</td></tr>
+            <tr><td><strong>RNF-10</strong></td><td>Protección de datos</td><td>Información de costos, márgenes y clientes encriptada. No accesible por roles sin permiso.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Usabilidad</h4>
+        <table>
+          <thead><tr><th>RNF</th><th>Descripción</th><th>Criterio de aceptación</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RNF-11</strong></td><td>Facilidad de uso</td><td>Un encargado de área sin experiencia técnica debe poder operar su módulo con máximo 2 horas de capacitación</td></tr>
+            <tr><td><strong>RNF-12</strong></td><td>Idioma</td><td>Interfaz completamente en español</td></tr>
+            <tr><td><strong>RNF-13</strong></td><td>Interfaz de almacén</td><td>Simple y rápida. Una sola persona opera todo el almacén, no puede ser compleja.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Integración</h4>
+        <table>
+          <thead><tr><th>RNF</th><th>Descripción</th><th>Criterio de aceptación</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RNF-14</strong></td><td>Convivencia con Restaurant.pe</td><td>El sistema complementa a Restaurant, no lo reemplaza. Los datos de ventas de Restaurant pueden importarse para análisis histórico.</td></tr>
+            <tr><td><strong>RNF-15</strong></td><td>Exportación de datos</td><td>Todos los reportes deben poder exportarse a Excel y PDF para el estudio contable externo.</td></tr>
+          </tbody>
+        </table>
       </div>
 
     </div>
@@ -982,71 +1111,14 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════════════
-       10. REQUERIMIENTOS FUNCIONALES — ACTUALIZADOS
-  ════════════════════════════════════════════════════ -->
-  <div class="section">
-    <div class="section-header">
-      <span class="icon">🆕</span>
-      <h3>10. Requerimientos Adicionales — Gerencia General</h3>
-      <span class="badge">+12 nuevos</span>
-    </div>
-    <div class="section-body">
-
-      <div class="subsection">
-        <h4>Módulo de Dashboard Ejecutivo (tiempo real)</h4>
-        <ul class="rf-list">
-          <li><span class="rf-code">RF-47</span>Dashboard en tiempo real con ventas del día por área, tienda y canal.</li>
-          <li><span class="rf-code">RF-48</span>Indicador en vivo de productos más vendidos por hora y por tienda.</li>
-          <li><span class="rf-code">RF-49</span>Comparativo de ventas vs histórico del mismo día/campaña del año anterior.</li>
-          <li><span class="rf-code">RF-50</span>Reporte diario consolidado: producción real, merma y despacho por área.</li>
-        </ul>
-      </div>
-
-      <div class="subsection">
-        <h4>Módulo de Control de Dosificación / Lotes</h4>
-        <ul class="rf-list">
-          <li><span class="rf-code">RF-51</span>Registro de entrega de insumos por cantidad exacta (no por bolsa/bulto). El sistema obliga a ingresar la cantidad en unidad de medida definida.</li>
-          <li><span class="rf-code">RF-52</span>Registro de consumo real de insumos por lote de producción.</li>
-          <li><span class="rf-code">RF-53</span>Cálculo automático de sobrante de insumo: cantidad entregada − cantidad usada.</li>
-          <li><span class="rf-code">RF-54</span>Trazabilidad completa por lote: insumos usados, cantidades, área responsable, fecha y turno.</li>
-        </ul>
-      </div>
-
-      <div class="subsection">
-        <h4>Módulo de Personal y Horas Extras</h4>
-        <ul class="rf-list">
-          <li><span class="rf-code">RF-55</span>Registro de horas extras por área y por persona.</li>
-          <li><span class="rf-code">RF-56</span>Reporte de costo de planilla por área (incluye horas extras) para comparativo entre áreas y tiendas.</li>
-        </ul>
-      </div>
-
-      <div class="subsection">
-        <h4>Módulo de Mantenimiento de Equipos</h4>
-        <ul class="rf-list">
-          <li><span class="rf-code">RF-57</span>Inventario de equipos y muebles por área (hornos, batidoras, vitrinas, etc.).</li>
-          <li><span class="rf-code">RF-58</span>Registro de mantenimiento preventivo y correctivo por equipo con costo y responsable.</li>
-          <li><span class="rf-code">RF-59</span>Alertas de mantenimiento programado próximo a vencer.</li>
-        </ul>
-      </div>
-
-      <div class="subsection">
-        <h4>Módulo de Merma Consolidada</h4>
-        <ul class="rf-list">
-          <li><span class="rf-code">RF-60</span>Reporte de merma consolidado: producción + despacho + tiendas + almacén, visible para gerencia en un solo lugar.</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
 
   <!-- ═══════════════════════════════════════════════════
-       11. FINANZAS Y COSTEO
+       10. FINANZAS Y COSTEO
   ════════════════════════════════════════════════════ -->
   <div class="section">
     <div class="section-header">
       <span class="icon">💰</span>
-      <h3>11. Área de Finanzas y Costeo</h3>
+      <h3>10. Área de Finanzas y Costeo</h3>
       <span class="badge">Levantamiento completo</span>
     </div>
     <div class="section-body">
@@ -1183,61 +1255,12 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
   </div>
 
   <!-- ═══════════════════════════════════════════════════
-       12. REQUERIMIENTOS ADICIONALES — FINANZAS
-  ════════════════════════════════════════════════════ -->
-  <div class="section">
-    <div class="section-header">
-      <span class="icon">🆕</span>
-      <h3>12. Requerimientos Adicionales — Finanzas y Costeo</h3>
-      <span class="badge">+10 nuevos</span>
-    </div>
-    <div class="section-body">
-
-      <div class="subsection">
-        <h4>Módulo de Costeo Integral</h4>
-        <ul class="rf-list">
-          <li><span class="rf-code">RF-61</span>Modelo de costeo integral por producto: insumos + mano de obra directa + costos indirectos de fabricación (CIF) + distribución + gastos admin/ventas, configurable por área.</li>
-          <li><span class="rf-code">RF-62</span>Actualización automática del costo del producto cuando cambia el precio de cualquiera de sus insumos, con alerta al área de finanzas y comercial.</li>
-          <li><span class="rf-code">RF-63</span>Cálculo automático de Food Cost % teórico y real por producto, con semáforo de alerta si supera el umbral configurado.</li>
-          <li><span class="rf-code">RF-64</span>Comparativo de costo teórico vs costo real por lote de producción, identificando desviaciones y sus causas (merma, sobrante, variación de precio).</li>
-        </ul>
-      </div>
-
-      <div class="subsection">
-        <h4>Módulo de Rentabilidad</h4>
-        <ul class="rf-list">
-          <li><span class="rf-code">RF-65</span>Estado de rentabilidad real por producto, cliente y canal de venta.</li>
-          <li><span class="rf-code">RF-66</span>Análisis de márgenes por canal (tienda física, online, corporativo, masivo, BID) con comparativo vs margen objetivo.</li>
-          <li><span class="rf-code">RF-67</span>Rentabilidad por ruta de distribución (costo de distribución vs ingresos generados por esa ruta).</li>
-          <li><span class="rf-code">RF-68</span>Alertas automáticas de desviación presupuestal cuando el costo real supera el presupuestado en un porcentaje configurable.</li>
-        </ul>
-      </div>
-
-      <div class="subsection">
-        <h4>Módulo de Cuentas por Cobrar y Crédito</h4>
-        <ul class="rf-list">
-          <li><span class="rf-code">RF-69</span>Reporte de antigüedad de saldos (aging report) por cliente con días vencidos y monto pendiente.</li>
-          <li><span class="rf-code">RF-70</span>Gestión de crédito: suspensión automática de crédito por morosidad, registro de acuerdos de pago y provisiones contables.</li>
-        </ul>
-      </div>
-
-      <div class="subsection">
-        <h4>Módulo de Cierre Contable</h4>
-        <ul class="rf-list">
-          <li><span class="rf-code">RF-71</span>Generación automática del reporte de inventario al cierre de mes por área, eliminando el proceso manual actual.</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════
-       13. ESTADO GENERAL
+       11. ESTADO GENERAL
   ════════════════════════════════════════════════════ -->
   <div class="section">
     <div class="section-header">
       <span class="icon">📊</span>
-      <h3>13. Estado General del Levantamiento</h3>
+      <h3>11. Estado General del Levantamiento</h3>
     </div>
     <div class="section-body">
       <div class="status-grid">
