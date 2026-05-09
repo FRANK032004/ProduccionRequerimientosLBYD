@@ -759,7 +759,7 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
     <div class="section-header">
       <span class="icon">📋</span>
       <h3>8. Requerimientos Funcionales Identificados</h3>
-      <span class="badge">60 requerimientos</span>
+      <span class="badge">71 requerimientos</span>
     </div>
     <div class="section-body">
 
@@ -1041,12 +1041,203 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
   </div>
 
   <!-- ═══════════════════════════════════════════════════
-       11. ESTADO GENERAL
+       11. FINANZAS Y COSTEO
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">💰</span>
+      <h3>11. Área de Finanzas y Costeo</h3>
+      <span class="badge">Levantamiento completo</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Situación Actual del Costeo</h4>
+        <table>
+          <thead><tr><th>Aspecto</th><th>Situación actual</th><th>Observación</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Herramienta</td>
+              <td>Excel + formatos internos</td>
+              <td><span class="tag tag-warn">Proceso manual, propenso a errores</span></td>
+            </tr>
+            <tr>
+              <td>Componentes del costo actual</td>
+              <td>Solo insumos y empaques + factor de ajuste</td>
+              <td><span class="tag tag-danger">Incompleto — no refleja costo real</span></td>
+            </tr>
+            <tr>
+              <td>Modelo deseado</td>
+              <td>Insumos + Mano de obra directa + CIF + Distribución + Gastos Admin/Ventas</td>
+              <td><span class="tag tag-ok">Modelo integral profesional</span></td>
+            </tr>
+            <tr>
+              <td>Márgenes por categoría</td>
+              <td>Existen por categoría y canal (definidos por comercial)</td>
+              <td><span class="tag tag-warn">No reflejan rentabilidad real por limitaciones del costeo</span></td>
+            </tr>
+            <tr>
+              <td>Productos con pérdida</td>
+              <td>Se sospechan pero no se pueden confirmar con precisión</td>
+              <td><span class="tag tag-danger">Decisiones tomadas sin datos exactos</span></td>
+            </tr>
+            <tr>
+              <td>Actualización de costos</td>
+              <td>Periódica, manual, no automática</td>
+              <td><span class="tag tag-danger">Si sube un insumo, el costo no se actualiza de inmediato</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Modelo de Costeo Integral — Lo que el sistema debe implementar</h4>
+        <div class="flow-box">COSTO INTEGRAL POR PRODUCTO:
+
+  (+) Costo de insumos y empaques          ← Ficha técnica × precio promedio ponderado
+  (+) Mano de obra directa                 ← Horas empleadas × costo hora por área
+  (+) Costos indirectos de fabricación     ← Energía, gas, mantenimiento prorrateados
+  (+) Costo de distribución                ← Por ruta, tienda o canal
+  (+) Gastos administrativos y ventas      ← Factor porcentual configurable
+  ─────────────────────────────────────────
+  (=) COSTO REAL DEL PRODUCTO
+
+  Precio de venta − Costo real = MARGEN REAL
+  (Margen real / Precio de venta) × 100    = FOOD COST % REAL</div>
+      </div>
+
+      <div class="subsection">
+        <h4>Precios de Venta</h4>
+        <table>
+          <tr><td style="width:260px;font-weight:600;">Quién define el precio</td><td>Área comercial lidera la propuesta</td></tr>
+          <tr><td style="font-weight:600;">Criterio actual</td><td>Combinación de: costo estimado + referencia de mercado + estrategia comercial</td></tr>
+          <tr><td style="font-weight:600;">Frecuencia de actualización</td><td>Sin periodicidad rígida. Depende de variaciones fuertes de insumos o decisiones comerciales</td></tr>
+          <tr><td style="font-weight:600;">Precios especiales (corporativo/masivo)</td><td>Negociados por comercial. Finanzas no tiene aprobación formal en el proceso actual</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Control Financiero General</h4>
+        <table>
+          <thead><tr><th>Proceso</th><th>Detalle</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Contabilidad</td>
+              <td>Equipo interno para operaciones diarias + estudio externo para estados financieros</td>
+              <td><span class="tag tag-ok">Estructurado</span></td>
+            </tr>
+            <tr>
+              <td>Reportes diarios</td>
+              <td>Análisis de cuentas, flujo de caja, control presupuestal, reportes operativos</td>
+              <td><span class="tag tag-warn">Parcialmente manual</span></td>
+            </tr>
+            <tr>
+              <td>Cierre contable</td>
+              <td>Mensual. Producción y comercial entregan reporte de inventario manual al cierre</td>
+              <td><span class="tag tag-warn">Proceso manual, puede tener retrasos</span></td>
+            </tr>
+            <tr>
+              <td>Presupuesto de producción</td>
+              <td>Pendiente de confirmar con producción y comercial</td>
+              <td><span class="tag tag-pending">Pendiente</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Cuentas por Cobrar</h4>
+        <table>
+          <tr><td style="width:260px;font-weight:600;">Control de facturas pendientes</td><td>Reportes de antigüedad de saldos + control administrativo + coordinación finanzas-comercial</td></tr>
+          <tr><td style="font-weight:600;">Morosidad</td><td>Existe. Se maneja con seguimiento escalonado, suspensión de crédito, acuerdos de pago y provisiones contables</td></tr>
+          <tr><td style="font-weight:600;">Clientes con crédito activo</td><td>Pendiente de confirmar con área comercial</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Lo que Finanzas necesita del sistema</h4>
+        <table>
+          <thead><tr><th>Información requerida</th><th>Prioridad</th></tr></thead>
+          <tbody>
+            <tr><td>Costos reales por producto en tiempo real</td><td><span class="tag tag-danger">Alta</span></td></tr>
+            <tr><td>Márgenes por canal y por cliente</td><td><span class="tag tag-danger">Alta</span></td></tr>
+            <tr><td>Variaciones de precios de insumos con alerta automática</td><td><span class="tag tag-danger">Alta</span></td></tr>
+            <tr><td>Costos de producción por área</td><td><span class="tag tag-danger">Alta</span></td></tr>
+            <tr><td>Alertas de desviación frente al presupuesto</td><td><span class="tag tag-warn">Media</span></td></tr>
+            <tr><td>Rentabilidad por ruta/distribución</td><td><span class="tag tag-warn">Media</span></td></tr>
+            <tr><td>Estado de rentabilidad real por producto, cliente y canal (reporte más transformador)</td><td><span class="tag tag-danger">Alta</span></td></tr>
+            <tr><td>Cierre de inventario automático mensual para el estudio contable</td><td><span class="tag tag-warn">Media</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Brechas Identificadas — Finanzas</h4>
+        <div class="brecha"><strong>BRECHA 1:</strong> El costo actual solo incluye insumos + factor de ajuste. No refleja el costo real del producto. El margen que creen tener puede ser incorrecto.</div>
+        <div class="brecha"><strong>BRECHA 2:</strong> No existe automatización en la actualización de costos cuando cambia el precio de un insumo. El retraso puede generar decisiones de precio equivocadas.</div>
+        <div class="brecha"><strong>BRECHA 3:</strong> Finanzas no tiene visibilidad ni aprobación formal sobre los descuentos que comercial otorga a clientes corporativos y masivos.</div>
+        <div class="brecha"><strong>BRECHA 4:</strong> El cierre mensual de inventario es manual y depende de que producción y comercial entreguen sus reportes a tiempo.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       12. REQUERIMIENTOS ADICIONALES — FINANZAS
+  ════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🆕</span>
+      <h3>12. Requerimientos Adicionales — Finanzas y Costeo</h3>
+      <span class="badge">+10 nuevos</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Módulo de Costeo Integral</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-61</span>Modelo de costeo integral por producto: insumos + mano de obra directa + costos indirectos de fabricación (CIF) + distribución + gastos admin/ventas, configurable por área.</li>
+          <li><span class="rf-code">RF-62</span>Actualización automática del costo del producto cuando cambia el precio de cualquiera de sus insumos, con alerta al área de finanzas y comercial.</li>
+          <li><span class="rf-code">RF-63</span>Cálculo automático de Food Cost % teórico y real por producto, con semáforo de alerta si supera el umbral configurado.</li>
+          <li><span class="rf-code">RF-64</span>Comparativo de costo teórico vs costo real por lote de producción, identificando desviaciones y sus causas (merma, sobrante, variación de precio).</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Rentabilidad</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-65</span>Estado de rentabilidad real por producto, cliente y canal de venta.</li>
+          <li><span class="rf-code">RF-66</span>Análisis de márgenes por canal (tienda física, online, corporativo, masivo, BID) con comparativo vs margen objetivo.</li>
+          <li><span class="rf-code">RF-67</span>Rentabilidad por ruta de distribución (costo de distribución vs ingresos generados por esa ruta).</li>
+          <li><span class="rf-code">RF-68</span>Alertas automáticas de desviación presupuestal cuando el costo real supera el presupuestado en un porcentaje configurable.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Cuentas por Cobrar y Crédito</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-69</span>Reporte de antigüedad de saldos (aging report) por cliente con días vencidos y monto pendiente.</li>
+          <li><span class="rf-code">RF-70</span>Gestión de crédito: suspensión automática de crédito por morosidad, registro de acuerdos de pago y provisiones contables.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Cierre Contable</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-71</span>Generación automática del reporte de inventario al cierre de mes por área, eliminando el proceso manual actual.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       13. ESTADO GENERAL
   ════════════════════════════════════════════════════ -->
   <div class="section">
     <div class="section-header">
       <span class="icon">📊</span>
-      <h3>11. Estado General del Levantamiento</h3>
+      <h3>13. Estado General del Levantamiento</h3>
     </div>
     <div class="section-body">
       <div class="status-grid">
@@ -1074,13 +1265,13 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
           <div class="area">✅ Gerencia General</div>
           <div class="estado">Levantamiento completo</div>
         </div>
-        <div class="status-card status-pending">
-          <div class="area">⬜ Administración / Finanzas</div>
-          <div class="estado">Pendiente</div>
+        <div class="status-card status-complete">
+          <div class="area">✅ Finanzas y Costeo</div>
+          <div class="estado">Levantamiento completo</div>
         </div>
         <div class="status-card status-pending">
           <div class="area">⬜ Compras</div>
-          <div class="estado">Pendiente</div>
+          <div class="estado">Pendiente — última área</div>
         </div>
       </div>
     </div>
@@ -1089,9 +1280,9 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
 </div>
 
 <footer>
-  Documento de Requerimientos v1.1 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Documento de Requerimientos v1.2 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
-  Última actualización: 08 Mayo 2026
+  Última actualización: 09 Mayo 2026
 </footer>
 
 </body>
