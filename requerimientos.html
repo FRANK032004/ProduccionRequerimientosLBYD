@@ -593,29 +593,48 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
 
       <div class="subsection">
         <h4>Flujo Ideal de Producción (según Jamin — Jefe de Producción)</h4>
-        <div class="flow-box">1. Tiendas envían requerimientos        →  Hora límite: 1:00 PM del día anterior
-2. Validación de insumos en almacén     →  Confirmar disponibilidad de todo lo necesario
-3. Programación del plan de producción  →  Asignación por sub-área y por cantidad
-4. Comanda digital baja a cada área     →  Reemplaza la hoja de papel actual
-5. Producción ejecuta                   →  Cada sub-área con su encargado
-6. Despacho distribuye                  →  Desde las 5:00 AM del día siguiente</div>
+        <div class="flow-box">CORTE 1 — Hasta 1:00 PM del día anterior
+  Tiendas envían requerimientos  →  Plan nocturno de producción
+  Producción ejecuta esa noche   →  🚗 Salida 1: 5:00 AM (pedidos principales)
+
+CORTE 2 — 1:00 PM hasta 10:00 PM del día anterior
+  Tiendas envían requerimientos  →  Plan de madrugada (lote complementario)
+  Producción ejecuta madrugada   →  🚗 Salida 2: 10:00–11:00 AM
+                                 →  🚗 Salida 3: 3:00–4:00 PM (último abastecimiento)
+
+FLUJO COMPLETO (ambos lotes):
+  1. Validación de insumos en almacén  →  Confirmar disponibilidad
+  2. Plan de producción confirmado     →  Asignación por sub-área
+  3. Comanda digital a cada área       →  Reemplaza la hoja de papel actual
+  4. Sub-áreas ejecutan producción     →  Cada encargado con su área
+  5. Registro real vs. planificado     →  Por encargado de sub-área
+  6. Traspaso formal a Despacho        →  Según lote (1 o 2)</div>
       </div>
 
       <div class="subsection">
         <h4>Tiempos Mínimos para Pedidos</h4>
         <table>
-          <thead><tr><th>Tipo</th><th>Anticipación mínima</th><th>Hora límite</th><th>Autoriza rechazo</th></tr></thead>
+          <thead><tr><th>Tipo</th><th>Anticipación mínima</th><th>Ventana de envío</th><th>Salida de despacho</th><th>Autoriza rechazo</th></tr></thead>
           <tbody>
             <tr>
-              <td><strong>Pedido estándar</strong></td>
-              <td>24 horas</td>
-              <td>Antes de 1:00 PM</td>
+              <td><strong>Pedido estándar — lote principal</strong></td>
+              <td>Día anterior</td>
+              <td>Hasta 1:00 PM</td>
+              <td>🚗 Salida 1 — 5:00 AM</td>
+              <td>Jamin / Valeria (Gerente General)</td>
+            </tr>
+            <tr>
+              <td><strong>Pedido estándar — lote complementario</strong></td>
+              <td>Mismo día</td>
+              <td>1:00 PM – 10:00 PM</td>
+              <td>🚗 Salida 2 (10–11 AM) o Salida 3 (3–4 PM)</td>
               <td>Jamin / Valeria (Gerente General)</td>
             </tr>
             <tr>
               <td><strong>Pedido especial</strong></td>
               <td>48 horas</td>
               <td>Antes de 1:00 PM</td>
+              <td>🚗 Salida 1 — 5:00 AM</td>
               <td>Jamin / Valeria (Gerente General)</td>
             </tr>
           </tbody>
@@ -818,6 +837,11 @@ Almacén registra entrada en Restaurant (cantidad + precio + factura)</div>
               <td>Vehículos propios de la empresa</td>
               <td><span class="tag tag-ok">OK</span></td>
             </tr>
+            <tr>
+              <td>Salidas de despacho por día</td>
+              <td><strong>3 salidas:</strong> 5:00 AM · 10:00–11:00 AM · 3:00–4:00 PM</td>
+              <td><span class="tag tag-warn">Sin trazabilidad por salida</span></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -865,7 +889,7 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
           <tr><td style="font-weight:600;">Catálogo</td><td>Distinto por tienda según demanda de cada zona estratégica</td></tr>
           <tr><td style="font-weight:600;">Precios</td><td>Iguales en todas las tiendas (un solo maestro de precios)</td></tr>
           <tr><td style="font-weight:600;">Tiendas físicas</td><td>4 tiendas físicas activas</td></tr>
-          <tr><td style="font-weight:600;">Hora de requerimientos</td><td>Todas las tiendas envían sus requerimientos entre 10pm y 11pm</td></tr>
+          <tr><td style="font-weight:600;">Ventana de requerimientos</td><td><strong>Lote principal:</strong> hasta 1:00 PM (para salida 5 AM) &nbsp;|&nbsp; <strong>Lote complementario:</strong> 1:00 PM – 10:00 PM (para salidas 10–11 AM o 3–4 PM)</td></tr>
         </table>
       </div>
 
@@ -1524,22 +1548,33 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
         </div>
         <div class="mermaid">
 flowchart TD
-    A(["Inicio del ciclo — noche anterior"]) --> B["Tiendas envían requerimientos\n10 PM – 11 PM"]
-    B --> C{"Llega antes de\nla 1:00 PM del día siguiente?"}
-    C -->|Sí — dentro de hora| D["Almacén valida\ndisponibilidad de insumos"]
-    C -->|No — fuera de hora| E["Alerta automática al sistema\nJamin o Valeria decide"]
-    E -->|Rechazado| RZ(["Pedido rechazado\nSe notifica a tienda"])
-    E -->|Aceptado excepcionalmente| D
-    D --> F{"Stock\nsuficiente?"}
-    F -->|Sí| G["Plan de producción\nconfirmado por sub-área"]
-    F -->|No| H["Compra urgente\nal proveedor alternativo"]
-    H --> G
-    G --> I["Comanda digital\ndistribuida a cada sub-área"]
-    I --> J["Sub-áreas ejecutan producción\nPastelería, Panadería, Cocina, BID"]
-    J --> K["Encargados registran\nproducción real vs planificada"]
-    K --> L["Traspaso formal\nProducción a Despacho"]
-    L --> M["Despacho distribuye\ndesde las 5:00 AM"]
-    M --> N(["Productos entregados\nen tiendas y clientes"])
+    A(["Inicio del ciclo — día en curso"]) --> B["Tiendas envían requerimientos\nvía sistema"]
+    B --> C{"¿Cuándo llega\nel requerimiento?"}
+
+    C -->|"Hasta 1:00 PM\nlote nocturno"| P1["Plan Nocturno\nProducción completa esa noche"]
+    C -->|"1:00 PM – 10:00 PM\nlote madrugada"| P2["Plan Madrugada\nProducción complementaria"]
+    C -->|"Después de 10:00 PM\nfuera de horario"| OOH["⚠ Alerta al sistema\nDecide Jefe de Producción"]
+    OOH -->|Rechazado| RZ(["Pedido rechazado\nSe notifica a tienda"])
+    OOH -->|"Excepción aprobada"| P1
+
+    P1 --> V["Almacén valida\ndisponibilidad de insumos"]
+    P2 --> V
+    V --> S{"¿Stock\nsuficiente?"}
+    S -->|No| CU["Solicitud compra urgente\na proveedor alternativo"]
+    CU --> PR
+    S -->|Sí| PR["Plan confirmado\nComanda digital a sub-áreas"]
+    PR --> EJ["Sub-áreas ejecutan producción\nPastelería · Panadería · Cocina · BID"]
+    EJ --> REG["Encargados registran\nproducción real vs. planificada"]
+    REG --> TR["Traspaso formal\nProducción → Despacho"]
+
+    TR --> SEL{"¿Lote\nde despacho?"}
+    SEL -->|"Lote Nocturno\nrq. antes de 1 PM"| D1["🚗 Salida 1 — 5:00 AM\nAbastece pedidos principales"]
+    SEL -->|"Lote Madrugada\nrq. 1 PM – 10 PM"| D2["🚗 Salida 2 — 10:00–11:00 AM\nAbastece pedidos de mañana"]
+    D2 -.->|"Saldo sin cubrir\no requerimiento tardío"| D3["🚗 Salida 3 — 3:00–4:00 PM\nÚltimo abastecimiento del día"]
+
+    D1 --> FIN(["Tiendas y clientes\nabastecidos ✅"])
+    D2 --> FIN
+    D3 --> FIN
         </div>
       </div>
 
