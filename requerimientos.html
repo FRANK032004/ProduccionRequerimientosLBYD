@@ -549,7 +549,7 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
             <tr><td><strong>Online General</strong></td><td>Público en general</td><td>Venta abierta a todo tipo de clientes</td></tr>
             <tr><td><strong>Corporativos</strong></td><td>Empresas (ej: Pikis — hamburguesas a grifos)</td><td>Precios y plazos especiales, crédito disponible</td></tr>
             <tr><td><strong>Masivos</strong></td><td>Empresas de grandes volúmenes</td><td>Pan masivo, empanadas, pedidos en grandes cantidades</td></tr>
-            <tr><td><strong>BID</strong></td><td>Marca propia (logo ardilla)</td><td>Productos exclusivos, vencimiento 2 meses, vende en Online y tiendas físicas</td></tr>
+            <tr><td><strong>BID</strong></td><td>Marca propia (logo ardilla)</td><td>Productos exclusivos, vencimiento variable según producto (3 días a 6 meses — ver tabla de duraciones pendiente), vende en Online y tiendas físicas</td></tr>
           </tbody>
         </table>
       </div>
@@ -563,7 +563,7 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
             <tr><td><strong>Pastelería Dulce</strong></td><td>6am–2pm / Una seña: 9am–5pm</td></tr>
             <tr><td><strong>Pastelería Salada</strong></td><td>6am–2pm</td></tr>
             <tr><td><strong>Cocina</strong></td><td>6am–2pm / 2pm–10pm</td></tr>
-            <tr><td><strong>BID</strong></td><td>7am–3pm (un solo turno)</td></tr>
+            <tr><td><strong>BID</strong></td><td>7am–3pm (un solo turno). <em>Nota: duración de productos varía según item — de 3 días a 6 meses. Pendiente tabla de vencimientos por producción con Jamin.</em></td></tr>
             <tr><td><strong>Almacén</strong></td><td>7am–5pm (1 persona)</td></tr>
             <tr>
               <td><strong>Despacho</strong></td>
@@ -672,7 +672,64 @@ FLUJO COMPLETO (ambos lotes):
       </div>
 
       <div class="subsection">
-        <h4>Gestión de Merma</h4>
+        <h4>Gestión de Merma — 6 Niveles</h4>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">
+          La merma abarca tres ámbitos: <strong>Producción</strong> (descarte durante elaboración), <strong>Tiendas</strong> (producto no vendido / vencido en vitrina) y <strong>Camión / Despacho</strong> (daño o pérdida durante el traslado). Pendiente: definir con Jamin y Gerencia los rangos exactos de tolerancia por nivel.
+        </p>
+        <table>
+          <thead><tr><th>Nivel</th><th>Ámbito</th><th>Descripción</th><th>Responsabilidad</th><th>Tolerancia</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Nivel 1</strong></td>
+              <td>Producción</td>
+              <td>Merma mínima — pérdida esperada del proceso (recortes, ajustes normales)</td>
+              <td>Encargado sub-área</td>
+              <td><span class="tag tag-ok">Por definir</span></td>
+            </tr>
+            <tr>
+              <td><strong>Nivel 2</strong></td>
+              <td>Producción</td>
+              <td>Merma controlable — error de operador o equipo dentro de margen aceptable</td>
+              <td>Encargado sub-área</td>
+              <td><span class="tag tag-ok">Por definir</span></td>
+            </tr>
+            <tr>
+              <td><strong>Nivel 3</strong></td>
+              <td>Producción</td>
+              <td>Merma elevada — supera margen; se activa alerta y se requiere justificación</td>
+              <td>Jefe de Producción</td>
+              <td><span class="tag tag-warn">Por definir</span></td>
+            </tr>
+            <tr>
+              <td><strong>Nivel 4</strong></td>
+              <td>Tiendas</td>
+              <td>Producto no vendido / vencido en vitrina</td>
+              <td>Supervisora de tienda</td>
+              <td><span class="tag tag-warn">Por definir</span></td>
+            </tr>
+            <tr>
+              <td><strong>Nivel 5</strong></td>
+              <td>Camión / Despacho</td>
+              <td>Daño o pérdida durante traslado</td>
+              <td>Encargado de despacho</td>
+              <td><span class="tag tag-warn">Por definir</span></td>
+            </tr>
+            <tr>
+              <td><strong>Nivel 6</strong></td>
+              <td>Transversal</td>
+              <td>Merma crítica — supera todos los umbrales; afecta food cost significativamente</td>
+              <td>Gerencia General</td>
+              <td><span class="tag tag-danger">Por definir</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:12px;color:var(--muted);margin-top:10px;">
+          <strong>Tolerancia para trabajadores nuevos:</strong> 1 semana de margen adicional antes de aplicar descuentos por merma. El sistema debe registrar la fecha de ingreso del operador para calcular el período de tolerancia automáticamente.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>Gestión de Merma (actual)</h4>
         <table>
           <tr><td style="width:240px;font-weight:600;">Registro actual</td><td>Excel de merma por área</td></tr>
           <tr><td style="font-weight:600;">Proceso</td><td>Si se dañan 10 de 100 unidades, se envían 90 al cliente y los 10 se reprograman en siguiente producción</td></tr>
@@ -1110,6 +1167,36 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
           <li><span class="rf-code">RF-81</span>Recepción de mercancía con verificación contra OC original: cantidad, precio y calidad; cierre automático de OC conforme.</li>
           <li><span class="rf-code">RF-82</span>Reportes de compras por proveedor, insumo y período con detalle de montos, volúmenes y condiciones aplicadas.</li>
           <li><span class="rf-code">RF-83</span>Dashboard de desempeño de proveedores: tasa de cumplimiento, entregas a tiempo, incidencias acumuladas y nivel de crédito utilizado.</li>
+          <li><span class="rf-code">RF-84</span>Seguimiento de tiempo de respuesta por Orden de Compra: alerta automática si el proveedor no confirma la OC dentro del plazo configurado; escala a Compras y luego a Gerencia si persiste sin respuesta.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Cola de Producción y Trazabilidad de Lotes</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-85</span>Cola activa de producción por sub-área (Panadería · Past. Dulce · Past. Salada · Cocina · BID) con estado por lote: Pendiente — En producción — Listo — Entregado a despacho.</li>
+          <li><span class="rf-code">RF-86</span>Alerta automática cuando la cola de una sub-área supera un umbral configurable de unidades o tiempo de espera estimado.</li>
+          <li><span class="rf-code">RF-87</span>Integración de productos precocidos en el flujo: registro de fecha de precocción, vida útil del precocido, estado (en espera de terminado / en terminado / listo), y stock intermedio disponible.</li>
+          <li><span class="rf-code">RF-88</span>Descuento automático de stock en almacén al confirmar un pedido de producción: el sistema reserva los insumos asignados al lote y actualiza la disponibilidad real en tiempo real para evitar sobrecomprometer insumos a múltiples lotes.</li>
+          <li><span class="rf-code">RF-89</span>Traspaso digital automático de información de producción a despacho al marcar un lote como "Listo": cantidad producida por producto, sub-área, turno y hora de cierre.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Gestión de Merma</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-90</span>Registro de merma con clasificación por nivel (1–6) y ámbito (Producción / Tienda / Camión), asociado al responsable, turno y lote de producción correspondiente.</li>
+          <li><span class="rf-code">RF-91</span>Costeo automático de merma por nivel: el sistema calcula el costo de la merma usando el costo del insumo + MOD + CIF proporcional del lote afectado.</li>
+          <li><span class="rf-code">RF-92</span>Tolerancia por trabajador nuevo: el sistema lee la fecha de ingreso del operador y aplica margen de tolerancia configurable (default: 1 semana) antes de activar descuentos o alertas de responsabilidad.</li>
+          <li><span class="rf-code">RF-93</span>Reporte consolidado de merma por nivel, área, operador y período, con impacto en food cost y comparativo vs. umbral definido.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Vencimientos BID</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-94</span>Registro de fecha de producción y fecha de vencimiento por cada lote de producto BID, con vida útil configurable por producto (rango: 3 días a 6 meses según tabla de duraciones a validar con Jamin Torres).</li>
+          <li><span class="rf-code">RF-95</span>Alertas de vencimiento próximo para productos BID: configurable por días antes del vencimiento, con aviso a almacén, tienda y despacho para priorizar la salida del producto.</li>
         </ul>
       </div>
 
@@ -1579,6 +1666,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
         <div class="brecha"><strong>BRECHA 2:</strong> Los requerimientos de compra llegan en físico (papel firmado). No hay trazabilidad digital desde la emisión en la sub-área hasta la generación de la OC. El sistema debe digitalizar este flujo completo.</div>
         <div class="brecha"><strong>BRECHA 3:</strong> No existe registro formal de incidencias de proveedores. Cuando un proveedor falla no queda evidencia histórica para evaluarlo ni para respaldar negociaciones futuras.</div>
         <div class="brecha"><strong>BRECHA 4:</strong> No hay alertas preventivas de quiebre de stock. El desabastecimiento se detecta cuando ya se generó el requerimiento, no antes. Esto obliga a salir al mercado de emergencia con pérdida de tiempo y probable sobrecosto.</div>
+        <div class="brecha"><strong>BRECHA 5 (reunión 12/05):</strong> El sistema debe contemplar que el proveedor puede demorar en atender la OC. No existe hoy ningún mecanismo de seguimiento de tiempo de respuesta ni de escala automática cuando una OC no es confirmada dentro de un plazo. Producción queda expuesta sin visibilidad del estado real del pedido.</div>
       </div>
 
     </div>
