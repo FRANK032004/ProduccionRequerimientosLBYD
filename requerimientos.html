@@ -402,7 +402,7 @@
     <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
     <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
     <div class="meta-item"><strong>Versión</strong>1.2 — En progreso</div>
-    <div class="meta-item"><strong>Estado</strong>7 de 8 áreas levantadas — Pendiente: Compras</div>
+    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅</div>
   </div>
 </header>
 
@@ -427,7 +427,7 @@
   <a class="nav-item" href="#sec-incidente"><span class="nav-icon">🚨</span>Incidente Documentado</a>
   <a class="nav-item" href="#sec-gerencia"><span class="nav-icon">👔</span>Gerencia General<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
   <a class="nav-item" href="#sec-finanzas"><span class="nav-icon">💰</span>Finanzas y Costeo<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
-  <a class="nav-item" style="opacity:0.45;pointer-events:none;"><span class="nav-icon">🛒</span>Compras<span class="nav-badge nav-badge-pend">Pendiente</span></a>
+  <a class="nav-item" href="#sec-compras"><span class="nav-icon">🛒</span>Compras<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
 
   <div class="nav-group-label">Requerimientos</div>
   <a class="nav-item" href="#sec-rf"><span class="nav-icon">📋</span>Funcionales<span class="nav-badge nav-badge-num">71 RF</span></a>
@@ -1096,6 +1096,24 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
       </div>
 
       <div class="subsection">
+        <h4>Módulo de Compras y Proveedores</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-72</span>Recepción digital de requerimientos de insumos emitidos por cada sub-área (cocina, past. dulce, panadería, past. salada, BID) con estado de atención en tiempo real.</li>
+          <li><span class="rf-code">RF-73</span>Consulta de disponibilidad de stock en tiempo real al evaluar cada requerimiento, antes de generar una Orden de Compra.</li>
+          <li><span class="rf-code">RF-74</span>Generación de Orden de Compra cuando el stock no cubre el requerimiento, con propuesta automática de proveedor según categoría e historial.</li>
+          <li><span class="rf-code">RF-75</span>Catálogo de proveedores con categoría de productos, datos de contacto, condiciones comerciales y líneas de crédito disponibles.</li>
+          <li><span class="rf-code">RF-76</span>Historial de precios por insumo y proveedor para comparación, análisis de tendencias y respaldo de negociación contractual.</li>
+          <li><span class="rf-code">RF-77</span>Evaluación y scoring de proveedores basada en precio, calidad y cumplimiento de tiempo de entrega, actualizada por cada recepción.</li>
+          <li><span class="rf-code">RF-78</span>Alertas preventivas de quiebre de stock basadas en consumo histórico y stock mínimo configurable por insumo, generadas antes de que llegue el requerimiento.</li>
+          <li><span class="rf-code">RF-79</span>Registro de incidencias de proveedores: fallas de entrega, rechazos por calidad y diferencias de precio vs. OC, con historial por proveedor.</li>
+          <li><span class="rf-code">RF-80</span>Panel de seguimiento de Órdenes de Compra abiertas con estados: Emitida — Confirmada — En tránsito — Recibida — Cerrada.</li>
+          <li><span class="rf-code">RF-81</span>Recepción de mercancía con verificación contra OC original: cantidad, precio y calidad; cierre automático de OC conforme.</li>
+          <li><span class="rf-code">RF-82</span>Reportes de compras por proveedor, insumo y período con detalle de montos, volúmenes y condiciones aplicadas.</li>
+          <li><span class="rf-code">RF-83</span>Dashboard de desempeño de proveedores: tasa de cumplimiento, entregas a tiempo, incidencias acumuladas y nivel de crédito utilizado.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
         <h4>Módulo de Dashboard Ejecutivo</h4>
         <ul class="rf-list">
           <li><span class="rf-code">RF-47</span>Dashboard en tiempo real con ventas del día por área, tienda y canal.</li>
@@ -1475,12 +1493,104 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
   </div>
 
   <!-- ═══════════════════════════════════════════════════
-       11. ESTADO GENERAL
+       11. ÁREA DE COMPRAS
+  ════════════════════════════════════════════════════ -->
+  <div class="section" id="sec-compras">
+    <div class="section-header">
+      <span class="icon">🛒</span>
+      <h3>11. Área de Compras</h3>
+      <span class="badge">Levantamiento completo</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Proceso de Abastecimiento Actual</h4>
+        <div class="flow-box">1. Sub-área emite requerimiento en Restaurant  →  Cocina · Past. Dulce · Panadería · Past. Salada · BID
+2. Requerimiento impreso, firmado por Gerencia de Producción  →  Entregado físicamente a Compras
+3. Compras revisa stock en almacén
+   → Si hay stock: se atiende desde almacén, no se genera OC
+   → Si no hay stock: se genera Orden de Compra en Restaurant
+4. Selección de proveedor según categoría
+   → Insumo conocido: proveedor habitual (precio y calidad ya evaluados)
+   → Insumo nuevo: cotización con múltiples proveedores (precio · calidad · tiempo de entrega)
+5. Proveedor atiende y entrega en almacén
+   → Si proveedor no tiene stock: búsqueda urgente en mercado local o proveedor alternativo
+6. Recepción y verificación contra OC  →  Ingreso a almacén</div>
+      </div>
+
+      <div class="subsection">
+        <h4>Base de Proveedores</h4>
+        <table>
+          <thead><tr><th>Dato</th><th>Situación actual</th></tr></thead>
+          <tbody>
+            <tr><td>Número de proveedores activos</td><td>Aproximadamente 30</td></tr>
+            <tr><td>Organización</td><td>Relación de proveedores organizada por categoría de producto</td></tr>
+            <tr><td>Contratos formales</td><td>No existen actualmente — <strong>en proceso de formalizar</strong> para garantizar abastecimiento en tiempo, cantidad y calidad</td></tr>
+            <tr><td>Condiciones de pago</td><td>La mayoría ofrece líneas de crédito a la empresa</td></tr>
+            <tr><td>Criterios de selección</td><td>Precio · Calidad · Tiempo de entrega (los tres evaluados en cada proveedor)</td></tr>
+            <tr><td>Cotización de precios</td><td>Solo para insumos nuevos; para insumos regulares se va directo al proveedor habitual</td></tr>
+            <tr><td>Registro de fallas de proveedor</td><td>No existe. Se resuelve comprando al mercado local, pero no queda historial de la incidencia</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Necesidades del Área para el Sistema</h4>
+        <table>
+          <thead><tr><th>Necesidad</th><th>Descripción</th><th>Prioridad</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Stock en tiempo real</td>
+              <td>Visualizar disponibilidad de insumos antes de generar OC — hoy es revisión manual</td>
+              <td><span class="tag tag-danger">Alta</span></td>
+            </tr>
+            <tr>
+              <td>Historial de precios</td>
+              <td>Data histórica de precios por insumo y proveedor para análisis y negociación</td>
+              <td><span class="tag tag-danger">Alta</span></td>
+            </tr>
+            <tr>
+              <td>Catálogo de alternativas</td>
+              <td>Múltiples opciones de proveedor por categoría para respuesta rápida ante fallas</td>
+              <td><span class="tag tag-warn">Media-Alta</span></td>
+            </tr>
+            <tr>
+              <td>Alertas preventivas de quiebre</td>
+              <td>Avisos cuando el stock baje del mínimo, antes de que se genere el requerimiento de sub-área</td>
+              <td><span class="tag tag-danger">Alta</span></td>
+            </tr>
+            <tr>
+              <td>Registro de incidencias</td>
+              <td>Historial de fallas de proveedor para evaluación objetiva y soporte en renegociaciones</td>
+              <td><span class="tag tag-warn">Media</span></td>
+            </tr>
+            <tr>
+              <td>Reportes completos</td>
+              <td>Stock en tiempo real, movimientos, tendencias de consumo y desempeño de proveedores</td>
+              <td><span class="tag tag-warn">Media</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Brechas Identificadas — Compras</h4>
+        <div class="brecha"><strong>BRECHA 1:</strong> No existen contratos formales con proveedores. Precios y condiciones no están garantizados, lo que expone a la empresa a variaciones de precio y riesgo de desabastecimiento. El área lo reconoce y está en proceso de formalizar.</div>
+        <div class="brecha"><strong>BRECHA 2:</strong> Los requerimientos de compra llegan en físico (papel firmado). No hay trazabilidad digital desde la emisión en la sub-área hasta la generación de la OC. El sistema debe digitalizar este flujo completo.</div>
+        <div class="brecha"><strong>BRECHA 3:</strong> No existe registro formal de incidencias de proveedores. Cuando un proveedor falla no queda evidencia histórica para evaluarlo ni para respaldar negociaciones futuras.</div>
+        <div class="brecha"><strong>BRECHA 4:</strong> No hay alertas preventivas de quiebre de stock. El desabastecimiento se detecta cuando ya se generó el requerimiento, no antes. Esto obliga a salir al mercado de emergencia con pérdida de tiempo y probable sobrecosto.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       12. ESTADO GENERAL
   ════════════════════════════════════════════════════ -->
   <div class="section" id="sec-estado">
     <div class="section-header">
       <span class="icon">📊</span>
-      <h3>11. Estado General del Levantamiento</h3>
+      <h3>12. Estado General del Levantamiento</h3>
     </div>
     <div class="section-body">
       <div class="status-grid">
@@ -1512,9 +1622,9 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
           <div class="area">✅ Finanzas y Costeo</div>
           <div class="estado">Levantamiento completo</div>
         </div>
-        <div class="status-card status-pending">
-          <div class="area">⬜ Compras</div>
-          <div class="estado">Pendiente — última área</div>
+        <div class="status-card status-complete">
+          <div class="area">✅ Compras</div>
+          <div class="estado">Levantamiento completo</div>
         </div>
         <div class="status-card" style="background:#d6eaf8;border-color:#a9cce3;">
           <div class="area" style="color:#1a5276;">📋 Mantenimiento</div>
@@ -1530,14 +1640,14 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
   <div class="section" id="sec-diagramas">
     <div class="section-header">
       <span class="icon">🔀</span>
-      <h3>12. Diagramas de Flujo de Procesos</h3>
-      <span class="badge">4 flujos validados — v1 parcial</span>
+      <h3>13. Diagramas de Flujo de Procesos</h3>
+      <span class="badge">5 flujos validados — v1.2 completa</span>
     </div>
     <div class="section-body">
 
       <p style="font-size:13px;color:var(--muted);margin-bottom:24px;">
         Los flujos documentados corresponden únicamente a procesos cuyo levantamiento está <strong>100% validado</strong>.
-        El Flujo de Órdenes de Compra se incorporará tras completar el levantamiento con el Área de Compras.
+        Con el Área de Compras completada, los 5 flujos del sistema están documentados.
       </p>
 
       <!-- FLUJO 1 -->
@@ -1655,9 +1765,38 @@ flowchart TD
         </div>
       </div>
 
-      <div class="diagram-pending">
-        <strong>Pendiente — Flujo 5:</strong> Ciclo de Órdenes de Compra (proveedores, aprobaciones, recepción).
-        Se documentará tras completar el levantamiento con el Área de Compras.
+      <!-- FLUJO 5 -->
+      <div class="subsection">
+        <h4>Flujo 5 — Ciclo de Órdenes de Compra</h4>
+        <div class="diagram-meta">
+          Fuente: Área de Compras (Sección 11) + Almacén (Sección 4) &nbsp;|&nbsp; Estado: Validado ✅
+        </div>
+        <div class="mermaid">
+flowchart TD
+    A(["Sub-área emite requerimiento\nen Restaurant\ncada taller con su hoja firmada"]) --> B["Gerencia de Producción\nfirma y entrega físicamente\na Compras"]
+    B --> C["Compras revisa\nstock en almacén"]
+    C --> D{"\u00bfHay stock\nsuficiente?"}
+    D -->|Sí| E["Se atiende desde almacén\nNo se genera Orden de Compra"]
+    E --> FIN1(["Insumo entregado\na sub-área ✅"])
+    D -->|"No — stock insuficiente"| F["Generar Orden de Compra\nen sistema Restaurant"]
+    F --> G{"\u00bfEs un\ninsumo nuevo?"}
+    G -->|"Sí — primer pedido"| H["Cotización con\nmúltiples proveedores\n(precio · calidad · tiempo)"]
+    G -->|"No — insumo regular"| I["Proveedor habitual\nde la categoría"]
+    H --> J["Selección de proveedor\nmejor criterio ponderado"]
+    I --> J
+    J --> K["Envío de OC\nal proveedor seleccionado"]
+    K --> L{"\u00bfProveedor\ntiene stock?"}
+    L -->|Sí| M["Entrega en almacén\nsegún plazo acordado"]
+    L -->|No| N["⚠ Búsqueda urgente\nmercado local / alternativo"]
+    N --> M
+    M --> O["Recepción con verificación\nvs. Orden de Compra\ncantidad · precio · calidad"]
+    O --> P{"\u00bfRecepción\ncompleta y conforme?"}
+    P -->|Sí| Q["Ingreso a almacén\ny cierre de OC"]
+    P -->|No| R["Registro de incidencia\nde proveedor (RF-79)"]
+    R --> S["Gestión de diferencia\ndevolución · ajuste · recompra"]
+    S --> Q
+    Q --> FIN2(["Insumo disponible\npara producción ✅"])
+        </div>
       </div>
 
     </div>
