@@ -493,6 +493,27 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
     </div>
     <div class="section-body">
       <div class="subsection">
+        <h4>Personal Clave — Directorio Interno</h4>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Personas con mayor conocimiento del negocio y sus procesos. Fuentes primarias del levantamiento.</p>
+        <table>
+          <thead><tr><th>Nombre</th><th>Cargo</th><th>Antigüedad aproximada</th><th>Relevancia para el sistema</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Samuel</strong></td><td>Gerente General</td><td>—</td><td>Visión global, aprobaciones, dashboard ejecutivo</td></tr>
+            <tr><td><strong>Paolo</strong></td><td>Gerente de Finanzas</td><td>~2 meses</td><td>Costeo integral, food cost, rentabilidad, presupuestos</td></tr>
+            <tr><td><strong>Valeria</strong></td><td>Gerenta de Producción</td><td>—</td><td>Aprobación de excepciones, supervisión de Jamin</td></tr>
+            <tr><td><strong>Jamin Torres</strong></td><td>Jefe de Producción</td><td>—</td><td>Fuente principal del flujo productivo, reglas de negocio</td></tr>
+            <tr><td><strong>Gerardo</strong></td><td>Jefe Comercial</td><td>+3 años</td><td>Ventas, clientes corporativos, masivos, campañas, proyecciones</td></tr>
+            <tr><td><strong>Claudia</strong></td><td>Encargada de Compras y Almacén</td><td>+2 años</td><td>Proveedores, OC, stock, control de insumos</td></tr>
+            <tr><td><strong>Renzo</strong></td><td>Encargado de Almacén</td><td>—</td><td>Operativa de almacén, entradas y salidas de insumos</td></tr>
+            <tr><td><strong>David</strong></td><td>Jefe de Despacho</td><td>—</td><td>Distribución, rutas, trazabilidad de entregas</td></tr>
+            <tr><td><strong>Noelia</strong></td><td>Encargada de Calidad</td><td>—</td><td>Estándares de producción, control de merma, vencimientos</td></tr>
+            <tr><td><strong>Flor</strong></td><td>Recursos Humanos</td><td>+2 años</td><td>Gestión de personal, turnos, nuevos ingresos, tolerancia por trabajador nuevo</td></tr>
+            <tr><td><strong>Miluska</strong></td><td>Contabilidad</td><td>+3 años</td><td>Cierre mensual, inventario contable, estudio externo</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
         <h4>Áreas de la empresa</h4>
         <table>
           <thead><tr><th>Área</th><th>Sub-áreas / Detalle</th><th>Estado levantamiento</th></tr></thead>
@@ -525,7 +546,7 @@ Resultado               →  Imposible calcular rentabilidad real por producto</
             <tr>
               <td><strong>Compras</strong></td>
               <td>Órdenes de compra, proveedores, abastecimiento</td>
-              <td><span class="tag tag-warn">Pendiente — última área</span></td>
+              <td><span class="tag tag-ok">Completo</span></td>
             </tr>
             <tr>
               <td><strong>Ventas — Tiendas Físicas</strong></td>
@@ -621,21 +642,18 @@ FLUJO COMPLETO (ambos lotes):
               <td>Día anterior</td>
               <td>Hasta 1:00 PM</td>
               <td>🚗 Salida 1 — 5:00 AM</td>
-              <td>Jamin / Valeria (Gerente General)</td>
-            </tr>
-            <tr>
-              <td><strong>Pedido estándar — lote complementario</strong></td>
+              <td>Jamin / Valeria (Gerenta de Producción) / Samuel (Gerente General)</td></td>
               <td>Mismo día</td>
               <td>1:00 PM – 10:00 PM</td>
               <td>🚗 Salida 2 (10–11 AM) o Salida 3 (3–4 PM)</td>
-              <td>Jamin / Valeria (Gerente General)</td>
+              <td>Jamin / Valeria (Gerenta de Producción) / Samuel (Gerente General)</td>
             </tr>
             <tr>
               <td><strong>Pedido especial</strong></td>
               <td>48 horas</td>
               <td>Antes de 1:00 PM</td>
               <td>🚗 Salida 1 — 5:00 AM</td>
-              <td>Jamin / Valeria (Gerente General)</td>
+              <td>Jamin / Valeria (Gerenta de Producción) / Samuel (Gerente General)</td>
             </tr>
           </tbody>
         </table>
@@ -1786,7 +1804,7 @@ flowchart TD
 flowchart TD
     A(["Cliente solicita\npedido especial"]) --> B{"Con mínimo\n48 horas de anticipación?"}
     B -->|Sí| C["Sistema registra el pedido\ncon fecha y hora límite de entrega"]
-    B -->|No — fuera del mínimo| D["Alerta automática al sistema\nJamin o Valeria decide"]
+    B -->|No — fuera del mínimo| D["Alerta automática al sistema\nJamin o Valeria (Gerenta Prod.) decide"]
     D -->|Rechazado| RZ(["Pedido rechazado\nSe notifica al cliente"])
     D -->|Aceptado excepcionalmente| C
     C --> E["Alerta automática\na Producción"]
