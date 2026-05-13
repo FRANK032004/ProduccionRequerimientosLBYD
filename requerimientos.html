@@ -401,8 +401,8 @@
     <div class="meta-item"><strong>Responsable</strong>Luis Franklin Zeta Juárez</div>
     <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
     <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
-    <div class="meta-item"><strong>Versión</strong>1.3 — En progreso</div>
-    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | Evidencia de datos Restaurant.pe incorporada</div>
+    <div class="meta-item"><strong>Versión</strong>1.4 — En progreso</div>
+    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | Evidencia de 4 exportaciones Restaurant.pe incorporada</div>
   </div>
 </header>
 
@@ -412,7 +412,7 @@
   <div class="sidebar-brand">
     <div class="brand-name">La Baguetteria<br>y Delicatezze</div>
     <div class="brand-sub">Sistema de Producción y Costos</div>
-    <span class="brand-version">v1.3</span>
+    <span class="brand-version">v1.4</span>
   </div>
 
   <div class="nav-group-label">Empresa</div>
@@ -1724,7 +1724,169 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
         </table>
 
         <div class="brecha" style="margin-top:1rem;background:#fef3c7;border-left-color:#f59e0b;">
-          <strong>Conclusión de la evidencia:</strong> El análisis de datos confirma que la base de Food Cost en Restaurant.pe está incompleta. El 53% de recetas sin costo, el 0% de mermas parametrizadas y los costos placeholder en BID hacen que cualquier cálculo de rentabilidad actual sea estimativo. El sistema a desarrollar debe completar y mantener esta base de datos como fundamento del control económico.
+          <strong>Conclusión (catálogo base):</strong> El análisis de datos confirma que la base de Food Cost en Restaurant.pe está incompleta. El 53% de recetas sin costo, el 0% de mermas parametrizadas y los costos placeholder en BID hacen que cualquier cálculo de rentabilidad actual sea estimativo. El sistema a desarrollar debe completar y mantener esta base de datos como fundamento del control económico.
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h4>Ventas por Producto — <em>InformeVentasPorproducto_13.05.2026.csv</em> &nbsp;|&nbsp; 1 al 13 de Mayo 2026</h4>
+        <table>
+          <thead><tr><th>Indicador</th><th>Valor</th><th>Interpretación</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Total facturado (13 días)</td>
+              <td><strong>S/ 93,879.57</strong></td>
+              <td>Subtotal S/81,005 + impuestos S/14,580 según cabecera del informe</td>
+            </tr>
+            <tr>
+              <td>Unidades vendidas</td>
+              <td><strong>103,213</strong></td>
+              <td>Alto volumen — operación de producción masiva, no de cafetería</td>
+            </tr>
+            <tr>
+              <td>Productos en catálogo activo</td>
+              <td><strong>884</strong></td>
+              <td>Catálogo amplio con muchos ítems históricos o inactivos</td>
+            </tr>
+            <tr>
+              <td>Productos con venta real</td>
+              <td><strong>290 (33%)</strong></td>
+              <td><span class="tag tag-warn">Solo un tercio del catálogo tuvo movimiento en 13 días</span></td>
+            </tr>
+            <tr>
+              <td>Productos sin ninguna venta</td>
+              <td><strong>594 (67%)</strong></td>
+              <td><span class="tag tag-danger">El 67% del catálogo no generó ningún ingreso — catálogo desactualizado</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h5 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:#334155;">Distribución por Canal de Venta</h5>
+        <table>
+          <thead><tr><th>Canal</th><th>Unidades</th><th>%</th><th>Interpretación</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Venta rápida (masivos / distribución)</td>
+              <td><strong>91,199</strong></td>
+              <td><strong>88%</strong></td>
+              <td><span class="tag tag-ok">Canal dominante — modelo de negocio real</span></td>
+            </tr>
+            <tr>
+              <td>Delivery</td>
+              <td>10,648</td>
+              <td>10%</td>
+              <td>Segundo canal — delivery online y corporativo</td>
+            </tr>
+            <tr>
+              <td>Salón</td>
+              <td>1,264</td>
+              <td><strong>1.2%</strong></td>
+              <td><span class="tag tag-warn">Marginal — LBYD es esencialmente una planta de producción y distribución, no una cafetería</span></td>
+            </tr>
+            <tr>
+              <td>Reserva</td>
+              <td>0</td>
+              <td>0%</td>
+              <td>Sin reservas registradas en el período</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h5 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:#334155;">Top Categorías por Facturación</h5>
+        <table>
+          <thead><tr><th>#</th><th>Categoría</th><th>S/ Facturado</th><th>% del total</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Corp / Masivo</td><td><strong>S/ 25,741</strong></td><td>27.4%</td></tr>
+            <tr><td>2</td><td>P. Masivos (pan a granel masivo)</td><td>S/ 21,679</td><td>23.1%</td></tr>
+            <tr><td>3</td><td>Bocaditos</td><td>S/ 15,152</td><td>16.1%</td></tr>
+            <tr><td>4</td><td>Panes A Granel</td><td>S/ 9,031</td><td>9.6%</td></tr>
+            <tr><td>5</td><td>Tortas</td><td>S/ 6,451</td><td>6.9%</td></tr>
+            <tr><td>6</td><td>BID Camión</td><td>S/ 4,792</td><td>5.1%</td></tr>
+            <tr><td colspan="2" style="color:#64748b;font-size:0.85rem;">Resto de categorías</td><td>S/ 11,033</td><td>11.8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Movimientos entre Almacenes — <em>movimientos entre almacenes.csv</em> &nbsp;|&nbsp; 1 al 13 de Mayo 2026</h4>
+        <p style="color:#64748b;font-size:0.93rem;margin-bottom:1rem;">
+          Traslados diarios del Centro de Producción a las 5 tiendas. Registra qué productos salen, en qué cantidad, a qué destino y a qué valor.
+        </p>
+        <table>
+          <thead><tr><th>Indicador</th><th>Valor</th><th>Interpretación</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Transferencias únicas (número de despachos)</td>
+              <td><strong>280</strong></td>
+              <td>~21 despachos por día — confirma los 3 turnos de salida del carro</td>
+            </tr>
+            <tr>
+              <td>Líneas de productos transferidos</td>
+              <td><strong>6,210</strong></td>
+              <td>Promedio ~22 productos por despacho</td>
+            </tr>
+            <tr>
+              <td>Con valor (costo) registrado</td>
+              <td><strong>2,671 (44%)</strong></td>
+              <td><span class="tag tag-warn">Menos de la mitad tiene costo calculado</span></td>
+            </tr>
+            <tr>
+              <td><strong>Sin valorizar (S/ 0.00)</strong></td>
+              <td><strong>3,539 (56%)</strong></td>
+              <td><span class="tag tag-danger">El 56% de los traslados sale sin costo — imposible medir el valor real distribuido por tienda</span></td>
+            </tr>
+            <tr>
+              <td>Total valorizado registrado</td>
+              <td><strong>S/ 170,471.66</strong></td>
+              <td>Valor parcial — el real es mayor dado el 56% sin valorizar</td>
+            </tr>
+            <tr>
+              <td>Días con actividad</td>
+              <td>13 de 13 días</td>
+              <td><span class="tag tag-ok">Operación continua todos los días (incluye fines de semana)</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h5 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:#334155;">Tiendas Destino</h5>
+        <table>
+          <thead><tr><th>Tienda</th><th>Líneas recibidas</th><th>%</th></tr></thead>
+          <tbody>
+            <tr><td>Santa Isabel</td><td>1,482</td><td>24%</td></tr>
+            <tr><td>Santa María</td><td>1,284</td><td>21%</td></tr>
+            <tr><td>Miraflores</td><td>1,106</td><td>18%</td></tr>
+            <tr><td>Plaza del Sol</td><td>1,096</td><td>18%</td></tr>
+            <tr><td>Tienda Online</td><td>1,026</td><td>17%</td></tr>
+            <tr><td>Centro de Producción (devoluciones/ajustes)</td><td>216</td><td>3%</td></tr>
+          </tbody>
+        </table>
+
+        <h5 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:#334155;">Encargados que Registran Movimientos</h5>
+        <p style="color:#64748b;font-size:0.88rem;">
+          <strong>AngieH, gnizama, kchinchay, maryben, Rina, Ursulla, PRODUCCIÓN, PRODUCÍN</strong> — 8 nombres distintos, incluyendo dos variantes del mismo encargado
+          (<em>"PRODUCCIÓN"</em> y <em>"PRODUCÍN"</em>), lo que confirma que el campo es de texto libre sin validación.
+          Esto impide trazar responsabilidad por despacho de forma confiable.
+        </p>
+
+        <div class="brecha" style="margin-top:0.8rem;">
+          <strong>BRECHA DESPACHO (confirmada con datos):</strong> El 56% de los movimientos entre almacenes no tiene costo asignado. Cuando un producto sale del centro de producción hacia una tienda sin valor, el sistema no puede calcular el costo de distribución ni el inventario real de cada punto de venta. La rentabilidad por tienda es imposible de calcular con los datos actuales.
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h4>Conclusión General — Evidencia de las 4 Exportaciones</h4>
+        <div class="brecha" style="background:#fef3c7;border-left-color:#f59e0b;">
+          <strong>Estado real del sistema Restaurant.pe en LBYD:</strong><br><br>
+          Los datos analizados (insumos, recetas, ventas, movimientos) confirman que Restaurant.pe <strong>está siendo usado principalmente como punto de venta (POS)</strong>, no como sistema de gestión integral.
+          La trazabilidad de costos está incompleta en cada nivel de la cadena:
+          <ul style="margin:0.6rem 0 0 1.2rem;line-height:1.8;">
+            <li>76% de insumos sin % merma definido</li>
+            <li>53% de recetas sin costo calculado</li>
+            <li>56% de despachos sin valorizar</li>
+            <li>67% del catálogo sin ventas en 13 días</li>
+            <li>0 órdenes de compra registradas</li>
+          </ul>
+          El sistema a desarrollar no reemplaza Restaurant.pe — lo <strong>complementa cerrando estas brechas</strong> de trazabilidad y costeo.
         </div>
       </div>
 
@@ -1881,7 +2043,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
     <div class="section-header">
       <span class="icon">🔀</span>
       <h3>13. Diagramas de Flujo de Procesos</h3>
-      <span class="badge">5 flujos validados — v1.3 completa</span>
+      <span class="badge">5 flujos validados — v1.4 completa</span>
     </div>
     <div class="section-body">
 
@@ -2066,7 +2228,7 @@ flowchart TD
 </div>
 
 <footer>
-  Documento de Requerimientos v1.3 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Documento de Requerimientos v1.4 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
   Última actualización: 09 Mayo 2026
 </footer>
