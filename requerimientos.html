@@ -402,7 +402,7 @@
     <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
     <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
     <div class="meta-item"><strong>Versión</strong>1.4 — En progreso</div>
-    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | Evidencia de 5 exportaciones Restaurant.pe incorporada</div>
+    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | Evidencia de 6 exportaciones Restaurant.pe incorporada</div>
   </div>
 </header>
 
@@ -412,7 +412,7 @@
   <div class="sidebar-brand">
     <div class="brand-name">La Baguetteria<br>y Delicatezze</div>
     <div class="brand-sub">Sistema de Producción y Costos</div>
-    <span class="brand-version">v1.5</span>
+    <span class="brand-version">v1.6</span>
   </div>
 
   <div class="nav-group-label">Empresa</div>
@@ -1939,28 +1939,117 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
         </table>
 
         <div class="brecha" style="margin-top:0.8rem;">
-          <strong>HALLAZGO KARDEX — Propagación de la brecha de costeo:</strong> La ausencia de fichas técnicas con costo
+          <strong>HALLAZGO KARDEX TIENDA — Propagación de la brecha de costeo:</strong> La ausencia de fichas técnicas con costo
           (53% de recetas en S/0 — BRECHA 6 Producción) se propaga directamente al Kardex de tiendas:
           los productos llegan del centro de producción <strong>sin valor asignado</strong>, las ventas se registran <strong>sin costo de mercancía</strong>
           y la merma queda <strong>sin valorizar</strong>. El Food Cost % a nivel de tienda es imposible de calcular con los datos actuales.
-          Obtener los Kardex del Centro de Producción es el siguiente paso crítico para cuantificar el impacto real.
+        </div>
+      </div>
+
+      <!-- ── KARDEX ALMACÉN / CENTRO DE PRODUCCIÓN ─────────── -->
+      <div class="subsection">
+        <h5 style="margin:1.2rem 0 0.6rem;font-size:0.95rem;color:#334155;">Kardex General — <em>InformeKardex_almacen_-1_13.05.2026_14_07_25.csv</em> (Centro de Producción)</h5>
+        <p style="color:#64748b;font-size:0.93rem;margin-bottom:0.8rem;">
+          Kardex del <strong>Centro de Producción LBYD</strong> — el almacén origen de toda la cadena. Contiene los 10 sub-almacenes del CP
+          (Despacho, Past.Dulce, Cocina, Past.Salada, Panadería, Saneamiento, BID, Administración, Calidad, Planta).
+          Este archivo es la fuente más crítica para determinar si el Food Cost % es calculable en la raíz del proceso.
+        </p>
+        <table>
+          <thead>
+            <tr><th>Indicador</th><th>Valor</th><th>Interpretación</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total movimientos registrados</td>
+              <td><strong>9,039</strong></td>
+              <td>13 días (1–13 mayo 2026) — 10 sub-almacenes del CP</td>
+            </tr>
+            <tr>
+              <td>Ítems únicos con movimiento</td>
+              <td><strong>467</strong></td>
+              <td>Insumos crudos + sub-recetas + productos terminados</td>
+            </tr>
+            <tr>
+              <td>Motivo dominante (salidas)</td>
+              <td><strong>SALIDA POR GUÍA DE REMISIÓN — 7,137 (79%)</strong></td>
+              <td>Despacho a tiendas. El 55% de estos despachos sale SIN costo — S/144,431 parcialmente valorizado</td>
+            </tr>
+            <tr>
+              <td>Ingreso de producción al almacén</td>
+              <td><strong>ENTRADA POR REGULACIÓN MANUAL — 694 veces</strong></td>
+              <td style="color:#b91c1c;font-weight:600;">CRÍTICO: no existe ninguna "Orden de Producción" registrada. Los ~53 ingresos diarios se hacen manualmente. Sin trazabilidad de lotes ni insumos consumidos</td>
+            </tr>
+            <tr>
+              <td>Regulaciones manuales sin costo</td>
+              <td><strong>327 de 694 (47%)</strong></td>
+              <td>La mitad de las entradas de producción no tiene valor asignado</td>
+            </tr>
+            <tr>
+              <td>Movimientos SIN costo unitario (total)</td>
+              <td><strong>4,533 (50%)</strong></td>
+              <td>La mitad del Kardex del CP tampoco está valorizada</td>
+            </tr>
+            <tr>
+              <td>Panadería a Granel sin costo</td>
+              <td><strong>71% de 3,173 mov.</strong></td>
+              <td>La categoría más producida del CP opera sin valorización</td>
+            </tr>
+            <tr>
+              <td>Adicional (salsas / acompañamientos)</td>
+              <td><strong>99% de 714 mov. sin costo</strong></td>
+              <td>Los adicionales de cocina son prácticamente invisibles para el costeo</td>
+            </tr>
+            <tr>
+              <td>Merma registrada en CP</td>
+              <td><strong>15 movimientos — S/0.00</strong></td>
+              <td style="color:#b91c1c;font-weight:600;">CRÍTICO: en 13 días de operación de panadería + pastelería, la merma registrada es cero soles. Los 15 registros tienen salida=0 y costo=0 — son registros vacíos</td>
+            </tr>
+            <tr>
+              <td>Costo total de movimientos con costo</td>
+              <td><strong>S/476,480.03</strong></td>
+              <td>Subestimado (50% sin valorizar). El costo real del CP es significativamente mayor</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="brecha" style="margin-top:0.8rem;border-left-color:#dc2626;background:#fef2f2;">
+          <strong>HALLAZGO CRÍTICO — El módulo de Producción de Restaurant.pe no está en uso:</strong><br><br>
+          En los 13 días analizados, <strong>ningún producto terminado ingresó al almacén mediante una Orden de Producción</strong>.
+          Los 694 ingresos de producción se realizaron como <strong>"Regulación de Stock Manual"</strong> (~53 por día),
+          lo que significa que el sistema no registra: qué insumos se consumieron, en qué cantidad,
+          qué operario produjo, ni en qué turno. La trazabilidad de la producción es inexistente en el sistema.
+          <br><br>
+          Adicionalmente, la merma del Centro de Producción es <strong>S/0.00 en 13 días</strong>
+          — una cifra imposible para una panadería/pastelería de este volumen. La merma real existe pero no se registra.
+          <br><br>
+          <strong>Cadena completa de la brecha confirmada con datos reales:</strong>
+          <ol style="margin:0.5rem 0 0 1.2rem;line-height:1.9;">
+            <li>Recetas sin costo (53%) → productos se producen sin ficha técnica valorizada</li>
+            <li>Ingresos al almacén vía regulación manual → sin consumo de insumos registrado</li>
+            <li>Despacho a tiendas vía guía de remisión → 55% sin costo</li>
+            <li>Kardex de tienda → 55% de movimientos sin costo</li>
+            <li><strong>Food Cost % = incalculable en todos los niveles de la cadena</strong></li>
+          </ol>
         </div>
       </div>
 
       <!-- ── CONCLUSIÓN GENERAL ────────────────────────────── -->
       <div class="subsection">
-        <h4>Conclusión General — Evidencia de las 5 Exportaciones</h4>
+        <h4>Conclusión General — Evidencia de las 6 Exportaciones</h4>
         <div class="brecha" style="background:#fef3c7;border-left-color:#f59e0b;">
           <strong>Estado real del sistema Restaurant.pe en LBYD:</strong><br><br>
-          Los datos analizados (insumos, recetas, ventas, movimientos, kardex) confirman que Restaurant.pe <strong>está siendo usado principalmente como punto de venta (POS)</strong>, no como sistema de gestión integral.
+          Los datos analizados (insumos, recetas, ventas, movimientos, kardex tienda, kardex CP) confirman que Restaurant.pe <strong>está siendo usado principalmente como punto de venta (POS)</strong>, no como sistema de gestión integral.
           La trazabilidad de costos está incompleta en cada nivel de la cadena:
           <ul style="margin:0.6rem 0 0 1.2rem;line-height:1.8;">
             <li>76% de insumos sin % merma definido</li>
             <li>53% de recetas sin costo calculado</li>
+            <li>0 órdenes de producción registradas — ingresos manuales (~53/día)</li>
             <li>56% de despachos sin valorizar</li>
+            <li>55% de movimientos en Kardex de almacén CP sin costo</li>
+            <li>55% de movimientos en Kardex de tienda sin costo</li>
+            <li>Merma CP = S/0.00 registrada en 13 días — inexistente en el sistema</li>
             <li>67% del catálogo sin ventas en 13 días</li>
             <li>0 órdenes de compra registradas</li>
-            <li><strong>55% de movimientos en Kardex de tienda sin costo</strong> — el problema de las fichas técnicas se propaga hasta el nivel de punto de venta</li>
           </ul>
           El sistema a desarrollar no reemplaza Restaurant.pe — lo <strong>complementa cerrando estas brechas</strong> de trazabilidad y costeo.
         </div>
@@ -2119,7 +2208,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
     <div class="section-header">
       <span class="icon">🔀</span>
       <h3>13. Diagramas de Flujo de Procesos</h3>
-      <span class="badge">5 flujos validados — v1.5 completa</span>
+      <span class="badge">5 flujos validados — v1.6 completa</span>
     </div>
     <div class="section-body">
 
@@ -2304,7 +2393,7 @@ flowchart TD
 </div>
 
 <footer>
-  Documento de Requerimientos v1.5 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Documento de Requerimientos v1.6 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
   Última actualización: 09 Mayo 2026
 </footer>
