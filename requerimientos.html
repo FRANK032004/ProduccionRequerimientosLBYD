@@ -402,7 +402,7 @@
     <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
     <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
     <div class="meta-item"><strong>Versión</strong>1.4 — En progreso</div>
-    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | Evidencia de 4 exportaciones Restaurant.pe incorporada</div>
+    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | Evidencia de 5 exportaciones Restaurant.pe incorporada</div>
   </div>
 </header>
 
@@ -412,7 +412,7 @@
   <div class="sidebar-brand">
     <div class="brand-name">La Baguetteria<br>y Delicatezze</div>
     <div class="brand-sub">Sistema de Producción y Costos</div>
-    <span class="brand-version">v1.4</span>
+    <span class="brand-version">v1.5</span>
   </div>
 
   <div class="nav-group-label">Empresa</div>
@@ -1873,11 +1873,86 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
         </div>
       </div>
 
+      <!-- ── KARDEX SANTA ISABEL ──────────────────────────── -->
       <div class="subsection">
-        <h4>Conclusión General — Evidencia de las 4 Exportaciones</h4>
+        <h5 style="margin:1.2rem 0 0.6rem;font-size:0.95rem;color:#334155;">Kardex General — <em>InformeKardex_page_-1_13.05.2026_13_10_24.csv</em> (Tienda Santa Isabel)</h5>
+        <p style="color:#64748b;font-size:0.93rem;margin-bottom:0.8rem;">
+          Primer Kardex analizado. Restaurant.pe lo genera por tienda; se obtuvo el de <strong>Santa Isabel</strong> como muestra representativa.
+          El archivo registra todos los movimientos de stock en un almacén: entradas, salidas por venta, mermas y ajustes manuales.
+        </p>
+        <table>
+          <thead>
+            <tr><th>Indicador</th><th>Valor</th><th>Interpretación</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total movimientos registrados</td>
+              <td><strong>8,824</strong></td>
+              <td>13 días (1–13 mayo 2026)</td>
+            </tr>
+            <tr>
+              <td>Ítems únicos con movimiento</td>
+              <td><strong>271</strong></td>
+              <td>Productos terminados + insumos de tienda (pan, pastelería, café, empaques…)</td>
+            </tr>
+            <tr>
+              <td>Movimientos <strong>SIN costo unitario</strong></td>
+              <td><strong>4,864 (55%)</strong></td>
+              <td style="color:#b91c1c;font-weight:600;">Crítico — más de la mitad de las transacciones no aportan valor al cálculo de Food Cost</td>
+            </tr>
+            <tr>
+              <td>Panadería a Granel — % sin costo</td>
+              <td><strong>82%</strong> de 3,743 mov.</td>
+              <td>La categoría principal del negocio opera sin valorización en el Kardex</td>
+            </tr>
+            <tr>
+              <td>DISTRIBUIDORA BID — % sin costo</td>
+              <td><strong>100%</strong> de 287 mov.</td>
+              <td>Confirma que el costo placeholder S/1.44 (fichas técnicas) se propaga al Kardex</td>
+            </tr>
+            <tr>
+              <td>Entradas por movimiento (desde producción)</td>
+              <td><strong>1,614</strong> — 55% sin costo</td>
+              <td>Los productos transferidos desde el centro de producción llegan SIN valorización en más de la mitad de los casos</td>
+            </tr>
+            <tr>
+              <td>Merma registrada en tienda</td>
+              <td><strong>113 movimientos</strong></td>
+              <td>La merma SÍ se intenta registrar (SALIDA POR MERMA), pero…</td>
+            </tr>
+            <tr>
+              <td>Merma <strong>sin costo</strong></td>
+              <td><strong>67 de 113 (59%)</strong></td>
+              <td>…la mayor parte no está valorizada. Costo total de merma registrada: S/176.21 en 13 días — cifra claramente subestimada</td>
+            </tr>
+            <tr>
+              <td>Ajustes manuales de stock</td>
+              <td><strong>67</strong></td>
+              <td>Regulaciones manuales por cuadre — señal de descuadres frecuentes sin trazabilidad de causa</td>
+            </tr>
+            <tr>
+              <td>Costo total registrado (solo mov. con costo)</td>
+              <td><strong>S/103,461.44</strong></td>
+              <td>Subestimado; el 55% restante no está valorizado</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="brecha" style="margin-top:0.8rem;">
+          <strong>HALLAZGO KARDEX — Propagación de la brecha de costeo:</strong> La ausencia de fichas técnicas con costo
+          (53% de recetas en S/0 — BRECHA 6 Producción) se propaga directamente al Kardex de tiendas:
+          los productos llegan del centro de producción <strong>sin valor asignado</strong>, las ventas se registran <strong>sin costo de mercancía</strong>
+          y la merma queda <strong>sin valorizar</strong>. El Food Cost % a nivel de tienda es imposible de calcular con los datos actuales.
+          Obtener los Kardex del Centro de Producción es el siguiente paso crítico para cuantificar el impacto real.
+        </div>
+      </div>
+
+      <!-- ── CONCLUSIÓN GENERAL ────────────────────────────── -->
+      <div class="subsection">
+        <h4>Conclusión General — Evidencia de las 5 Exportaciones</h4>
         <div class="brecha" style="background:#fef3c7;border-left-color:#f59e0b;">
           <strong>Estado real del sistema Restaurant.pe en LBYD:</strong><br><br>
-          Los datos analizados (insumos, recetas, ventas, movimientos) confirman que Restaurant.pe <strong>está siendo usado principalmente como punto de venta (POS)</strong>, no como sistema de gestión integral.
+          Los datos analizados (insumos, recetas, ventas, movimientos, kardex) confirman que Restaurant.pe <strong>está siendo usado principalmente como punto de venta (POS)</strong>, no como sistema de gestión integral.
           La trazabilidad de costos está incompleta en cada nivel de la cadena:
           <ul style="margin:0.6rem 0 0 1.2rem;line-height:1.8;">
             <li>76% de insumos sin % merma definido</li>
@@ -1885,6 +1960,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
             <li>56% de despachos sin valorizar</li>
             <li>67% del catálogo sin ventas en 13 días</li>
             <li>0 órdenes de compra registradas</li>
+            <li><strong>55% de movimientos en Kardex de tienda sin costo</strong> — el problema de las fichas técnicas se propaga hasta el nivel de punto de venta</li>
           </ul>
           El sistema a desarrollar no reemplaza Restaurant.pe — lo <strong>complementa cerrando estas brechas</strong> de trazabilidad y costeo.
         </div>
@@ -2043,7 +2119,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
     <div class="section-header">
       <span class="icon">🔀</span>
       <h3>13. Diagramas de Flujo de Procesos</h3>
-      <span class="badge">5 flujos validados — v1.4 completa</span>
+      <span class="badge">5 flujos validados — v1.5 completa</span>
     </div>
     <div class="section-body">
 
@@ -2228,7 +2304,7 @@ flowchart TD
 </div>
 
 <footer>
-  Documento de Requerimientos v1.4 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Documento de Requerimientos v1.5 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
   Última actualización: 09 Mayo 2026
 </footer>
