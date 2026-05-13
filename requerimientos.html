@@ -401,8 +401,8 @@
     <div class="meta-item"><strong>Responsable</strong>Luis Franklin Zeta Juárez</div>
     <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
     <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
-    <div class="meta-item"><strong>Versión</strong>1.2 — En progreso</div>
-    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅</div>
+    <div class="meta-item"><strong>Versión</strong>1.3 — En progreso</div>
+    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | Evidencia de datos Restaurant.pe incorporada</div>
   </div>
 </header>
 
@@ -412,7 +412,7 @@
   <div class="sidebar-brand">
     <div class="brand-name">La Baguetteria<br>y Delicatezze</div>
     <div class="brand-sub">Sistema de Producción y Costos</div>
-    <span class="brand-version">v1.2</span>
+    <span class="brand-version">v1.3</span>
   </div>
 
   <div class="nav-group-label">Empresa</div>
@@ -772,6 +772,7 @@ FLUJO COMPLETO (ambos lotes):
         <div class="brecha"><strong>BRECHA 3:</strong> No existe una lista de productos que son exclusivamente por pedido especial.</div>
         <div class="brecha"><strong>BRECHA 4:</strong> Los requerimientos de tiendas llegan mal estructurados generando confusión en producción.</div>
         <div class="brecha"><strong>BRECHA 5 (confirmada con Gerencia y Finanzas):</strong> El costo real de las horas extras en campañas es completamente desconocido. Se sabe que se usan pero nadie sabe cuánto cuestan por área ni cómo impactan el costo final del producto producido en esa jornada.</div>
+        <div class="brecha"><strong>BRECHA 6 (confirmada con datos — 13/05/2026):</strong> El campo de merma en las fichas técnicas de Restaurant.pe no se está utilizando. De las <strong>850 recetas registradas, el 0% tiene porcentaje de merma parametrizado</strong>. Sin este dato, es imposible calcular el Food Cost real de ningún producto. La merma se gestiona de forma empírica y no se refleja en el costo del producto.</div>
       </div>
 
     </div>
@@ -1594,6 +1595,139 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
         <div class="brecha"><strong>BRECHA 4:</strong> El cierre mensual de inventario es manual y depende de que producción y comercial entreguen sus reportes a tiempo.</div>
       </div>
 
+      <div class="subsection">
+        <h4>📊 Evidencia del Estado Actual — Exportaciones de Restaurant.pe (13/05/2026)</h4>
+        <p style="color:#64748b;font-size:0.93rem;margin-bottom:1rem;">
+          Análisis realizado sobre dos exportaciones del módulo de Logística de Restaurant.pe.
+          Los números confirman cuantitativamente las brechas identificadas en el levantamiento de campo.
+        </p>
+
+        <h5 style="margin:1.2rem 0 0.6rem;font-size:0.95rem;color:#334155;">Catálogo de Insumos — <em>Lista_insumos_2026-05-13.csv</em></h5>
+        <table>
+          <thead>
+            <tr><th>Indicador</th><th>Valor</th><th>Interpretación</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total ítems en catálogo</td>
+              <td><strong>1,241</strong></td>
+              <td>Catálogo muy amplio sin depuración</td>
+            </tr>
+            <tr>
+              <td>Con código activo asignado</td>
+              <td><strong>112 (9%)</strong></td>
+              <td><span class="tag tag-danger">Solo el 9% tiene uso real registrado</span></td>
+            </tr>
+            <tr>
+              <td>Sin código (guión <code>-</code>)</td>
+              <td><strong>1,114 (91%)</strong></td>
+              <td>Ítems sin actividad o duplicados históricos</td>
+            </tr>
+            <tr>
+              <td>Con % de merma definido</td>
+              <td><strong>298 (24%)</strong></td>
+              <td><span class="tag tag-warn">El 76% no tiene merma parametrizada</span></td>
+            </tr>
+            <tr>
+              <td>Tipo: Insumo</td>
+              <td>579</td>
+              <td rowspan="2">El catálogo mezcla insumos productivos con descartables y materiales no productivos</td>
+            </tr>
+            <tr>
+              <td>Tipo: Descartable</td>
+              <td>671</td>
+            </tr>
+            <tr>
+              <td>Órdenes de Compra registradas</td>
+              <td><strong>0</strong></td>
+              <td><span class="tag tag-danger">Claudia no usa el módulo OC de Restaurant — confirma BRECHA 2 de Compras</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h5 style="margin:1.4rem 0 0.6rem;font-size:0.95rem;color:#334155;">Fichas Técnicas (Recetas) — <em>recetas productos lbyd 2026.csv</em></h5>
+        <table>
+          <thead>
+            <tr><th>Indicador</th><th>Valor</th><th>Interpretación</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total recetas en sistema</td>
+              <td><strong>850</strong></td>
+              <td>Incluye productos finales, sub-recetas y masas base</td>
+            </tr>
+            <tr>
+              <td>Con costo calculado (> S/ 0)</td>
+              <td><strong>401 (47%)</strong></td>
+              <td><span class="tag tag-warn">Solo la mitad del catálogo tiene costo real</span></td>
+            </tr>
+            <tr>
+              <td>Sin costo (= S/ 0)</td>
+              <td><strong>449 (53%)</strong></td>
+              <td><span class="tag tag-danger">Imposible calcular Food Cost de más de la mitad del portafolio</span></td>
+            </tr>
+            <tr>
+              <td>Sin almacén de producción asignado</td>
+              <td><strong>423 (50%)</strong></td>
+              <td><span class="tag tag-danger">La mitad no tiene área de producción definida</span></td>
+            </tr>
+            <tr>
+              <td>Con almacén asignado pero costo S/ 0</td>
+              <td><strong>26</strong></td>
+              <td><span class="tag tag-danger">Productos que se producen y venden sin ficha técnica completa</span> (Pan Ciabatta x6 tamaños, Baguette, Pan de Yema, Tostadas, etc.)</td>
+            </tr>
+            <tr>
+              <td>Con campo "Merma %" completado</td>
+              <td><strong>0 de 850 (0%)</strong></td>
+              <td><span class="tag tag-danger">El campo merma de Restaurant.pe no se usa — confirma BRECHA 6 de Producción</span></td>
+            </tr>
+            <tr>
+              <td>Sub-recetas (receta usa otra receta como insumo)</td>
+              <td><strong>120</strong></td>
+              <td>Estructura de costeo en cascada necesaria en el sistema</td>
+            </tr>
+            <tr>
+              <td>Productos BID con costo S/ 1.44 uniforme</td>
+              <td><strong>25 de 29</strong></td>
+              <td><span class="tag tag-warn">Costo placeholder idéntico para productos distintos — no refleja costo real</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h5 style="margin:1.4rem 0 0.6rem;font-size:0.95rem;color:#334155;">Hallazgos Específicos de Alta Relevancia</h5>
+        <table>
+          <thead>
+            <tr><th>Hallazgo</th><th>Evidencia</th><th>Impacto</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Torta de Zanahoria</strong> — incidente documentado en Sección 7</td>
+              <td>La sub-receta "Base Torta de Zanahoria" tiene costo (S/ 7.971) pero los 4 productos finales ("Torta de Zanahoria", "#18", "#22", "#24") tienen costo S/ 0 y almacén sin definir</td>
+              <td><span class="tag tag-danger">Ficha técnica incompleta — el incidente era predecible con datos</span></td>
+            </tr>
+            <tr>
+              <td><strong>Croissant</strong> — producto de alta rotación</td>
+              <td>27+ variantes en el sistema. Algunas con costo real calculado, otras con costo S/ 0 o placeholder S/ 1.44</td>
+              <td><span class="tag tag-warn">Rentabilidad por variante no medible actualmente</span></td>
+            </tr>
+            <tr>
+              <td><strong>Error de categorización</strong></td>
+              <td>"Alfajor de Manjar 45 Gr" figura en categoría "Pastelería Salada" siendo un producto dulce</td>
+              <td><span class="tag tag-warn">Errores en reportes de ventas por categoría</span></td>
+            </tr>
+            <tr>
+              <td><strong>Receta placeholder detectada</strong></td>
+              <td>"Alfajor Corazón 45 gr - Día de la Mujer" tiene como único ingrediente: 1 KILO de Sal de Mesa</td>
+              <td><span class="tag tag-warn">Receta incompleta — costo calculado es incorrecto</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="brecha" style="margin-top:1rem;background:#fef3c7;border-left-color:#f59e0b;">
+          <strong>Conclusión de la evidencia:</strong> El análisis de datos confirma que la base de Food Cost en Restaurant.pe está incompleta. El 53% de recetas sin costo, el 0% de mermas parametrizadas y los costos placeholder en BID hacen que cualquier cálculo de rentabilidad actual sea estimativo. El sistema a desarrollar debe completar y mantener esta base de datos como fundamento del control económico.
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1747,7 +1881,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
     <div class="section-header">
       <span class="icon">🔀</span>
       <h3>13. Diagramas de Flujo de Procesos</h3>
-      <span class="badge">5 flujos validados — v1.2 completa</span>
+      <span class="badge">5 flujos validados — v1.3 completa</span>
     </div>
     <div class="section-body">
 
@@ -1932,7 +2066,7 @@ flowchart TD
 </div>
 
 <footer>
-  Documento de Requerimientos v1.2 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Documento de Requerimientos v1.3 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
   Última actualización: 09 Mayo 2026
 </footer>
