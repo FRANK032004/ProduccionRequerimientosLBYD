@@ -401,8 +401,8 @@
     <div class="meta-item"><strong>Responsable</strong>Luis Franklin Zeta Juárez</div>
     <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
     <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
-    <div class="meta-item"><strong>Versión</strong>1.4 — En progreso</div>
-    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | 108 RF | Evidencia de 6 exportaciones | Dosificador documentado</div>
+    <div class="meta-item"><strong>Versión</strong>1.8 — MVP definido</div>
+    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | 108 RF | MVP: Módulo Dosificador + Food Cost (urgente) | 6 exportaciones analizadas</div>
   </div>
 </header>
 
@@ -412,8 +412,11 @@
   <div class="sidebar-brand">
     <div class="brand-name">La Baguetteria<br>y Delicatezze</div>
     <div class="brand-sub">Sistema de Producción y Costos</div>
-    <span class="brand-version">v1.7</span>
+    <span class="brand-version">v1.8</span>
   </div>
+
+  <div class="nav-group-label" style="color:#dc2626;">🎯 Prioridad</div>
+  <a class="nav-item" href="#sec-mvp" style="font-weight:700;color:#dc2626;"><span class="nav-icon">🎯</span>MVP — 2 Módulos Urgentes<span class="nav-badge" style="background:#dc2626;color:#fff;">AHORA</span></a>
 
   <div class="nav-group-label">Empresa</div>
   <a class="nav-item" href="#sec-descripcion"><span class="nav-icon">🏢</span>Descripción General</a>
@@ -430,7 +433,7 @@
   <a class="nav-item" href="#sec-compras"><span class="nav-icon">🛒</span>Compras<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
 
   <div class="nav-group-label">Requerimientos</div>
-  <a class="nav-item" href="#sec-rf"><span class="nav-icon">📋</span>Funcionales<span class="nav-badge nav-badge-num">71 RF</span></a>
+  <a class="nav-item" href="#sec-rf"><span class="nav-icon">📋</span>Funcionales<span class="nav-badge nav-badge-num">108 RF</span></a>
   <a class="nav-item" href="#sec-rnf"><span class="nav-icon">⚙</span>No Funcionales<span class="nav-badge nav-badge-num">15 RNF</span></a>
 
   <div class="nav-group-label">Análisis</div>
@@ -439,6 +442,117 @@
 </nav>
 
 <main class="main-content">
+
+  <!-- ═══════════════════════════════════════════════════
+       MVP — PRIORIDAD DE IMPLEMENTACIÓN
+  ════════════════════════════════════════════════════ -->
+  <div class="section" id="sec-mvp" style="border-top:4px solid #dc2626;">
+    <div class="section-header" style="background:linear-gradient(135deg,#dc2626,#7f1d1d);">
+      <span class="icon">🎯</span>
+      <h3>Prioridad de Implementación — MVP</h3>
+      <span class="badge" style="background:rgba(255,255,255,0.25);color:#fff;">Definido por Gerencia General — 15/05/2026</span>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h4>Contexto de decisión</h4>
+        <div class="flow-box">El sistema completo es un proyecto ambicioso y de largo plazo.
+Como equipo de desarrollo lo sabemos y lo planificamos con calma.
+
+Sin embargo, el Gerente General (Samuel) ha definido una prioridad inmediata:
+→ Construir PRIMERO los 2 módulos que habilitan el control del dosificador
+  y el Food Cost real de insumos.
+
+Razón: En ~3 semanas se contrata el dosificador.
+Cuando llegue, el sistema debe estar listo para que trabaje desde el día 1.
+El resto del sistema se integra de forma progresiva a partir de esa base.</div>
+      </div>
+
+      <div class="subsection">
+        <h4>Fase 0 — Inmediata (&lt;3 semanas) ⚡</h4>
+        <table>
+          <thead><tr><th>Acción</th><th>Responsable</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Contratar al dosificador</td>
+              <td>Gerencia General / RRHH</td>
+              <td><span class="tag tag-warn">En proceso</span></td>
+            </tr>
+            <tr>
+              <td>Definir los insumos que van a dosificación vs. uso directo</td>
+              <td>Jamin Torres + Dosificador</td>
+              <td><span class="tag tag-warn">Pendiente</span></td>
+            </tr>
+            <tr>
+              <td>Revisar y completar fichas técnicas (Food Cost depende de esto)</td>
+              <td>Valeria / Jamin</td>
+              <td><span class="tag tag-warn">Pendiente — 53% sin costo</span></td>
+            </tr>
+            <tr>
+              <td>Módulo Dosificador listo para producción</td>
+              <td>Equipo de Desarrollo</td>
+              <td><span class="tag tag-danger">Desarrollar</span></td>
+            </tr>
+            <tr>
+              <td>Módulo Food Cost Insumos (Paolo) listo</td>
+              <td>Equipo de Desarrollo</td>
+              <td><span class="tag tag-danger">Desarrollar</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo 1 — Dosificador <span class="tag tag-danger" style="vertical-align:middle;">PRIORITARIO</span></h4>
+        <p style="font-size:0.93rem;color:#64748b;margin-bottom:0.8rem;">
+          Para el dosificador que se contrata en ~3 semanas. Reemplaza el Excel manual. Opera desde la laptop del CP.
+          Cubre <strong>RF-96 a RF-103</strong>.
+        </p>
+        <table>
+          <thead><tr><th>RF</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RF-96</strong></td><td>Seleccionar sub-área + producto + cantidad → calcula insumos necesarios automáticamente</td></tr>
+            <tr><td><strong>RF-97</strong></td><td>Lógica Panadería (unidades, mín. 20) y Pastelería Dulce (batidos) en la misma pantalla</td></tr>
+            <tr><td><strong>RF-98</strong></td><td>Convierte cantidades exactas de receta → cantidades completas de almacén (para el pedido)</td></tr>
+            <tr><td><strong>RF-99</strong></td><td>Solicitud digital al almacén — el almacén confirma entrega en el sistema</td></tr>
+            <tr><td><strong>RF-100</strong></td><td>Registro de entrega a cada sub-área: insumo, cantidad exacta, hora, turno, nombre</td></tr>
+            <tr><td><strong>RF-101</strong></td><td>Control de sobrante al cierre de turno — ecuación de trazabilidad</td></tr>
+            <tr><td><strong>RF-102</strong></td><td>Clasificación insumos dosificables vs. uso directo</td></tr>
+            <tr><td><strong>RF-103</strong></td><td>Alerta si stock en almacén no alcanza para la producción solicitada</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo 2 — Food Cost por Insumo — Paolo / Finanzas <span class="tag tag-danger" style="vertical-align:middle;">PRIORITARIO</span></h4>
+        <p style="font-size:0.93rem;color:#64748b;margin-bottom:0.8rem;">
+          Alimentado por los registros del Módulo 1. Permite a Paolo y Finanzas ver el costo real de producción,
+          no solo el teórico de las fichas técnicas. Cubre <strong>RF-104 a RF-108</strong>.
+        </p>
+        <table>
+          <thead><tr><th>RF</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RF-104</strong></td><td>Dashboard: costo unitario × cantidad dosificada por insumo → % del costo total</td></tr>
+            <tr><td><strong>RF-105</strong></td><td>Food Cost % real por producto = insumos dosificados × costo + merma valorizada ÷ precio venta</td></tr>
+            <tr><td><strong>RF-106</strong></td><td>Comparativo Food Cost teórico (ficha técnica) vs. real (dosificación) con causa de desviación</td></tr>
+            <tr><td><strong>RF-107</strong></td><td>Ranking de insumos por mayor impacto en el Food Cost — para negociación y ajuste de recetas</td></tr>
+            <tr><td><strong>RF-108</strong></td><td>Histórico Food Cost % por producto, semana, mes y campaña</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <h4>Fase 2 en adelante — Resto del sistema (largo plazo)</h4>
+        <div class="brecha" style="background:#f0f9ff;border-left-color:#0284c7;">
+          <strong>Los 96 RF restantes (RF-01 a RF-95) se desarrollan de forma gradual y progresiva,</strong>
+          integrándose sobre la base que construyen los módulos del dosificador y Food Cost.
+          Cada módulo adicional se priorizará en reuniones con Gerencia conforme el negocio lo requiera.
+          No hay urgencia de desarrollarlos todos a la vez — el valor se entrega de forma incremental.
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════
        1. DESCRIPCIÓN GENERAL
@@ -769,24 +883,25 @@ FLUJO COMPLETO (ambos lotes):
       <div class="subsection">
         <h4>El Dosificador — Rol Clave en la Cadena de Costeo</h4>
         <p style="font-size:0.93rem;color:#64748b;margin-bottom:0.8rem;">
-          Rol <strong>activo hoy</strong> en el Centro de Producción. Es el intermediario entre el almacén de insumos y las sub-áreas de producción.
-          Confirmado el 15/05/2026. La digitalización de este flujo es la acción de <strong>mayor impacto para habilitar el cálculo real del Food Cost</strong> —
-          es el punto donde los insumos pasan de cantidades completas de almacén a cantidades exactas por receta.
+          Rol <strong>planificado — contratación prevista en ~3 semanas a partir del 15/05/2026</strong>.
+          Actualmente en reuniones con Gerencia para definir el perfil y los requerimientos del puesto.
+          Es el intermediario entre el almacén de insumos y las sub-áreas de producción, y el punto de control
+          más cercano al <strong>Food Cost real</strong>.
         </p>
         <table>
-          <thead><tr><th>Atributo</th><th>Estado actual</th></tr></thead>
+          <thead><tr><th>Atributo</th><th>Diseño planificado</th></tr></thead>
           <tbody>
             <tr><td>Equipo de trabajo</td><td>Laptop · Balanza · Tapers (contenedores de dosificación) · Calendario/fechas de producción</td></tr>
-            <tr><td>Herramienta actual</td><td><strong>Excel propio:</strong> ingresa receta + cantidad de unidades a producir → el Excel calcula los insumos necesarios y las cantidades exactas</td></tr>
-            <tr><td>Lógica Panadería</td><td>Trabajo por <strong>unidades</strong> — mínimo <strong>20 panes</strong> para arrancar un lote de producción</td></tr>
-            <tr><td>Lógica Pastelería Dulce</td><td>Trabajo por <strong>batidos</strong> — cada batido es la unidad de producción (varía por receta)</td></tr>
+            <tr><td>Herramienta de referencia</td><td><strong>Excel de concepto:</strong> receta + cantidad de unidades → calcula insumos necesarios y cantidades exactas. El sistema reemplazará este Excel con el Módulo del Dosificador (RF-96–103)</td></tr>
+            <tr><td>Lógica Panadería</td><td>Por <strong>unidades</strong> — mínimo <strong>20 panes</strong> para arrancar un lote de producción</td></tr>
+            <tr><td>Lógica Pastelería Dulce</td><td>Por <strong>batidos</strong> — cada batido es la unidad de producción (varía por receta)</td></tr>
             <tr><td>Relación con almacén</td><td>Solicita insumos en <strong>cantidades completas</strong> (bolsas enteras, sacos, envases completos)</td></tr>
             <tr><td>Entrega a sub-áreas</td><td>Entrega en <strong>cantidades exactas por receta</strong>, fraccionando lo recibido del almacén con balanza y tapers</td></tr>
-            <tr><td>Conexión con sistema</td><td style="color:#b91c1c;font-weight:600;">Ninguna — el Excel es local y manual. No genera ningún registro digital de consumo</td></tr>
+            <tr><td>Estado del módulo de sistema</td><td style="color:#b91c1c;font-weight:600;">A desarrollar — es el Módulo 1 del MVP. Debe estar listo cuando el dosificador sea contratado</td></tr>
           </tbody>
         </table>
 
-        <div class="flow-box">FLUJO OPERATIVO DEL DOSIFICADOR (estado actual)
+        <div class="flow-box">FLUJO OPERATIVO DEL DOSIFICADOR (diseño planificado)
 
 1. Sub-áreas envían requerimientos al dosificador
    → Panadería: N unidades de cada pan (mín. 20 por lote)
@@ -1425,10 +1540,15 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
         <h4>Visión del Negocio</h4>
         <div class="flow-box">Objetivo estratégico: Control y trazabilidad total de todas las áreas.
 
-Rol de Dosificador: ACTIVO — confirmado el 15/05/2026.
-  El dosificador opera con Excel manual hoy (receta + cantidad → lista de insumos).
-  Digitalizar este flujo es la acción de mayor impacto para habilitar el Food Cost real.
-  → Ver BRECHA 7 (Producción) y Módulo del Dosificador (RF-96 a RF-103).
+Rol de Dosificador: EN PROCESO DE CONTRATACIÓN — previsto en ~3 semanas (desde 15/05/2026).
+  Actualmente en reuniones con Gerencia para definir el perfil.
+  El sistema debe tener el módulo listo cuando el dosificador sea contratado.
+  → Ver BRECHA 7 (Producción), Módulo Dosificador (RF-96–103) y Sección MVP.
+
+Prioridad inmediata del sistema (definida por Gerencia General):
+  Módulo 1: Dosificador (RF-96–103)
+  Módulo 2: Food Cost por Insumo — Paolo (RF-104–108)
+  Resto del sistema: desarrollo gradual a largo plazo.
 
 Modelo a evaluar: Control de producción por LOTES.
 
@@ -2287,7 +2407,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
     <div class="section-header">
       <span class="icon">🔀</span>
       <h3>13. Diagramas de Flujo de Procesos</h3>
-      <span class="badge">5 flujos validados — v1.7 completa</span>
+      <span class="badge">5 flujos validados — v1.8 completa</span>
     </div>
     <div class="section-body">
 
@@ -2472,7 +2592,7 @@ flowchart TD
 </div>
 
 <footer>
-  Documento de Requerimientos v1.7 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Documento de Requerimientos v1.8 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
   Última actualización: 09 Mayo 2026
 </footer>
