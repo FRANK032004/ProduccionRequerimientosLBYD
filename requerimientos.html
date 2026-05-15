@@ -402,7 +402,7 @@
     <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
     <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
     <div class="meta-item"><strong>Versión</strong>1.4 — En progreso</div>
-    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | Evidencia de 6 exportaciones Restaurant.pe incorporada</div>
+    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | 108 RF | Evidencia de 6 exportaciones | Dosificador documentado</div>
   </div>
 </header>
 
@@ -412,7 +412,7 @@
   <div class="sidebar-brand">
     <div class="brand-name">La Baguetteria<br>y Delicatezze</div>
     <div class="brand-sub">Sistema de Producción y Costos</div>
-    <span class="brand-version">v1.6</span>
+    <span class="brand-version">v1.7</span>
   </div>
 
   <div class="nav-group-label">Empresa</div>
@@ -765,6 +765,49 @@ FLUJO COMPLETO (ambos lotes):
         </table>
       </div>
 
+      <!-- ── DOSIFICADOR ──────────────────────────────────── -->
+      <div class="subsection">
+        <h4>El Dosificador — Rol Clave en la Cadena de Costeo</h4>
+        <p style="font-size:0.93rem;color:#64748b;margin-bottom:0.8rem;">
+          Rol <strong>activo hoy</strong> en el Centro de Producción. Es el intermediario entre el almacén de insumos y las sub-áreas de producción.
+          Confirmado el 15/05/2026. La digitalización de este flujo es la acción de <strong>mayor impacto para habilitar el cálculo real del Food Cost</strong> —
+          es el punto donde los insumos pasan de cantidades completas de almacén a cantidades exactas por receta.
+        </p>
+        <table>
+          <thead><tr><th>Atributo</th><th>Estado actual</th></tr></thead>
+          <tbody>
+            <tr><td>Equipo de trabajo</td><td>Laptop · Balanza · Tapers (contenedores de dosificación) · Calendario/fechas de producción</td></tr>
+            <tr><td>Herramienta actual</td><td><strong>Excel propio:</strong> ingresa receta + cantidad de unidades a producir → el Excel calcula los insumos necesarios y las cantidades exactas</td></tr>
+            <tr><td>Lógica Panadería</td><td>Trabajo por <strong>unidades</strong> — mínimo <strong>20 panes</strong> para arrancar un lote de producción</td></tr>
+            <tr><td>Lógica Pastelería Dulce</td><td>Trabajo por <strong>batidos</strong> — cada batido es la unidad de producción (varía por receta)</td></tr>
+            <tr><td>Relación con almacén</td><td>Solicita insumos en <strong>cantidades completas</strong> (bolsas enteras, sacos, envases completos)</td></tr>
+            <tr><td>Entrega a sub-áreas</td><td>Entrega en <strong>cantidades exactas por receta</strong>, fraccionando lo recibido del almacén con balanza y tapers</td></tr>
+            <tr><td>Conexión con sistema</td><td style="color:#b91c1c;font-weight:600;">Ninguna — el Excel es local y manual. No genera ningún registro digital de consumo</td></tr>
+          </tbody>
+        </table>
+
+        <div class="flow-box">FLUJO OPERATIVO DEL DOSIFICADOR (estado actual)
+
+1. Sub-áreas envían requerimientos al dosificador
+   → Panadería: N unidades de cada pan (mín. 20 por lote)
+   → Pastelería Dulce: N batidos de cada producto
+   → Cocina / Past. Salada / BID: por unidades o porciones
+
+2. Dosificador calcula insumos necesarios (Excel manual)
+   → Ingresa receta + cantidad → Excel devuelve lista de insumos + cantidades exactas
+
+3. Dosificador solicita a almacén en cantidades completas
+   → Almacén entrega bolsas / sacos / envases completos
+
+4. Dosificador fracciona y entrega a cada sub-área la cantidad exacta
+   → Usa taper + balanza para porcionamiento preciso por receta
+
+5. Sobrante queda en custodia del dosificador (no regresa automáticamente al almacén)
+   → HOY: el sobrante NO se registra → pérdida de trazabilidad de insumos
+
+6. Integración futura requerida: conectar con Food Cost (finanzas — Paolo)</div>
+      </div>
+
       <div class="subsection">
         <h4>Brechas Identificadas — Producción</h4>
         <div class="brecha"><strong>BRECHA 1:</strong> BID no tiene planificación formal. La producción es completamente empírica ("al ojo"). No hay datos históricos propios de BID.</div>
@@ -773,6 +816,7 @@ FLUJO COMPLETO (ambos lotes):
         <div class="brecha"><strong>BRECHA 4:</strong> Los requerimientos de tiendas llegan mal estructurados generando confusión en producción.</div>
         <div class="brecha"><strong>BRECHA 5 (confirmada con Gerencia y Finanzas):</strong> El costo real de las horas extras en campañas es completamente desconocido. Se sabe que se usan pero nadie sabe cuánto cuestan por área ni cómo impactan el costo final del producto producido en esa jornada.</div>
         <div class="brecha"><strong>BRECHA 6 (confirmada con datos — 13/05/2026):</strong> El campo de merma en las fichas técnicas de Restaurant.pe no se está utilizando. De las <strong>850 recetas registradas, el 0% tiene porcentaje de merma parametrizado</strong>. Sin este dato, es imposible calcular el Food Cost real de ningún producto. La merma se gestiona de forma empírica y no se refleja en el costo del producto.</div>
+        <div class="brecha"><strong>BRECHA 7 (confirmada — 15/05/2026):</strong> El dosificador usa un Excel manual completamente desconectado del sistema. Cada dosificación diaria (~53 ingresos al día según Kardex CP) <strong>no genera ningún registro digital de consumo de insumos</strong>. El Kardex del Centro de Producción confirma que en 13 días de operación no se generó ninguna Orden de Producción — todos los ingresos al almacén son "regulación manual". El dosificador es el punto de control más cercano al Food Cost real: digitalizar su flujo desbloquea la trazabilidad completa insumo → producto → costo.</div>
       </div>
 
     </div>
@@ -1220,6 +1264,39 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
       </div>
 
       <div class="subsection">
+        <h4>Módulo del Dosificador — Pantalla Operativa <span class="tag tag-danger" style="font-size:0.78rem;vertical-align:middle;">URGENTE</span></h4>
+        <p style="font-size:0.93rem;color:#64748b;margin-bottom:0.8rem;">
+          Digitaliza el flujo actual del dosificador, reemplazando el Excel manual. Es el módulo que habilita el Food Cost real.
+          Opera desde la laptop del dosificador en el Centro de Producción.
+        </p>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-96</span>Pantalla del dosificador: seleccionar sub-área + producto + cantidad → el sistema calcula automáticamente los insumos necesarios y cantidades exactas según la ficha técnica activa, reemplazando el Excel manual actual.</li>
+          <li><span class="rf-code">RF-97</span>Lógica de producción por sub-área: <strong>Panadería</strong> en unidades (mínimo configurable por producto, default 20), <strong>Pastelería Dulce</strong> en batidos (tamaño de batido configurable por receta). Ambas lógicas coexisten en la misma pantalla.</li>
+          <li><span class="rf-code">RF-98</span>Conversión automática de cantidades exactas de receta a cantidades completas de almacén (bolsa, saco, caja, envase) según la unidad de almacenamiento configurada por insumo — para que el pedido al almacén siempre sea en cantidades enteras.</li>
+          <li><span class="rf-code">RF-99</span>Solicitud digital al almacén desde la pantalla del dosificador: el almacén recibe la lista de insumos + cantidades completas y confirma la entrega en el sistema.</li>
+          <li><span class="rf-code">RF-100</span>Registro digital de entrega del dosificador a cada sub-área: insumo, cantidad exacta dosificada, hora, turno y nombre del dosificador — crea el registro de consumo que hoy no existe.</li>
+          <li><span class="rf-code">RF-101</span>Control de sobrante al cierre de turno: el dosificador registra la cantidad sobrante de cada insumo; el sistema valida la ecuación: entregado por almacén − Σ(entregado a sub-áreas) − sobrante = desvío. Desvío ≠ 0 activa alerta de trazabilidad.</li>
+          <li><span class="rf-code">RF-102</span>Identificación automática de insumos dosificables (pasan por el dosificador) vs. insumos de uso directo (sub-área solicita directamente al almacén), configurable por categoría de insumo.</li>
+          <li><span class="rf-code">RF-103</span>Alerta preventiva al dosificador si la suma de insumos solicitados supera el stock disponible en almacén antes de generar la solicitud — evita arrancar producción sin insumos suficientes.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo Food Cost por Insumo — Finanzas (Paolo) <span class="tag tag-danger" style="font-size:0.78rem;vertical-align:middle;">URGENTE</span></h4>
+        <p style="font-size:0.93rem;color:#64748b;margin-bottom:0.8rem;">
+          Vista de costos a nivel de insumo, de la mano con el módulo del dosificador. Alimentado por los registros de dosificación real.
+          Permite a Paolo y Finanzas ver el costo real de producción, no solo el teórico de las fichas técnicas.
+        </p>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-104</span>Dashboard de Food Cost por insumo para Finanzas: costo unitario actual (precio de compra más reciente), cantidad dosificada en el período, costo total por insumo y % sobre el costo total de producción del período.</li>
+          <li><span class="rf-code">RF-105</span>Food Cost % real por producto terminado = (Σ insumos dosificados × costo unitario + merma valorizada) ÷ precio de venta, calculado por lote de producción y acumulado por semana/mes.</li>
+          <li><span class="rf-code">RF-106</span>Comparativo Food Cost teórico (ficha técnica) vs. Food Cost real (dosificación registrada) por producto: tabla de desviaciones con identificación de causa raíz (diferencia en consumo / variación de precio de insumo / merma no planificada).</li>
+          <li><span class="rf-code">RF-107</span>Ranking de insumos por impacto en el Food Cost total del período, para priorizar negociación con proveedores o revisión de recetas en la sub-área correspondiente.</li>
+          <li><span class="rf-code">RF-108</span>Histórico de Food Cost % por producto, semana, mes y campaña — para análisis de tendencias, benchmarking interno y evaluación del impacto de cambios de precio en insumos clave.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
         <h4>Módulo de Dashboard Ejecutivo</h4>
         <ul class="rf-list">
           <li><span class="rf-code">RF-47</span>Dashboard en tiempo real con ventas del día por área, tienda y canal.</li>
@@ -1232,10 +1309,10 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
       <div class="subsection">
         <h4>Módulo de Control de Dosificación y Lotes</h4>
         <ul class="rf-list">
-          <li><span class="rf-code">RF-51</span>Registro de entrega de insumos por cantidad exacta, el sistema obliga a ingresar la unidad de medida definida (no por bolsa/bulto).</li>
-          <li><span class="rf-code">RF-52</span>Registro de consumo real de insumos por lote de producción.</li>
-          <li><span class="rf-code">RF-53</span>Cálculo automático de sobrante de insumo: cantidad entregada − cantidad consumida real.</li>
-          <li><span class="rf-code">RF-54</span>Trazabilidad completa por lote: insumos, cantidades, área responsable, fecha y turno.</li>
+          <li><span class="rf-code">RF-51</span>Registro de entrega de insumos por cantidad exacta; el sistema obliga a ingresar la unidad de medida definida en la ficha técnica, no por bolsa/bulto.</li>
+          <li><span class="rf-code">RF-52</span>Registro de consumo real de insumos por lote de producción, vinculado a la sub-área y turno.</li>
+          <li><span class="rf-code">RF-53</span>Cálculo automático de sobrante de insumo: cantidad entregada por almacén − cantidad consumida real por sub-área; alerta si el sobrante supera umbral configurable.</li>
+          <li><span class="rf-code">RF-54</span>Trazabilidad completa por lote: insumos, cantidades, área responsable, fecha y turno — elimina la regulación manual en el Kardex.</li>
         </ul>
       </div>
 
@@ -1348,8 +1425,10 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
         <h4>Visión del Negocio</h4>
         <div class="flow-box">Objetivo estratégico: Control y trazabilidad total de todas las áreas.
 
-Próxima acción operativa: Contratar un dosificador para controlar
-exactamente las cantidades de insumos entregadas a cada área.
+Rol de Dosificador: ACTIVO — confirmado el 15/05/2026.
+  El dosificador opera con Excel manual hoy (receta + cantidad → lista de insumos).
+  Digitalizar este flujo es la acción de mayor impacto para habilitar el Food Cost real.
+  → Ver BRECHA 7 (Producción) y Módulo del Dosificador (RF-96 a RF-103).
 
 Modelo a evaluar: Control de producción por LOTES.
 
@@ -2208,7 +2287,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
     <div class="section-header">
       <span class="icon">🔀</span>
       <h3>13. Diagramas de Flujo de Procesos</h3>
-      <span class="badge">5 flujos validados — v1.6 completa</span>
+      <span class="badge">5 flujos validados — v1.7 completa</span>
     </div>
     <div class="section-body">
 
@@ -2393,7 +2472,7 @@ flowchart TD
 </div>
 
 <footer>
-  Documento de Requerimientos v1.6 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Documento de Requerimientos v1.7 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
   Última actualización: 09 Mayo 2026
 </footer>
