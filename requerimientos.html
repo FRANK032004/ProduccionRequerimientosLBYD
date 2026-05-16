@@ -401,8 +401,8 @@
     <div class="meta-item"><strong>Responsable</strong>Luis Franklin Zeta Juárez</div>
     <div class="meta-item"><strong>Cargo</strong>Ingeniero de Sistemas</div>
     <div class="meta-item"><strong>Fecha de inicio</strong>Abril 2026</div>
-    <div class="meta-item"><strong>Versión</strong>1.8 — MVP definido</div>
-    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | 108 RF | MVP: Módulo Dosificador + Food Cost (urgente) | 6 exportaciones analizadas</div>
+    <div class="meta-item"><strong>Versión</strong>1.9 — Flujo dosificador confirmado</div>
+    <div class="meta-item"><strong>Estado</strong>8 de 8 áreas levantadas — Fase 1 completa ✅ | 109 RF | MVP: Módulo Dosificador + Food Cost | Flujo dosificador validado 16/05/2026</div>
   </div>
 </header>
 
@@ -412,7 +412,7 @@
   <div class="sidebar-brand">
     <div class="brand-name">La Baguetteria<br>y Delicatezze</div>
     <div class="brand-sub">Sistema de Producción y Costos</div>
-    <span class="brand-version">v1.8</span>
+    <span class="brand-version">v1.9</span>
   </div>
 
   <div class="nav-group-label" style="color:#dc2626;">🎯 Prioridad</div>
@@ -433,7 +433,7 @@
   <a class="nav-item" href="#sec-compras"><span class="nav-icon">🛒</span>Compras<span class="nav-badge nav-badge-ok">✅ Completo</span></a>
 
   <div class="nav-group-label">Requerimientos</div>
-  <a class="nav-item" href="#sec-rf"><span class="nav-icon">📋</span>Funcionales<span class="nav-badge nav-badge-num">108 RF</span></a>
+  <a class="nav-item" href="#sec-rf"><span class="nav-icon">📋</span>Funcionales<span class="nav-badge nav-badge-num">109 RF</span></a>
   <a class="nav-item" href="#sec-rnf"><span class="nav-icon">⚙</span>No Funcionales<span class="nav-badge nav-badge-num">15 RNF</span></a>
 
   <div class="nav-group-label">Análisis</div>
@@ -498,6 +498,11 @@ El resto del sistema se integra de forma progresiva a partir de esa base.</div>
               <td>Equipo de Desarrollo</td>
               <td><span class="tag tag-danger">Desarrollar</span></td>
             </tr>
+            <tr>
+              <td>Calibrar % de margen por insumo/etapa usando histórico del Kardex CP (masa / conservación / horneo)</td>
+              <td>Jamin Torres + Analista de datos</td>
+              <td><span class="tag tag-warn">Pendiente — dato crítico para RF-98</span></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -511,14 +516,14 @@ El resto del sistema se integra de forma progresiva a partir de esa base.</div>
         <table>
           <thead><tr><th>RF</th><th>Qué hace</th></tr></thead>
           <tbody>
-            <tr><td><strong>RF-96</strong></td><td>Seleccionar sub-área + producto + cantidad → calcula insumos necesarios automáticamente</td></tr>
-            <tr><td><strong>RF-97</strong></td><td>Lógica Panadería (unidades, mín. 20) y Pastelería Dulce (batidos) en la misma pantalla</td></tr>
-            <tr><td><strong>RF-98</strong></td><td>Convierte cantidades exactas de receta → cantidades completas de almacén (para el pedido)</td></tr>
-            <tr><td><strong>RF-99</strong></td><td>Solicitud digital al almacén — el almacén confirma entrega en el sistema</td></tr>
-            <tr><td><strong>RF-100</strong></td><td>Registro de entrega a cada sub-área: insumo, cantidad exacta, hora, turno, nombre</td></tr>
-            <tr><td><strong>RF-101</strong></td><td>Control de sobrante al cierre de turno — ecuación de trazabilidad</td></tr>
-            <tr><td><strong>RF-102</strong></td><td>Clasificación insumos dosificables vs. uso directo</td></tr>
-            <tr><td><strong>RF-103</strong></td><td>Alerta si stock en almacén no alcanza para la producción solicitada</td></tr>
+            <tr><td><strong>RF-96</strong></td><td>Soporta 2 modos: Semanal (pan tiendas, desde programación del Jefe Comercial) y Diario (masivos/corporativos, 24h anticipación). Jamin consolida una lista única esa misma noche y la envía al almacén y al dosificador</td></tr>
+            <tr><td><strong>RF-97</strong></td><td>Pantalla del turno: carga el plan del día (enviado noche anterior). Selecciona área + producto + cantidad → calcula insumos aplicando margen por etapa automáticamente</td></tr>
+            <tr><td><strong>RF-98</strong></td><td><strong>Margen configurable por etapa:</strong> Insumo = teórico × (1+%masa) × (1+%conservación) × (1+%horneo). Derivado del Kardex histórico, ajustable por Jamin</td></tr>
+            <tr><td><strong>RF-99</strong></td><td>Lógica Panadería (unidades, mín. 20) y Pastelería Dulce (batidos configurables por receta)</td></tr>
+            <tr><td><strong>RF-100</strong></td><td>Convierte cantidades exactas → cantidades completas de almacén (bolsas, sacos, envases enteros)</td></tr>
+            <tr><td><strong>RF-101</strong></td><td>Solicitud digital al almacén — almacén confirma entrega, stock se actualiza</td></tr>
+            <tr><td><strong>RF-102</strong></td><td>Registro de entrega a cada sub-área: insumo, cantidad exacta, hora, turno, nombre. Ecuación de trazabilidad al cierre de turno</td></tr>
+            <tr><td><strong>RF-103</strong></td><td>Registro de sobrante de producción: excedente sobre pedido queda registrado y se despacha a tiendas con trazabilidad</td></tr>
           </tbody>
         </table>
       </div>
@@ -898,29 +903,42 @@ FLUJO COMPLETO (ambos lotes):
             <tr><td>Relación con almacén</td><td>Solicita insumos en <strong>cantidades completas</strong> (bolsas enteras, sacos, envases completos)</td></tr>
             <tr><td>Entrega a sub-áreas</td><td>Entrega en <strong>cantidades exactas por receta</strong>, fraccionando lo recibido del almacén con balanza y tapers</td></tr>
             <tr><td>Estado del módulo de sistema</td><td style="color:#b91c1c;font-weight:600;">A desarrollar — es el Módulo 1 del MVP. Debe estar listo cuando el dosificador sea contratado</td></tr>
+            <tr><td>Modo SEMANAL (pan tiendas)</td><td>El <strong>Jefe Comercial</strong> envía programación semanal de pan por tienda → Jamin consolida y envía al dosificador. Solo aplica a Panadería → tiendas</td></tr>
+            <tr><td>Modo DIARIO (masivos/corporativos)</td><td>Clientes envían requerimientos con <strong>24h de anticipación</strong> → Jamin consolida <strong>esa misma noche</strong> en una sola lista para todos los insumos de todas las áreas → envía a Almacén y Dosificador</td></tr>
+            <tr><td>Momento de consolidación</td><td>Jamin genera la lista <strong>la noche anterior</strong>, al cerrar los requerimientos del día → Dosificador llega en la mañana con el plan ya proyectado</td></tr>
+            <tr><td>Margen de error por insumo</td><td style="color:#b91c1c;">Actualmente definido <strong>"al ojo" por Jamin</strong> — no documentado por producto ni por etapa. El sistema debe calcular el margen inicial con el histórico del Kardex y hacerlo configurable</td></tr>
           </tbody>
         </table>
 
-        <div class="flow-box">FLUJO OPERATIVO DEL DOSIFICADOR (diseño planificado)
+        <div class="flow-box">FLUJO OPERATIVO CONFIRMADO DEL DOSIFICADOR (16/05/2026)
 
-1. Sub-áreas envían requerimientos al dosificador
-   → Panadería: N unidades de cada pan (mín. 20 por lote)
-   → Pastelería Dulce: N batidos de cada producto
-   → Cocina / Past. Salada / BID: por unidades o porciones
+━━━ MODO 1: SEMANAL — Pan para Tiendas ━━━
+  Jefe Comercial envía programación semanal de pan por tienda a Jamin
+  → Jamin consolida en lista unificada (cantidades completas + margen de error)
+  → Envía a Almacén + Dosificador
+  → Dosificador distribuye a Panadería según plan semanal
 
-2. Dosificador calcula insumos necesarios (Excel manual)
-   → Ingresa receta + cantidad → Excel devuelve lista de insumos + cantidades exactas
+━━━ MODO 2: DIARIO — Masivos y Corporativos (24h anticipación) ━━━
+  Clientes / áreas envían requerimientos → cierra el corte del día
+  → Jamin crea UNA lista consolidada esa misma noche
+     (todas las áreas: panadería, past. dulce, cocina, past. salada, BID)
+     (cantidades en unidades completas + margen de error por etapa)
+  → Jamin envía lista al Almacén Y al Dosificador esa misma noche
+  → MAÑANA: Dosificador llega con plan proyectado y arranca distribución
 
-3. Dosificador solicita a almacén en cantidades completas
-   → Almacén entrega bolsas / sacos / envases completos
-
-4. Dosificador fracciona y entrega a cada sub-área la cantidad exacta
-   → Usa taper + balanza para porcionamiento preciso por receta
-
-5. Sobrante queda en custodia del dosificador (no regresa automáticamente al almacén)
-   → HOY: el sobrante NO se registra → pérdida de trazabilidad de insumos
-
-6. Integración futura requerida: conectar con Food Cost (finanzas — Paolo)</div>
+FLUJO DE DOSIFICACIÓN (aplica a ambos modos):
+  1. Cada área envía sub-requerimiento al dosificador
+     → Panadería   : N unidades por pan (mín. 20 por lote)
+     → Past. Dulce : N batidos (tamaño configurado por receta)
+     → Cocina / Past. Salada / BID: por unidades o porciones
+  2. Sistema calcula insumos con margen por etapa de producción:
+     Insumo = (cantidad receta × unidades) × (1 + % merma masa)
+                                            × (1 + % merma conservación)
+                                            × (1 + % merma horneo)
+  3. Solicita al almacén en cantidades COMPLETAS (bolsas, sacos, envases)
+  4. Almacén confirma entrega → Dosificador fracciona y dosifica por área
+  5. Cierre de turno: dosificador registra sobrante real
+     Sobrante de producción (exceso sobre pedido) → registrado y enviado a tienda</div>
       </div>
 
       <div class="subsection">
@@ -931,7 +949,7 @@ FLUJO COMPLETO (ambos lotes):
         <div class="brecha"><strong>BRECHA 4:</strong> Los requerimientos de tiendas llegan mal estructurados generando confusión en producción.</div>
         <div class="brecha"><strong>BRECHA 5 (confirmada con Gerencia y Finanzas):</strong> El costo real de las horas extras en campañas es completamente desconocido. Se sabe que se usan pero nadie sabe cuánto cuestan por área ni cómo impactan el costo final del producto producido en esa jornada.</div>
         <div class="brecha"><strong>BRECHA 6 (confirmada con datos — 13/05/2026):</strong> El campo de merma en las fichas técnicas de Restaurant.pe no se está utilizando. De las <strong>850 recetas registradas, el 0% tiene porcentaje de merma parametrizado</strong>. Sin este dato, es imposible calcular el Food Cost real de ningún producto. La merma se gestiona de forma empírica y no se refleja en el costo del producto.</div>
-        <div class="brecha"><strong>BRECHA 7 (confirmada — 15/05/2026):</strong> El dosificador usa un Excel manual completamente desconectado del sistema. Cada dosificación diaria (~53 ingresos al día según Kardex CP) <strong>no genera ningún registro digital de consumo de insumos</strong>. El Kardex del Centro de Producción confirma que en 13 días de operación no se generó ninguna Orden de Producción — todos los ingresos al almacén son "regulación manual". El dosificador es el punto de control más cercano al Food Cost real: digitalizar su flujo desbloquea la trazabilidad completa insumo → producto → costo.</div>
+        <div class="brecha"><strong>BRECHA 7 (confirmada — 16/05/2026):</strong> No existe un rol formal de dosificador — se contrata en ~3 semanas. Mientras tanto, cada sub-área gestiona sus propios insumos sin control centralizado. Adicionalmente, el <strong>margen de error por insumo es empírico</strong>: Jamin Torres lo define "al ojo" sin porcentaje documentado por producto ni por etapa de producción (masa / conservación / horneo). El sistema debe derivar los porcentajes iniciales del histórico del Kardex y permitir que Jamin los configure y ajuste. Sin este margen calculado, el Food Cost teórico siempre será menor al real.</div>
       </div>
 
     </div>
@@ -1385,14 +1403,14 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
           Opera desde la laptop del dosificador en el Centro de Producción.
         </p>
         <ul class="rf-list">
-          <li><span class="rf-code">RF-96</span>Pantalla del dosificador: seleccionar sub-área + producto + cantidad → el sistema calcula automáticamente los insumos necesarios y cantidades exactas según la ficha técnica activa, reemplazando el Excel manual actual.</li>
-          <li><span class="rf-code">RF-97</span>Lógica de producción por sub-área: <strong>Panadería</strong> en unidades (mínimo configurable por producto, default 20), <strong>Pastelería Dulce</strong> en batidos (tamaño de batido configurable por receta). Ambas lógicas coexisten en la misma pantalla.</li>
-          <li><span class="rf-code">RF-98</span>Conversión automática de cantidades exactas de receta a cantidades completas de almacén (bolsa, saco, caja, envase) según la unidad de almacenamiento configurada por insumo — para que el pedido al almacén siempre sea en cantidades enteras.</li>
-          <li><span class="rf-code">RF-99</span>Solicitud digital al almacén desde la pantalla del dosificador: el almacén recibe la lista de insumos + cantidades completas y confirma la entrega en el sistema.</li>
-          <li><span class="rf-code">RF-100</span>Registro digital de entrega del dosificador a cada sub-área: insumo, cantidad exacta dosificada, hora, turno y nombre del dosificador — crea el registro de consumo que hoy no existe.</li>
-          <li><span class="rf-code">RF-101</span>Control de sobrante al cierre de turno: el dosificador registra la cantidad sobrante de cada insumo; el sistema valida la ecuación: entregado por almacén − Σ(entregado a sub-áreas) − sobrante = desvío. Desvío ≠ 0 activa alerta de trazabilidad.</li>
-          <li><span class="rf-code">RF-102</span>Identificación automática de insumos dosificables (pasan por el dosificador) vs. insumos de uso directo (sub-área solicita directamente al almacén), configurable por categoría de insumo.</li>
-          <li><span class="rf-code">RF-103</span>Alerta preventiva al dosificador si la suma de insumos solicitados supera el stock disponible en almacén antes de generar la solicitud — evita arrancar producción sin insumos suficientes.</li>
+          <li><span class="rf-code">RF-96</span>El sistema soporta <strong>dos modos de planificación de producción</strong>: (a) <em>Modo Semanal</em> — el Jefe Comercial envía la programación de pan por tienda una vez por semana; (b) <em>Modo Diario</em> — requerimientos de masivos y corporativos con 24h de anticipación. Jamin genera una lista consolidada única (todas las áreas) esa misma noche y la envía al almacén y al dosificador.</li>
+          <li><span class="rf-code">RF-97</span>Pantalla del dosificador: al abrir el turno, ya tiene cargado el plan del día (enviado por Jamin la noche anterior). Selecciona sub-área + producto + cantidad → el sistema calcula automáticamente los insumos necesarios aplicando el margen de error configurado por etapa (masa / conservación / horneo).</li>
+          <li><span class="rf-code">RF-98</span><strong>Margen de error configurable por etapa de producción:</strong> para cada insumo y producto, el sistema almacena % merma en masa, % merma en conservación y % merma en horneo. La cantidad a solicitar al almacén = insumo teórico × (1 + %masa) × (1 + %conservación) × (1 + %horneo). Los valores iniciales se derivan del histórico del Kardex; Jamin puede ajustarlos manualmente con registro de cambio.</li>
+          <li><span class="rf-code">RF-99</span>Lógica de dosificación por sub-área: <strong>Panadería</strong> en unidades (mínimo configurable, default 20 panes por lote), <strong>Pastelería Dulce</strong> en batidos (tamaño de batido configurable por receta). Las demás áreas en unidades o porciones según receta.</li>
+          <li><span class="rf-code">RF-100</span>Conversión automática de cantidades exactas de receta → cantidades completas de almacén (bolsa, saco, caja) según unidad de almacenamiento configurada por insumo. El pedido al almacén siempre es en unidades enteras.</li>
+          <li><span class="rf-code">RF-101</span>Solicitud digital al almacén desde el módulo del dosificador. El almacén recibe la lista de insumos + cantidades completas y confirma la entrega; el sistema actualiza el stock en tiempo real.</li>
+          <li><span class="rf-code">RF-102</span>Registro digital de entrega a cada sub-área: insumo, cantidad exacta dosificada, hora, turno, nombre del dosificador. Al cierre del turno: ecuación de trazabilidad = entregado almacén − Σ(entregado a sub-áreas) − sobrante registrado. Desvío ≠ 0 activa alerta.</li>
+          <li><span class="rf-code">RF-103</span>Registro de sobrante de producción: cuando una sub-área produce más de lo pedido (efecto del margen de error), el excedente queda registrado como producción adicional y se incluye en el despacho a tiendas con trazabilidad de origen.</li>
         </ul>
       </div>
 
@@ -1408,6 +1426,13 @@ EXCEPCIÓN: Productos BID  →  Vencimiento de 2 meses
           <li><span class="rf-code">RF-106</span>Comparativo Food Cost teórico (ficha técnica) vs. Food Cost real (dosificación registrada) por producto: tabla de desviaciones con identificación de causa raíz (diferencia en consumo / variación de precio de insumo / merma no planificada).</li>
           <li><span class="rf-code">RF-107</span>Ranking de insumos por impacto en el Food Cost total del período, para priorizar negociación con proveedores o revisión de recetas en la sub-área correspondiente.</li>
           <li><span class="rf-code">RF-108</span>Histórico de Food Cost % por producto, semana, mes y campaña — para análisis de tendencias, benchmarking interno y evaluación del impacto de cambios de precio en insumos clave.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h4>Módulo de Calibración de Márgenes — Jamin Torres</h4>
+        <ul class="rf-list">
+          <li><span class="rf-code">RF-109</span>Pantalla de configuración de márgenes de error por insumo y etapa (masa / conservación / horneo): muestra el % calculado automáticamente del histórico del Kardex como valor sugerido y permite a Jamin ajustarlo manualmente. Cada cambio queda registrado con fecha, usuario y valor anterior.</li>
         </ul>
       </div>
 
@@ -2407,7 +2432,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
     <div class="section-header">
       <span class="icon">🔀</span>
       <h3>13. Diagramas de Flujo de Procesos</h3>
-      <span class="badge">5 flujos validados — v1.8 completa</span>
+      <span class="badge">5 flujos validados — v1.9 completa</span>
     </div>
     <div class="section-body">
 
@@ -2592,7 +2617,7 @@ flowchart TD
 </div>
 
 <footer>
-  Documento de Requerimientos v1.8 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Documento de Requerimientos v1.9 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
   Última actualización: 09 Mayo 2026
 </footer>
