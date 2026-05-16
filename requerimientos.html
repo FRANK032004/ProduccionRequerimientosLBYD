@@ -438,7 +438,7 @@
 
   <div class="nav-group-label">Análisis</div>
   <a class="nav-item" href="#sec-estado"><span class="nav-icon">📊</span>Estado General</a>
-  <a class="nav-item" href="#sec-diagramas"><span class="nav-icon">🔀</span>Diagramas de Flujo<span class="nav-badge nav-badge-num">4</span></a>
+  <a class="nav-item" href="#sec-diagramas"><span class="nav-icon">🔀</span>Diagramas de Flujo<span class="nav-badge nav-badge-num">6</span></a>
 </nav>
 
 <main class="main-content">
@@ -2432,7 +2432,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
     <div class="section-header">
       <span class="icon">🔀</span>
       <h3>13. Diagramas de Flujo de Procesos</h3>
-      <span class="badge">5 flujos validados — v1.9 completa</span>
+      <span class="badge">6 flujos — v1.9 | Flujo 6: Dosificador ⚙️</span>
     </div>
     <div class="section-body">
 
@@ -2587,6 +2587,66 @@ flowchart TD
     R --> S["Gestión de diferencia\ndevolución · ajuste · recompra"]
     S --> Q
     Q --> FIN2(["Insumo disponible\npara producción ✅"])
+        </div>
+      </div>
+
+      <!-- FLUJO 6 -->
+      <div class="subsection">
+        <h4>Flujo 6 — Dosificador: Ciclo Completo de Dosificación</h4>
+        <div class="diagram-meta">
+          Fuente: Jamin Torres (Jefe de Producción) — confirmado 16/05/2026 &nbsp;|&nbsp; Estado: Diseño validado — en desarrollo ⚙️
+        </div>
+        <div class="mermaid">
+flowchart TD
+    %% ─── FASE 1: PLANIFICACIÓN ───
+    INI(["📅 FASE 1 — PLANIFICACIÓN\nNoche anterior al turno"])
+    INI --> MODO{"Tipo de\nproducción del día"}
+
+    MODO -->|"SEMANAL\nPan para tiendas"| JC["Jefe Comercial envía\nprogramación semanal\nde pan por tienda a Jamin"]
+    MODO -->|"DIARIO\nMasivos / Corporativos"| CLI["Clientes y áreas envían\nrequerimientos con\n24 h de anticipación"]
+
+    JC  --> CONS["Jamin consolida UNA lista unificada\ntodas las áreas · todos los insumos\nen cantidades completas + margen"]
+    CLI --> CONS
+
+    CONS --> ENV["Jamin envía esa misma noche:\n📦 Lista al Almacén  +  🧪 Lista al Dosificador"]
+
+    %% ─── FASE 2: EJECUCIÓN ───
+    ENV --> OPEN(["☀️ FASE 2 — EJECUCIÓN\nDosificador abre turno con plan ya cargado"])
+
+    OPEN --> AREA{"Sub-área envía\nsu requerimiento"}
+    AREA -->|"Panadería"| PA["N unidades\nmín. 20 por lote"]
+    AREA -->|"Past. Dulce"| PD["N batidos\n(tamaño configurado por receta)"]
+    AREA -->|"Cocina / Past. Salada / BID"| OT["Unidades o\nporciones"]
+
+    PA  --> CALC["⚙️ Sistema calcula insumos necesarios:\nteórico × (1 + % merma masa)\n× (1 + % merma conservación)\n× (1 + % merma horneo)\n— % configurado por Jamin · calibrado con Kardex —"]
+    PD  --> CALC
+    OT  --> CALC
+
+    CALC --> SOL["Dosificador solicita al Almacén\nen cantidades COMPLETAS\n(bolsas · sacos · envases enteros)"]
+
+    SOL --> STK{"¿Stock\nsuficiente?"}
+    STK -->|"No"| A1["⚠️ Alerta preventiva (RF-103)\nJamin decide antes\nde arrancar producción"]
+    STK -->|"Sí"| DEL["Almacén entrega y confirma\nen sistema — stock actualizado\nen tiempo real"]
+
+    DEL --> FRAC["Dosificador fracciona\ncon balanza y tapers\ncantidad exacta por insumo"]
+    FRAC --> DIST["Entrega cantidad exacta\na cada sub-área\n📝 Registro: insumo · cantidad · hora · turno (RF-100)"]
+    DIST --> PROD["Sub-áreas ejecutan\nproducción del día"]
+
+    %% ─── FASE 3: CIERRE ───
+    PROD --> EXC{"¿Excedente\nde producción?"}
+    EXC -->|"Sí — panes/productos extras\n(margen consumido < asignado)"| EXT["Excedente registrado\ncomo producción adicional\n→ despacho a tiendas (RF-103)"]
+    EXC -->|"No"| SOB["🔒 FASE 3 — CIERRE DE TURNO\nDosificador registra sobrante de insumos"]
+    EXT --> SOB
+
+    SOB --> EQ["Sistema valida ecuación de trazabilidad:\nAlmacén entregado\n− Σ (dosificado a cada sub-área)\n− sobrante registrado = desvío"]
+
+    EQ --> DV{"¿Desvío\n= 0?"}
+    DV -->|"Sí ✅"| OK["Trazabilidad completa\nCiclo cerrado correctamente"]
+    DV -->|"No ⚠️"| AL["Alerta de trazabilidad (RF-102)\nRequiere justificación\nde Jamin / Dosificador"]
+    AL --> OK
+
+    OK --> FC["📊 Datos fluyen al Módulo Food Cost\nPaolo — Finanzas\nRF-104 a RF-108"]
+    FC --> FIN(["✅ Ciclo de dosificación completo\nInsumo trazado desde almacén\nhasta costo real del producto"])
         </div>
       </div>
 
