@@ -941,6 +941,171 @@ FLUJO DE DOSIFICACIÓN (aplica a ambos modos):
      Sobrante de producción (exceso sobre pedido) → registrado y enviado a tienda</div>
       </div>
 
+      <!-- ── RIESGOS MÓDULO DOSIFICADOR ────────────────── -->
+      <div class="subsection">
+        <h4 style="color:#b91c1c;">⚠ Riesgos e Inconsistencias Pendientes — Módulo Dosificador</h4>
+        <p style="font-size:0.92rem;color:#64748b;margin-bottom:1rem;">
+          Análisis desde perspectiva de desarrollo: problemas no resueltos que pueden distorsionar el Food Cost
+          o generar conflictos operativos entre áreas. Deben resolverse <strong>antes o durante el desarrollo del MVP</strong>.
+        </p>
+
+        <p style="font-size:0.85rem;font-weight:700;color:#475569;margin:0.4rem 0 0.5rem;">BLOQUE 1 — Datos base: sin esto, el módulo calcula sobre aire</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:30px;">#</th>
+              <th>Riesgo / Inconsistencia</th>
+              <th style="width:160px;">Área afectada</th>
+              <th style="width:90px;text-align:center;">Impacto FC</th>
+              <th style="width:130px;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>R-01</td>
+              <td><strong>Ficha técnica con costo S/0 o sin ingredientes completos.</strong> Si la receta base está vacía o sin costo, el sistema calcula insumos correctamente pero el Food Cost resultante es S/0. El módulo dosificador depende 100% de la calidad de las fichas técnicas en Restaurant.pe. <em>Confirmado: 53% de recetas sin costo en la BD actual.</em></td>
+              <td>Todas las áreas</td>
+              <td style="text-align:center;background:#fee2e2;color:#b91c1c;font-weight:700;">🔴 ALTO</td>
+              <td><span class="tag tag-danger">Bloqueante</span></td>
+            </tr>
+            <tr>
+              <td>R-02</td>
+              <td><strong>Ficha técnica con cantidades desactualizadas.</strong> Si Jamin cambió empíricamente las proporciones de una receta (como hace hoy) y no se actualizó en el sistema, el dosificador dosifica cantidades incorrectas. El Food Cost calculado no refleja la realidad. No hay mecanismo hoy para detectar que una ficha está "desactualizada".</td>
+              <td>Todas las áreas</td>
+              <td style="text-align:center;background:#fee2e2;color:#b91c1c;font-weight:700;">🔴 ALTO</td>
+              <td><span class="tag tag-warn">Sin RF aún</span></td>
+            </tr>
+            <tr>
+              <td>R-03</td>
+              <td><strong>Conversión unidad de receta ≠ unidad de almacén no configurada.</strong> RF-100 convierte cantidades exactas a unidades completas de almacén. Si esa conversión no está parametrizada (ej: receta pide 250g de harina, almacén maneja bolsas de 50kg vs 25kg) el cálculo de pedido al almacén falla o es sistemáticamente incorrecto. Una bolsa de tamaño equivocado afecta TODOS los cálculos de esa receta.</td>
+              <td>Almacén + todas las áreas</td>
+              <td style="text-align:center;background:#fee2e2;color:#b91c1c;font-weight:700;">🔴 ALTO</td>
+              <td><span class="tag tag-warn">Pendiente validar</span></td>
+            </tr>
+            <tr>
+              <td>R-04</td>
+              <td><strong>Calibración del % merma con base en datos del Kardex actual (regulaciones manuales, no producción real).</strong> El Kardex CP tiene 694 ingresos/día como "regulación manual" — no hay Órdenes de Producción. Los porcentajes derivados de ese Kardex reflejan el comportamiento actual sin dosificador, no el comportamiento con dosificador. La calibración inicial puede estar estadísticamente sesgada.</td>
+              <td>Producción / Finanzas</td>
+              <td style="text-align:center;background:#fef9c3;color:#b45309;font-weight:700;">🟠 MEDIO</td>
+              <td><span class="tag tag-warn">Riesgo conocido</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p style="font-size:0.85rem;font-weight:700;color:#475569;margin:1rem 0 0.5rem;">BLOQUE 2 — Conflictos operativos por sub-área</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:30px;">#</th>
+              <th>Riesgo / Inconsistencia</th>
+              <th style="width:160px;">Área afectada</th>
+              <th style="width:90px;text-align:center;">Impacto FC</th>
+              <th style="width:130px;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>R-05</td>
+              <td><strong>Panadería — lote mínimo genera excedente no registrado como desvío.</strong> Si la tienda pide 18 panes y el lote mínimo es 20, se producen 20. Los 2 extras van a tienda. El sistema registraría "entregado: 20, pedido: 18" como normalidad. Pero si ese excedente habitual no se analiza, el Food Cost real por unidad siempre se amortiza sobre más unidades de las pedidas → distorsión acumulada invisible.</td>
+              <td>Panadería</td>
+              <td style="text-align:center;background:#fef9c3;color:#b45309;font-weight:700;">🟠 MEDIO</td>
+              <td><span class="tag tag-warn">Sin RF aún</span></td>
+            </tr>
+            <tr>
+              <td>R-06</td>
+              <td><strong>Pastelería Dulce — tamaño de "batido" variable y no configurado.</strong> Si el tamaño del batido (unidad de producción de Pastelería Dulce) no está definido en el sistema por receta, el cálculo de insumos es incorrecto para toda esa área. Un batido de torta de chocolate ≠ un batido de pie de limón. Es la variable más crítica de esta sub-área y hoy nadie tiene ese dato formal.</td>
+              <td>Pastelería Dulce</td>
+              <td style="text-align:center;background:#fee2e2;color:#b91c1c;font-weight:700;">🔴 ALTO</td>
+              <td><span class="tag tag-danger">Dato faltante crítico</span></td>
+            </tr>
+            <tr>
+              <td>R-07</td>
+              <td><strong>Cocina y Pastelería Salada usan insumos directo del almacén (bypass del dosificador).</strong> Si estas áreas tienen insumos de "uso directo" que no pasan por el dosificador (RF-102 clasifica esto), el consumo de esos insumos nunca queda registrado en el módulo. El Food Cost de los productos de Cocina y Past. Salada quedará incompleto de forma sistemática porque falta la porción de insumos directos.</td>
+              <td>Cocina / Past. Salada</td>
+              <td style="text-align:center;background:#fee2e2;color:#b91c1c;font-weight:700;">🔴 ALTO</td>
+              <td><span class="tag tag-warn">Diseño incompleto</span></td>
+            </tr>
+            <tr>
+              <td>R-08</td>
+              <td><strong>BID — producción no es diaria, flujo de dosificación no definido.</strong> Los productos BID tienen vida útil larga (hasta 2 meses). La producción puede ser semanal o quincenal, no entra en el ciclo noche anterior → mañana. No está definido cómo se inserta BID en el flujo del dosificador: ¿pedido especial? ¿ciclo propio? ¿Jamin lo incluye en la lista nocturna cuando corresponde? Sin definir esto, BID queda fuera del control de Food Cost.</td>
+              <td>BID</td>
+              <td style="text-align:center;background:#fef9c3;color:#b45309;font-weight:700;">🟠 MEDIO</td>
+              <td><span class="tag tag-warn">Flujo sin definir</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p style="font-size:0.85rem;font-weight:700;color:#475569;margin:1rem 0 0.5rem;">BLOQUE 3 — Conflictos de proceso y excepciones</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:30px;">#</th>
+              <th>Riesgo / Inconsistencia</th>
+              <th style="width:160px;">Área afectada</th>
+              <th style="width:90px;text-align:center;">Impacto FC</th>
+              <th style="width:130px;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>R-09</td>
+              <td><strong>Pedido urgente llega después de que Jamin ya cerró la lista nocturna.</strong> No existe un flujo de excepción definido. ¿El dosificador solicita más insumos al almacén fuera del ciclo? ¿Jamin debe aprobar? ¿Qué pasa con el registro de Food Cost de ese pedido urgente? Si no hay flujo formal, se vuelve al método actual: regulación manual en el Kardex, sin trazabilidad.</td>
+              <td>Todas las áreas</td>
+              <td style="text-align:center;background:#fef9c3;color:#b45309;font-weight:700;">🟠 MEDIO</td>
+              <td><span class="tag tag-danger">Sin RF aún</span></td>
+            </tr>
+            <tr>
+              <td>R-10</td>
+              <td><strong>Sustitución de insumo (el original se agotó o no llegó el proveedor).</strong> Si el almacén no tiene el insumo de la receta y se usa un sustituto, el sistema calculó el Food Cost con el insumo original. El costo real es diferente (puede ser mayor o menor). Sin un mecanismo de "registrar sustitución con justificación y ajuste de costo", el Food Cost queda incorrecto para ese lote.</td>
+              <td>Almacén + Producción</td>
+              <td style="text-align:center;background:#fee2e2;color:#b91c1c;font-weight:700;">🔴 ALTO</td>
+              <td><span class="tag tag-danger">Sin RF aún</span></td>
+            </tr>
+            <tr>
+              <td>R-11</td>
+              <td><strong>Merma durante el proceso de dosificación no está diferenciada de la merma de producción.</strong> Si se cae un taper, se contamina un insumo al fraccionar, o se pesa de más — eso es merma del dosificador, no de la sub-área. Hoy el diseño solo captura sobrante al cierre de turno. La merma que ocurre DURANTE el fraccionamiento queda invisible y no se puede imputar correctamente al Food Cost ni responsabilizar al dosificador.</td>
+              <td>Dosificador</td>
+              <td style="text-align:center;background:#fef9c3;color:#b45309;font-weight:700;">🟠 MEDIO</td>
+              <td><span class="tag tag-warn">Sin RF aún</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p style="font-size:0.85rem;font-weight:700;color:#475569;margin:1rem 0 0.5rem;">BLOQUE 4 — Integridad de la cadena de datos</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:30px;">#</th>
+              <th>Riesgo / Inconsistencia</th>
+              <th style="width:160px;">Área afectada</th>
+              <th style="width:90px;text-align:center;">Impacto FC</th>
+              <th style="width:130px;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>R-12</td>
+              <td><strong>Stock de almacén incorrecto hace que RF-103 (alerta preventiva) sea no confiable.</strong> El 50% de los movimientos del Kardex CP no tienen valorización. Si el stock en sistema no refleja la realidad física, la alerta de "stock insuficiente" puede dar falso positivo (hay stock pero el sistema dice que no) o peor, falso negativo (el sistema dice que hay pero en realidad no). El dosificador llegaría en la mañana sin insumos reales.</td>
+              <td>Almacén + Dosificador</td>
+              <td style="text-align:center;background:#fee2e2;color:#b91c1c;font-weight:700;">🔴 ALTO</td>
+              <td><span class="tag tag-danger">Depende de saneamiento BD</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:14px 18px;margin-top:1rem;font-size:0.88rem;">
+          <strong style="color:#166534;">Resumen de pendientes críticos antes de desarrollo:</strong>
+          <ul style="margin:8px 0 0 18px;line-height:1.8;">
+            <li>Tamaño de "batido" por receta confirmado con encargada de Pastelería Dulce (R-06 — bloqueante)</li>
+            <li>Clasificación formal de insumos dosificables vs. uso directo (R-07 — requiere reunión Jamin + encargados de Cocina/Past. Salada)</li>
+            <li>Flujo de excepción para pedidos urgentes post-consolidación (R-09 — requiere decisión de Valeria/Samuel)</li>
+            <li>Flujo de BID en el ciclo del dosificador (R-08 — requiere reunión encargado BID + Jamin)</li>
+            <li>Saneamiento de fichas técnicas y costos en Restaurant.pe (R-01 — responsable: Valeria)</li>
+            <li>Configurar conversiones de unidades almacén por insumo (R-03 — responsable: almacén + Jamin)</li>
+          </ul>
+        </div>
+      </div>
+
       <div class="subsection">
         <h4>Brechas Identificadas — Producción</h4>
         <div class="brecha"><strong>BRECHA 1:</strong> BID no tiene planificación formal. La producción es completamente empírica ("al ojo"). No hay datos históricos propios de BID.</div>
