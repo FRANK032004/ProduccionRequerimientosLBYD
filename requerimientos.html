@@ -412,7 +412,7 @@
   <div class="sidebar-brand">
     <div class="brand-name">La Baguetteria<br>y Delicatezze</div>
     <div class="brand-sub">Sistema de Producción y Costos</div>
-    <span class="brand-version">v1.9</span>
+    <span class="brand-version">v2.0</span>
   </div>
 
   <div class="nav-group-label" style="color:#dc2626;">🎯 Prioridad</div>
@@ -439,6 +439,7 @@
   <div class="nav-group-label">Análisis</div>
   <a class="nav-item" href="#sec-estado"><span class="nav-icon">📊</span>Estado General</a>
   <a class="nav-item" href="#sec-diagramas"><span class="nav-icon">🔀</span>Diagramas de Flujo<span class="nav-badge nav-badge-num">6</span></a>
+  <a class="nav-item" href="#sec-arquitectura"><span class="nav-icon">🏗️</span>Arquitectura del Sistema<span class="nav-badge" style="background:#7c3aed;">NUEVO</span></a>
 </nav>
 
 <main class="main-content">
@@ -2597,7 +2598,7 @@ SOLUCIÓN QUE EL SISTEMA DEBE GARANTIZAR:
     <div class="section-header">
       <span class="icon">🔀</span>
       <h3>13. Diagramas de Flujo de Procesos</h3>
-      <span class="badge">6 flujos — v1.9 | Flujo 6: Dosificador ⚙️</span>
+      <span class="badge">6 flujos — v2.0 | Flujo 6: Dosificador ⚙️</span>
     </div>
     <div class="section-body">
 
@@ -2893,6 +2894,278 @@ flowchart TD
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════════
+       14. ARQUITECTURA DEL SISTEMA
+  ══════════════════════════════════════════════════ -->
+  <div class="section" id="sec-arquitectura">
+    <div class="section-header">
+      <span class="icon">🏗️</span>
+      <h3>14. Arquitectura del Sistema — Restaurant.pe vs Sistema Propio LBYD</h3>
+      <span class="badge" style="background:#7c3aed;">Decisión estratégica — v2.0</span>
+    </div>
+    <div class="section-body">
+
+      <!-- INTRO -->
+      <div class="subsection">
+        <h4>Contexto de la Decisión</h4>
+        <p style="font-size:0.93rem;line-height:1.7;">
+          LBYD utiliza Restaurant.pe como sistema de gestión principal. Sin embargo, <strong>LBYD no es un restaurante</strong> — es una
+          <strong>panadería y pastelería industrial con modelo de producción centralizada</strong> que distribuye a múltiples tiendas
+          y atiende pedidos masivos/corporativos. Restaurant.pe fue diseñado para restaurantes con modelo comanda→cocina→mesa,
+          lo que genera brechas estructurales en los procesos clave de LBYD.
+        </p>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;">
+          <div style="flex:1;min-width:200px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:14px;text-align:center;">
+            <div style="font-size:1.6rem;">&#x2705;</div>
+            <div style="font-weight:700;color:#166534;font-size:0.9rem;margin-top:4px;">Restaurant.pe cubre bien</div>
+            <div style="font-size:0.8rem;color:#4ade80;margin-top:2px;">Lograr que LBYD lo use correctamente</div>
+          </div>
+          <div style="flex:1;min-width:200px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:14px;text-align:center;">
+            <div style="font-size:1.6rem;">⚠️</div>
+            <div style="font-weight:700;color:#c2410c;font-size:0.9rem;margin-top:4px;">Restaurant.pe cubre parcialmente</div>
+            <div style="font-size:0.8rem;color:#fb923c;margin-top:2px;">Requiere adaptación o workarounds</div>
+          </div>
+          <div style="flex:1;min-width:200px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:14px;text-align:center;">
+            <div style="font-size:1.6rem;">❌</div>
+            <div style="font-weight:700;color:#b91c1c;font-size:0.9rem;margin-top:4px;">Restaurant.pe no puede hacerlo</div>
+            <div style="font-size:0.8rem;color:#ef4444;margin-top:2px;">Debe construirse en sistema propio</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COBERTURA RESTAURANT.PE -->
+      <div class="subsection">
+        <h4>Cobertura Actual de Restaurant.pe para LBYD</h4>
+        <table>
+          <thead><tr><th>Módulo Restaurant.pe</th><th style="width:80px;text-align:center;">Cobertura</th><th>Observación para LBYD</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Punto de Venta (POS)</strong></td><td style="text-align:center;background:#f0fdf4;">&#x2705; Sí</td><td>Funciona bien para venta en tiendas físicas walk-in</td></tr>
+            <tr><td><strong>Almacenes</strong> (13 mód.)</td><td style="text-align:center;background:#f0fdf4;">&#x2705; Sí*</td><td>Funciona pero LBYD lo usa mal: 50% mov. sin valorizar, 0 órdenes de producción</td></tr>
+            <tr><td><strong>Compras / OC</strong> (7 mód.)</td><td style="text-align:center;background:#f0fdf4;">&#x2705; Sí</td><td>Gestión de órdenes de compra a proveedores funciona correctamente</td></tr>
+            <tr><td><strong>Insumos</strong> (7 mód.)</td><td style="text-align:center;background:#f0fdf4;">&#x2705; Sí*</td><td>Catálogo disponible pero 91% sin código activo, muchos sin costo unitario</td></tr>
+            <tr><td><strong>Ventas / Reportes</strong></td><td style="text-align:center;background:#f0fdf4;">&#x2705; Sí</td><td>Exportación CSV confirmada; historial de ventas por producto disponible</td></tr>
+            <tr><td><strong>Facturación Electrónica</strong></td><td style="text-align:center;background:#f0fdf4;">&#x2705; Sí</td><td>Integrado con SUNAT, funcional</td></tr>
+            <tr><td><strong>Recetas</strong> (5 mód.)</td><td style="text-align:center;background:#fff7ed;">⚠️ Parcial</td><td>No soporta lotes mínimos, ni merma multi-etapa, ni recetas privadas</td></tr>
+            <tr><td><strong>Food Cost</strong> (2 mód.)</td><td style="text-align:center;background:#fff7ed;">⚠️ Parcial</td><td>Requiere recetas en el sistema — decisjón de seguridad de Samuel lo bloquea</td></tr>
+            <tr><td><strong>Producción</strong> (2 mód.)</td><td style="text-align:center;background:#fff7ed;">⚠️ Parcial</td><td>Modelo comanda→cocina→mesa. No aplica a planificación nocturna por lotes</td></tr>
+            <tr><td><strong>Costos y Gastos</strong></td><td style="text-align:center;background:#fff7ed;">⚠️ Parcial</td><td>Control general de costos, no diferencia etapas de producción de panadería</td></tr>
+            <tr><td><strong>Clientes / CRM</strong></td><td style="text-align:center;background:#fff7ed;">⚠️ Parcial</td><td>Registro básico de clientes; sin gestión de cuentas corporativas B2B</td></tr>
+            <tr><td><strong>Delivery / Despacho</strong></td><td style="text-align:center;background:#fff7ed;">⚠️ Parcial</td><td>Diseñado para delivery on-demand; no modela salidas fijas CP→tiendas</td></tr>
+            <tr><td><strong>Workplace Logística</strong></td><td style="text-align:center;background:#fff7ed;">⚠️ Parcial</td><td>Logística general; no modela la cadena CP → dosificador → sub-área</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BRECHAS LOGÍSTICA -->
+      <div class="subsection">
+        <h4 style="color:#b91c1c;">❌ Brechas en Logística — Lo que Restaurant.pe no puede hacer para LBYD</h4>
+        <table>
+          <thead><tr><th style="width:30px;">#</th><th>Brecha</th><th style="width:260px;">Por qué Restaurant.pe no lo resuelve</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>L-01</strong></td>
+              <td><strong>Distribución desde Centro de Producción único a múltiples tiendas.</strong> LBYD produce en un solo CP y despacha a N tiendas. El flujo correcto es: CP produce → despacho carga → cada tienda recibe y confirma. Hoy se usan 280 transferencias manuales como workaround.</td>
+              <td>Restaurant.pe es <em>store-centric</em>: cada local gestiona su propio inventario. No existe el modelo “un almacén central distribuye a sus propias tiendas” con confirmación de recepción y diferencia de merma en tránsito.</td>
+            </tr>
+            <tr>
+              <td><strong>L-02</strong></td>
+              <td><strong>Trazabilidad completa Producción → Almacén → Despacho → Tienda.</strong> Hoy no existe un registro digital de la entrega de producción a despacho. El tránsito entre áreas es un agujero negro: se produce X, llega Y a tienda, la diferencia no se rastrea.</td>
+              <td>Restaurant.pe registra entradas y salidas de almacén, pero no el traspaso formal entre áreas internas (producción → despacho → tienda) con confirmación digital en cada punto.</td>
+            </tr>
+            <tr>
+              <td><strong>L-03</strong></td>
+              <td><strong>Merma en tránsito registrada por tramo.</strong> Si se dañan 10 panes entre el CP y la tienda, hoy no hay registro de dónde ocurrió ni quién es responsable (despacho o recepción de tienda).</td>
+              <td>Restaurant.pe tiene merma en recetas (porcentaje de preparación) pero no un modelo de merma durante el traslado físico entre puntos.</td>
+            </tr>
+            <tr>
+              <td><strong>L-04</strong></td>
+              <td><strong>Salidas de despacho con ventanas horarias fijas.</strong> LBYD tiene 3 salidas diarias: 5:00 AM, 10–11 AM y 3–4 PM. Cada salida tiene una lista de tiendas y productos asignados.</td>
+              <td>El módulo de delivery de Restaurant.pe es on-demand (pedido → despacho individual). No modela ventanas de distribución masiva pre-planificadas hacia tiendas propias.</td>
+            </tr>
+            <tr>
+              <td><strong>L-05</strong></td>
+              <td><strong>Dosificador: fracción de insumos del almacén a sub-áreas por receta.</strong> Este rol es el corazón del control de Food Cost real. Ninguna herramienta de restaurante lo contempla porque en restaurantes el chef toma directamente del almacén.</td>
+              <td>No existe en ningún plan de Restaurant.pe. Es un proceso exclusivo de panadería/pastelería industrial de producción por lotes.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BRECHAS VENTAS -->
+      <div class="subsection">
+        <h4 style="color:#b91c1c;">❌ Brechas en Ventas — Lo que Restaurant.pe no puede hacer para LBYD</h4>
+        <div class="brecha" style="background:#fef9c3;border-color:#ca8a04;"><strong>Contexto clave:</strong> El 88% de los ingresos de LBYD viene de masivos y corporativos — no de venta en tienda. Restaurant.pe está diseñado para el 12% del negocio (ventas en mostrador), no para el 88% (B2B de volúmen).</div>
+        <table>
+          <thead><tr><th style="width:30px;">#</th><th>Brecha</th><th style="width:260px;">Por qué Restaurant.pe no lo resuelve</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>V-01</strong></td>
+              <td><strong>Gestión de pedidos masivos y corporativos B2B.</strong> 88% del ingreso. Estos pedidos tienen: anticipación de 24–48h, precios especiales por volumen, facturación a crédito, cliente corporativo recurrente con historial de volumen, despacho separado de las tiendas.</td>
+              <td>Restaurant.pe gestiona ventas al consumidor final (B2C). No tiene un módulo de gestión de cuentas corporativas con pricing diferenciado, historial de compras por cliente B2B ni flujo de cotización→orden→producción→despacho.</td>
+            </tr>
+            <tr>
+              <td><strong>V-02</strong></td>
+              <td><strong>Pedidos especiales con especificaciones custom.</strong> Tortas de bodas, pedidos de eventos, productos personalizados. Tienen ficha de especificaciones, adelanto de pago, reserva de producción con fecha de entrega comprometida y seguimiento de estado.</td>
+              <td>Restaurant.pe puede registrar una venta, pero no modela el flujo completo: especificación→reserva de capacidad→producción asignada→confirmación de entrega con estado visible para el cliente.</td>
+            </tr>
+            <tr>
+              <td><strong>V-03</strong></td>
+              <td><strong>Precios diferenciados por canal de venta.</strong> Precio tienda ≠ precio masivo ≠ precio corporativo ≠ precio evento. Hoy no está sistematizado — se maneja empíricamente.</td>
+              <td>Restaurant.pe tiene descuentos y promociones, pero no una matriz de precios por canal de venta con reglas de negocio configurables (ej: masivo ≥ 50 unidades aplica precio B2B).</td>
+            </tr>
+            <tr>
+              <td><strong>V-04</strong></td>
+              <td><strong>Proyección de demanda para campañas con base en historial.</strong> Hoy: el Jefe Comercial descarga ventas del año anterior y suma 20–30% a ojo. No hay herramienta que compare año a año por producto y campaña automáticamente.</td>
+              <td>Restaurant.pe tiene reportes históricos de ventas, pero no una herramienta de proyección de demanda con comparación interanual, alerta de capacidad de producción y planificación de horas extra.</td>
+            </tr>
+            <tr>
+              <td><strong>V-05</strong></td>
+              <td><strong>Rentabilidad real por canal de venta.</strong> ¿Los masivos son más rentables que las tiendas? ¿Un cliente corporativo grande es rentable después de descontar el costo de producción y despacho? Hoy nadie lo sabe.</td>
+              <td>Restaurant.pe muestra ventas por producto, pero no rentabilidad neta por canal (venta − costo real de producción − costo de despacho). Ese cálculo requiere el Food Cost real que solo el sistema propio puede calcular.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BRECHAS PRODUCCIÓN -->
+      <div class="subsection">
+        <h4 style="color:#b91c1c;">❌ Brechas en Producción — Lo que Restaurant.pe no puede hacer para LBYD</h4>
+        <table>
+          <thead><tr><th style="width:30px;">#</th><th>Brecha</th><th style="width:260px;">Por qué Restaurant.pe no lo resuelve</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>P-01</strong></td>
+              <td><strong>Planificación por lotes con consolidación nocturna.</strong> El ciclo de LBYD es: requerimientos del día → Jamin consolida lista única esa noche → almacén + dosificador reciben la lista → madrugada/mañana se produce. Esto no es un flujo de restaurante.</td>
+              <td>La producción en Restaurant.pe funciona por comanda en tiempo real (cliente pide → cocina produce inmediatamente). No existe el concepto de “consolidación nocturna” ni planificación anticipada de lotes.</td>
+            </tr>
+            <tr>
+              <td><strong>P-02</strong></td>
+              <td><strong>Lote mínimo de producción con excedente registrado.</strong> Si se piden 18 panes y el lote mínimo es 20, se producen 20. Los 2 extras son producción adicional que va a tienda. Esto debe quedar registrado como producción real, no como sobrante sin origen.</td>
+              <td>Restaurant.pe produce exactamente lo que se pide (por comanda). No tiene el concepto de lote mínimo ni la lógica de “excedente de lote → despacho a tienda con trazabilidad”.</td>
+            </tr>
+            <tr>
+              <td><strong>P-03</strong></td>
+              <td><strong>Merma multi-etapa por producto.</strong> En panadería la merma ocurre en 3 etapas secuenciales: masa (mezcla/amasado), conservación (fermentación/reposo), horneo. Cada etapa tiene su propio porcentaje por producto.</td>
+              <td>Restaurant.pe tiene un único campo de merma por insumo en la ficha técnica. No soporta merma acumulada multi-etapa. Fórmula requerida: <code>insumo = teórico × (1+%masa) × (1+%conservación) × (1+%horneo)</code></td>
+            </tr>
+            <tr>
+              <td><strong>P-04</strong></td>
+              <td><strong>Planificación diferenciada: semanal (pan tiendas) vs diario (masivos).</strong> El pan para tiendas se planifica semanalmente desde el Jefe Comercial. Los masivos y corporativos se consolidan diariamente con 24h de anticipación. Dos modos coexisten.</td>
+              <td>Restaurant.pe no tiene modos de planificación de producción. Todo es en tiempo real basado en pedidos.</td>
+            </tr>
+            <tr>
+              <td><strong>P-05</strong></td>
+              <td><strong>Producción intermitente para BID.</strong> Los productos BID tienen vida útil de hasta 2 meses y producción variable (semanal, quincenal, por pedido). No encajan en el ciclo diario ni en el semanal.</td>
+              <td>No existe en Restaurant.pe un modo de producción intermitente o por calendario para productos de larga vida útil.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BRECHAS FOOD COST -->
+      <div class="subsection">
+        <h4 style="color:#b91c1c;">❌ Brechas en Food Cost — Lo que Restaurant.pe no puede hacer para LBYD</h4>
+        <table>
+          <thead><tr><th style="width:30px;">#</th><th>Brecha</th><th style="width:260px;">Por qué Restaurant.pe no lo resuelve</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>FC-01</strong></td>
+              <td><strong>Recetas privadas fuera de un SaaS compartido.</strong> Samuel ha decidido que las recetas de LBYD no pueden estar en Restaurant.pe porque la plataforma es utilizada por la competencia directa. Las recetas son el activo competitivo más valioso de la empresa.</td>
+              <td>Restaurant.pe es multi-tenant (miles de clientes comparten la misma plataforma). El equipo técnico de Restaurant.pe tiene acceso técnico a los datos. Para LBYD, esto es un riesgo inaceptable. <strong>Decisión de Samuel: recetas solo en sistema propio bajo control de LBYD.</strong></td>
+            </tr>
+            <tr>
+              <td><strong>FC-02</strong></td>
+              <td><strong>Food Cost real vs teórico con datos del dosificador.</strong> El Food Cost real = lo que realmente se dosificó × costo unitario + merma valorizada. Ese dato (lo que se dosificó realmente) solo existe en el módulo del dosificador, que es un sistema propio.</td>
+              <td>Restaurant.pe calcula Food Cost teórico con la ficha técnica. Sin los datos reales del dosificador, siempre será teórico. El FC real requiere la cadena completa: dosificador → registro consumo → cálculo FC.</td>
+            </tr>
+            <tr>
+              <td><strong>FC-03</strong></td>
+              <td><strong>Costo por lote de producción.</strong> En panadería el costo se calcula por lote (20 panes = 1 lote, costo total del lote ÷ unidades producidas = costo unitario real). Restaurant.pe calcula costo por porción/plato individual.</td>
+              <td>La unidad de costeo de Restaurant.pe es el plato/porción. La unidad de costeo de LBYD es el lote de producción. Son modelos diferentes.</td>
+            </tr>
+            <tr>
+              <td><strong>FC-04</strong></td>
+              <td><strong>Rentabilidad por canal de venta (tienda vs masivo vs corporativo).</strong> Paolo necesita saber si un pedido masivo de 1,000 panes es realmente rentable después de descontar el costo de producción real y el costo de despacho.</td>
+              <td>Restaurant.pe no cruza el Food Cost con el canal de venta. Ese análisis requiere datos que solo el sistema propio puede combinar: dosificador (costo) + ventas por canal + despacho.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DECISIÓN DE ARQUITECTURA -->
+      <div class="subsection">
+        <h4>Decisión de Arquitectura — Qué va en cada sistema</h4>
+        <p style="font-size:0.92rem;color:#64748b;margin-bottom:1rem;">
+          Basado en el análisis de brechas, la arquitectura recomendada es <strong>complementaria</strong>: Restaurant.pe continúa
+          gestionando los procesos que cubre bien. El sistema propio de LBYD agrega exclusivamente lo que Restaurant.pe
+          no puede hacer por diseño. <strong>Nadie opera dos sistemas para la misma función.</strong>
+        </p>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+
+          <div style="flex:1;min-width:260px;border:2px solid #0ea5e9;border-radius:10px;overflow:hidden;">
+            <div style="background:#0ea5e9;color:#fff;padding:10px 16px;font-weight:700;font-size:0.9rem;">&#x1F4BB; RESTAURANT.PE — Mantener y mejorar</div>
+            <div style="padding:12px 16px;font-size:0.83rem;line-height:2;">
+              ✅ Almacenes: stock, entradas, OC<br>
+              ✅ Compras: órdenes de compra a proveedores<br>
+              ✅ Punto de Venta: ventas en tiendas físicas<br>
+              ✅ Facturación electrónica SUNAT<br>
+              ✅ Reportes de ventas por producto/tienda<br>
+              ✅ Catálogo de insumos (sanear datos)<br>
+              ✅ Historial de compras y costos unitarios<br>
+              <span style="color:#94a3b8;font-size:0.78rem;">→ CSV mensual de costos al sistema propio</span>
+            </div>
+          </div>
+
+          <div style="flex:1;min-width:260px;border:2px solid #7c3aed;border-radius:10px;overflow:hidden;">
+            <div style="background:#7c3aed;color:#fff;padding:10px 16px;font-weight:700;font-size:0.9rem;">🔒 SISTEMA PROPIO LBYD — Construir</div>
+            <div style="padding:12px 16px;font-size:0.83rem;line-height:2;">
+              🔨 <strong>MVP-1:</strong> Módulo Dosificador (urgente)<br>
+              🔨 <strong>MVP-2:</strong> Food Cost real con recetas privadas<br>
+              🔨 Planificación nocturna de producción por lotes<br>
+              🔨 Merma multi-etapa (masa/conservación/horneo)<br>
+              🔨 Lote mínimo + excedente registrado<br>
+              🔨 Distribución CP → Tiendas con trazabilidad<br>
+              🔨 Pedidos masivos/corporativos B2B<br>
+              🔨 Proyección de demanda para campañas<br>
+              🔨 Rentabilidad por canal de venta<br>
+              <span style="color:#a78bfa;font-size:0.78rem;">→ Hosting propio bajo control de LBYD</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Tabla de personas y sistemas -->
+        <p style="font-size:0.85rem;font-weight:700;color:#475569;margin:1.2rem 0 0.5rem;">Qué sistema usa cada persona — sin trabajo duplicado</p>
+        <table>
+          <thead><tr><th>Persona / Rol</th><th>Restaurant.pe</th><th>Sistema Propio LBYD</th><th>Trabajo nuevo?</th></tr></thead>
+          <tbody>
+            <tr><td>Encargada de Almacén</td><td>&#x2705; Igual que hoy</td><td>❌ No lo usa</td><td style="color:#16a34a;"><strong>Ninguno</strong></td></tr>
+            <tr><td>Claudia (Compras)</td><td>&#x2705; Igual que hoy</td><td>❌ No lo usa</td><td style="color:#16a34a;"><strong>Ninguno</strong></td></tr>
+            <tr><td>Tiendas</td><td>&#x2705; POS igual que hoy</td><td>❌ No lo usan</td><td style="color:#16a34a;"><strong>Ninguno</strong></td></tr>
+            <tr><td>Jefe Comercial</td><td>&#x2705; Reportes ventas</td><td>⚠️ Programación semanal</td><td style="color:#ca8a04;"><strong>Mínimo</strong></td></tr>
+            <tr><td>Jamin Torres (Jefe Prod.)</td><td>&#x2705; Requerimientos/OC</td><td>&#x2705; Lista dosificador + merma</td><td style="color:#ca8a04;"><strong>Moderado — es su rol principal</strong></td></tr>
+            <tr><td>Dosificador (nuevo)</td><td>❌ No lo usa</td><td>&#x2705; Su única herramienta</td><td style="color:#16a34a;"><strong>Ninguno — no tiene sistema hoy</strong></td></tr>
+            <tr><td>Paolo (Finanzas)</td><td>&#x2705; Exporta ventas/costos</td><td>&#x2705; Dashboard Food Cost</td><td style="color:#16a34a;"><strong>Gana visibilidad que no tiene hoy</strong></td></tr>
+            <tr><td>Samuel (Gerente General)</td><td>&#x2705; Reportes</td><td>&#x2705; Vista ejecutiva FC</td><td style="color:#16a34a;"><strong>Gana control que no tiene hoy</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RNF DE ARQUITECTURA -->
+      <div class="subsection">
+        <h4>Requisito No Funcional Crítico — Hosting Privado</h4>
+        <div class="brecha" style="background:#fef2f2;border-color:#ef4444;">
+          <strong>RNF-16 (nuevo):</strong> El sistema propio de LBYD debe estar alojado en infraestructura <strong>exclusivamente controlada por LBYD</strong>
+          (servidor propio, VPS dedicado o nube privada). <strong>No puede ser un SaaS compartido con terceros.</strong>
+          Las recetas son el activo competitivo central de la empresa. La decisión es de Samuel Vargas (Gerente General)
+          y está documentada formalmente en este requerimiento. Cualquier propuesta de arquitectura que no cumpla
+          este requisito debe ser rechazada en la revisión técnica.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </main>
 </div>
 
@@ -2917,9 +3190,9 @@ flowchart TD
 </div>
 
 <footer>
-  Documento de Requerimientos v1.9 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
+  Documento de Requerimientos v2.0 — La Baguetteria y Delicatezze &nbsp;|&nbsp;
   Elaborado por: Luis Franklin Zeta Juárez &nbsp;|&nbsp;
-  Última actualización: 09 Mayo 2026
+  Última actualización: 20 Mayo 2026
 </footer>
 
 <script>
